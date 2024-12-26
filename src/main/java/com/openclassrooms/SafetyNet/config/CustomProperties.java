@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet.utils;
+package com.openclassrooms.SafetyNet.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

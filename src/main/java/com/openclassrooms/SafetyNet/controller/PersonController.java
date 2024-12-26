@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.PersonService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,19 +10,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
+
+    /**
+     * Constructor
+     *
+     * @param personService PersonService
+     */
+    @Autowired
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
+
+    /**
+     * Get all persons
+     *
+     * @return List of Person objects
+     */
     @GetMapping("/person")
     public List<Person> getPersons() {
+        log.info("==> Request GET on /person");
         return personService.getPersons();
     }
 
+    /**
+     * Get a person by first name and last name
+     *
+     * @param firstName String case-sensitive
+     * @param lastName  String case-sensitive
+     * @return Person object
+     */
     @GetMapping("/person/{firstName}/{lastName}")
     public Person getPersonByFirstnameAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
+        log.info("==> Request GET on /person/{}/{}", firstName, lastName);
         return personService.getPersonByFirstnameAndLastname(firstName, lastName);
     }
 }

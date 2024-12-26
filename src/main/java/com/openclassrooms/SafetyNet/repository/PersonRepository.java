@@ -1,28 +1,40 @@
 package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.model.Person;
-import com.openclassrooms.SafetyNet.utils.JsonManager;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Log4j2
 @Repository
 public class PersonRepository {
 
-    @Autowired
-    private JsonManager jsonManager;
 
-    public List<Person> getPersons() {
-        return jsonManager.getPersons();
+    private final JsonFileManager jsonFileManager;
+
+    @Autowired
+    public PersonRepository(JsonFileManager jsonFileManager) {
+        this.jsonFileManager = jsonFileManager;
     }
 
+    /**
+     * @return List of Person objects
+     */
+    public List<Person> getPersons() {
+        log.debug("==> Repository : getPersons");
+        return jsonFileManager.getPersons();
+    }
+
+    /**
+     * @param firstName String
+     * @param lastName  String
+     * @return Person object
+     */
     public Person getPersonByFirstnameAndLastname(String firstName, String lastName) {
-        System.out.println("getPersonByFirstnameAndLastname " + firstName + " " + lastName);
         for (Person person : getPersons()) {
-            System.out.println(" --> " + person.getFirstName() + " " + person.getLastName());
             if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
-                System.out.println("!! Trouvée !! ");
                 return person;
             }
         }
