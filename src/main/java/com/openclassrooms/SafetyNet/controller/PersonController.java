@@ -32,14 +32,28 @@ public class PersonController {
 
     /**
      * Get all persons
+     * Api version : 1
      *
      * @return List of Person objects
      */
-    @GetMapping("/person")
+    @GetMapping(path = "/person", headers = "X-API-VERSION=1")
     public List<Person> getPersons() {
-        log.info("==> Request GET on /person");
+        log.info("==> Request GET on /person (Version 1)");
         return personService.getPersons();
     }
+
+    /**
+     * Get all persons
+     * Api version : 2
+     *
+     * @return List of Person objects
+     */
+    @GetMapping(path = "/person", headers = "X-API-VERSION=2")
+    public List<Person> getPersonsV2() {
+        log.info("==> Request GET on /person (Version 2)");
+        return personService.getPersons();
+    }
+
 
     /**
      * Get a person by first name and last name
@@ -48,7 +62,7 @@ public class PersonController {
      * @param lastName  String case-sensitive
      * @return Person object
      */
-    @GetMapping("/person/{firstName}/{lastName}")
+    @GetMapping(path = "/person/{firstName}/{lastName}", headers = "X-API-VERSION=1")
     public ResponseEntity<Person> getPersonByFirstnameAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
         log.info("==> Request GET on /person/{}/{}", firstName, lastName);
         Person person = personService.getPersonByFirstnameAndLastname(firstName, lastName);
@@ -67,7 +81,7 @@ public class PersonController {
      * @param firstName String case-sensitive
      * @param lastName  String case-sensitive
      */
-    @DeleteMapping("/person/{firstName}/{lastName}")
+    @DeleteMapping(path = "/person/{firstName}/{lastName}", headers = "X-API-VERSION=1")
     public ResponseEntity<Object> deletePerson(@PathVariable String firstName, @PathVariable String lastName) {
         log.info("==> Request DELETE on /person/{}/{}", firstName, lastName);
         boolean deleted = personService.deletePersonByFirstnameAndLastname(firstName, lastName);
