@@ -34,7 +34,7 @@ public class JsonFileManager {
      */
     @Autowired
     public JsonFileManager(ObjectMapper objectMapper, CustomProperties customProperties) {
-        log.info("==> JsonFileManager : constructor");
+        log.info("<constructor> JsonFileManager");
         this.objectMapper = objectMapper;
         this.customProperties = customProperties;
 
@@ -43,40 +43,60 @@ public class JsonFileManager {
 
     /**
      * Load the Json file into a JsonModel object
+     *
+     * @throws JsonFileManagerLoadException if an error occurs while loading the file
      */
     private void loadJsonFile() {
         try {
             jsonModel = objectMapper.readValue(new File(customProperties.getJsonFilePath()), JsonModel.class);
-            log.info("===> Json : file loaded");
+            log.info("<manager> Json : file loaded");
 
         } catch (Exception e) {
-            log.error("===> Json : error while loading the file");
+            log.error("<manager> Json : error while loading the file");
             throw new JsonFileManagerLoadException("Error while loading the file");
         }
     }
 
     /**
      * Save the JsonModel object into the Json file
+     *
+     * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void saveJsonFile() {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(customProperties.getJsonFilePath()), jsonModel);
-            log.info("===> Json : file saved");
+            log.info("<manager> Json : file saved");
 
         } catch (Exception e) {
-            log.error("===> Json : error while saving the file");
+            log.error("<manager> Json : error while saving the file");
             throw new JsonFileManagerSaveException("Error while saving the file");
         }
     }
 
+    /**
+     * Get the list of persons from the JsonModel object
+     *
+     * @return List of Person objects
+     */
     public List<Person> getPersons() {
         return jsonModel.getPersons();
     }
 
+
+    /**
+     * Get the list of firestations from the JsonModel object
+     *
+     * @return List of Firestation objects
+     */
     public List<Firestation> getFirestations() {
         return jsonModel.getFirestations();
     }
 
+    /**
+     * Get the list of medical records from the JsonModel object
+     *
+     * @return List of MedicalRecord objects
+     */
     public List<MedicalRecord> getMedicalRecords() {
         return jsonModel.getMedicalrecords();
     }
