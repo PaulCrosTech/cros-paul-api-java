@@ -4,7 +4,6 @@ import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.PersonService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +49,16 @@ public class PersonController {
      * @return Person object
      */
     @GetMapping("/person/{firstName}/{lastName}")
-    public Person getPersonByFirstnameAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
+    public ResponseEntity<Person> getPersonByFirstnameAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
         log.info("==> Request GET on /person/{}/{}", firstName, lastName);
-        return personService.getPersonByFirstnameAndLastname(firstName, lastName);
+        Person person = personService.getPersonByFirstnameAndLastname(firstName, lastName);
+        if (person == null) {
+            log.error("==> Person {} {} not found", firstName, lastName);
+            return ResponseEntity.notFound().build();
+        } else {
+            log.info("==> Person {} {} found", firstName, lastName);
+            return ResponseEntity.ok(person);
+        }
     }
 
     /**
@@ -62,7 +68,7 @@ public class PersonController {
      * @param lastName  String case-sensitive
      */
     @DeleteMapping("/person/{firstName}/{lastName}")
-    public HttpEntity<Object> deletePerson(@PathVariable String firstName, @PathVariable String lastName) {
+    public ResponseEntity<Object> deletePerson(@PathVariable String firstName, @PathVariable String lastName) {
         log.info("==> Request DELETE on /person/{}/{}", firstName, lastName);
         boolean deleted = personService.deletePersonByFirstnameAndLastname(firstName, lastName);
 
