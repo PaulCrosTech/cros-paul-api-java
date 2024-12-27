@@ -1,7 +1,8 @@
 package com.openclassrooms.SafetyNet.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.SafetyNet.exceptions.JsonFileServiceLoadException;
+import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerLoadException;
+import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.JsonModel;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
@@ -33,6 +34,7 @@ public class JsonFileManager {
      */
     @Autowired
     public JsonFileManager(ObjectMapper objectMapper, CustomProperties customProperties) {
+        log.info("==> JsonFileManager : constructor");
         this.objectMapper = objectMapper;
         this.customProperties = customProperties;
 
@@ -45,11 +47,25 @@ public class JsonFileManager {
     private void loadJsonFile() {
         try {
             jsonModel = objectMapper.readValue(new File(customProperties.getJsonFilePath()), JsonModel.class);
-            log.info("==> Json : file loaded");
+            log.info("===> Json : file loaded");
 
         } catch (Exception e) {
-            log.error("==> Json : error while loading the file");
-            throw new JsonFileServiceLoadException("Error while loading the file");
+            log.error("===> Json : error while loading the file");
+            throw new JsonFileManagerLoadException("Error while loading the file");
+        }
+    }
+
+    /**
+     * Save the JsonModel object into the Json file
+     */
+    public void saveJsonFile() {
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(customProperties.getJsonFilePath()), jsonModel);
+            log.info("===> Json : file saved");
+
+        } catch (Exception e) {
+            log.error("===> Json : error while saving the file");
+            throw new JsonFileManagerSaveException("Error while saving the file");
         }
     }
 

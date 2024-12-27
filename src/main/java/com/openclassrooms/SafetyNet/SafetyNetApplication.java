@@ -12,7 +12,7 @@ public class SafetyNetApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(SafetyNetApplication.class, args);
-        log.info("==> Starting application : SafetyNetApplication");
+        log.info("==> Application SafetyNet started");
     }
 
 }

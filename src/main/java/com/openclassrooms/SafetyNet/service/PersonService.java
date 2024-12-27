@@ -18,6 +18,7 @@ public class PersonService {
 
     @Autowired
     public PersonService(PersonRepository personRepository) {
+        log.info("==> PersonService : constructor");
         this.personRepository = personRepository;
     }
 
@@ -25,7 +26,7 @@ public class PersonService {
      * @return List of Person objects
      */
     public List<Person> getPersons() {
-        log.debug("==> Service : getPersons");
+        log.info("==> PersonService : getPersons");
         return personRepository.getPersons();
     }
 
@@ -35,6 +36,17 @@ public class PersonService {
      * @return Person object
      */
     public Person getPersonByFirstnameAndLastname(String firstName, String lastName) {
+        log.info("==> PersonService : getPersonByFirstnameAndLastname");
         return personRepository.getPersonByFirstnameAndLastname(firstName, lastName);
+    }
+
+    /**
+     * @param firstName String case-sensitive
+     * @param lastName  String case-sensitive
+     * @return boolean
+     */
+    public boolean deletePersonByFirstnameAndLastname(String firstName, String lastName) {
+        log.info("==> PersonService : deletePersonByFirstnameAndLastname");
+        return personRepository.deletePersonByFirstnameAndLastname(firstName, lastName);
     }
 }

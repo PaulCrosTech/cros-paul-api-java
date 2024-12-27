@@ -11,11 +11,11 @@ import java.util.List;
 @Repository
 public class PersonRepository {
 
-
     private final JsonFileManager jsonFileManager;
 
     @Autowired
     public PersonRepository(JsonFileManager jsonFileManager) {
+        log.info("==> PersonRepository : constructor");
         this.jsonFileManager = jsonFileManager;
     }
 
@@ -23,7 +23,7 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersons() {
-        log.debug("==> Repository : getPersons");
+        log.info("==> PersonRepository : getPersons");
         return jsonFileManager.getPersons();
     }
 
@@ -39,5 +39,25 @@ public class PersonRepository {
             }
         }
         return null;
+    }
+
+    /**
+     * @param firstName String case-sensitive
+     * @param lastName  String case-sensitive
+     * @return boolean
+     */
+    public boolean deletePersonByFirstnameAndLastname(String firstName, String lastName) {
+        log.info("==> PersonRepository : deletePersonByFirstnameAndLastname");
+        List<Person> persons = getPersons();
+        boolean deleted = persons.removeIf(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName));
+        if (deleted) {
+            try {
+                jsonFileManager.saveJsonFile();
+            } catch (Exception e) {
+                return false;
+            }
+
+        }
+        return deleted;
     }
 }
