@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Person;
+import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -82,19 +83,22 @@ public class PersonRepository {
         jsonFileManager.saveJsonFile();
     }
 
+
     /**
      * Update a person
      *
-     * @param person Person
-     * @return Person updated
+     * @param firstName first name of the person to update
+     * @param lastName  last name of the person to update
+     * @param person    PersonUpdateDTO object with the new information
+     * @return Person object updated
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
-    public Person updatePerson(Person person) throws JsonFileManagerSaveException {
+    public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws JsonFileManagerSaveException {
         log.info("<repo> updatePerson : person: {}", person);
         // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         for (Person p : persons) {
-            if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
                 p.setAddress(person.getAddress());
                 p.setCity(person.getCity());
                 p.setZip(person.getZip());

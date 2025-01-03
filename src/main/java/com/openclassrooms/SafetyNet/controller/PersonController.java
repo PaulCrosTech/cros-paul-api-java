@@ -3,6 +3,7 @@ package com.openclassrooms.SafetyNet.controller;
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.exceptions.PersonNotFoundException;
 import com.openclassrooms.SafetyNet.model.Person;
+import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -163,14 +164,18 @@ public class PersonController {
      * @return Person object updated
      */
     @Operation(summary = "Update a person", description = "Update a person by his first name and last name.<br>Names are case-sensitive")
+    @Parameters({
+            @Parameter(name = "firstName", description = "The first name of the person", required = true, example = "John"),
+            @Parameter(name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
+    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - The person was not found", content = @Content)
     })
-    @PutMapping(path = "/person", headers = "X-API-VERSION=1")
-    public Person updatePerson(@Valid @RequestBody Person person) {
+    @PutMapping(path = "/person/{firstName}/{lastName}", headers = "X-API-VERSION=1")
+    public Person updatePerson(@PathVariable String firstName, @PathVariable String lastName, @Valid @RequestBody PersonUpdateDTO person) {
         log.info("<controller> **New** Request PUT on /person {}", person);
 
-        return personService.updatePerson(person);
+        return personService.updatePerson(firstName, lastName, person);
     }
 }
