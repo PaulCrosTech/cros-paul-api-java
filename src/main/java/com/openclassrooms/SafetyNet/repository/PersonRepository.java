@@ -58,6 +58,7 @@ public class PersonRepository {
      */
     public boolean deletePersonByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
         log.info("<repo> deletePersonByFirstnameAndLastname : firstName: {} and lastName: {}", firstName, lastName);
+        // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         boolean deleted = persons.removeIf(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName));
         if (deleted) {
@@ -65,6 +66,20 @@ public class PersonRepository {
             jsonFileManager.saveJsonFile();
         }
         return deleted;
+    }
+
+    /**
+     * Save a person
+     *
+     * @param person Person
+     * @throws JsonFileManagerSaveException if an error occurs while saving the file
+     */
+    public void savePerson(Person person) throws JsonFileManagerSaveException {
+        log.info("<repo> savePerson : person: {}", person);
+        // Ici, on récupère la référence et non une copie de la liste
+        List<Person> persons = getPersons();
+        persons.add(person);
+        jsonFileManager.saveJsonFile();
     }
 
 }

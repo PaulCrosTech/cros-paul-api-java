@@ -1,6 +1,7 @@
 package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
+import com.openclassrooms.SafetyNet.exceptions.PersonConflictException;
 import com.openclassrooms.SafetyNet.exceptions.PersonNotFoundException;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import com.openclassrooms.SafetyNet.model.Person;
@@ -70,8 +71,37 @@ public class PersonService {
             }
         } catch (JsonFileManagerSaveException e) {
             log.info("<service> Error while deleting in JSON file");
-            throw new Exception("Error while deleting the person with firstName: " + firstName + " and lastName: " + lastName);
+            throw new Exception("Error while deleting the person in JSON file, firstName: " + firstName + " and lastName: " + lastName);
         }
         log.info("<service> Person deleted");
+    }
+
+
+    /**
+     * Save a person
+     *
+     * @param person Person
+     */
+    public void savePerson(Person person) throws JsonFileManagerSaveException, PersonConflictException {
+        log.info("<service> savePerson");
+
+        try {
+            // Vérifie si la personne existe déjà
+            Person personExist = getPersonByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+            if (personExist != null) {
+                log.info("<service> Person already exist");
+                throw new PersonConflictException("Person already exist with firstName: " + person.getFirstName() + " and lastName: " + person.getLastName());
+            }
+        } catch (PersonNotFoundException e) {
+            // Création de la personne
+            try {
+                personRepository.savePerson(person);
+            } catch (JsonFileManagerSaveException ex) {
+                log.info("<service> Error while saving in JSON file");
+                throw new JsonFileManagerSaveException("Error while saving the person in JSON file");
+            }
+            log.info("<service> Person saved");
+        }
+
     }
 }

@@ -82,7 +82,6 @@ public class JsonFileManager {
         return jsonModel.getPersons();
     }
 
-
     /**
      * Get the list of firestations from the JsonModel object
      *

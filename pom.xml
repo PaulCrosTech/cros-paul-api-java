@@ -44,6 +44,12 @@
             </exclusions>
         </dependency>
 
+        <!-- Spring Boot Starter Object Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- Correction dépendance Lombock cf. https://projectlombok.org/setup/maven -->
         <dependency>
             <groupId>org.projectlombok</groupId>
