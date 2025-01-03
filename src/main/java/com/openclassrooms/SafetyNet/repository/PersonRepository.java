@@ -82,4 +82,29 @@ public class PersonRepository {
         jsonFileManager.saveJsonFile();
     }
 
+    /**
+     * Update a person
+     *
+     * @param person Person
+     * @return Person updated
+     * @throws JsonFileManagerSaveException if an error occurs while saving the file
+     */
+    public Person updatePerson(Person person) throws JsonFileManagerSaveException {
+        log.info("<repo> updatePerson : person: {}", person);
+        // Ici, on récupère la référence et non une copie de la liste
+        List<Person> persons = getPersons();
+        for (Person p : persons) {
+            if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+                p.setAddress(person.getAddress());
+                p.setCity(person.getCity());
+                p.setZip(person.getZip());
+                p.setPhone(person.getPhone());
+                p.setEmail(person.getEmail());
+                jsonFileManager.saveJsonFile();
+                return p;
+            }
+        }
+        return null;
+    }
+
 }

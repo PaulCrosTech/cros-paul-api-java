@@ -102,6 +102,26 @@ public class PersonService {
             }
             log.info("<service> Person saved");
         }
+    }
 
+    /**
+     * Update a person
+     *
+     * @param person Person (use firstName and lastName to find the person to update)
+     * @return Person object updated
+     * @throws PersonNotFoundException if person not found
+     */
+    public Person updatePerson(Person person) throws PersonNotFoundException {
+        log.info("<service> updatePerson");
+
+        Person personUpdated = personRepository.updatePerson(person);
+        if (personUpdated == null) {
+            log.info("<service> Person not found");
+            throw new PersonNotFoundException("Person not found with firstName: " + person.getFirstName() + " and lastName: " + person.getLastName());
+        }
+
+        log.info("<service> Person updated");
+
+        return personUpdated;
     }
 }

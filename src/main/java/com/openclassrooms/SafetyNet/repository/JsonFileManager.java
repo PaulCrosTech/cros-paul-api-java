@@ -62,7 +62,7 @@ public class JsonFileManager {
      *
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
-    public void saveJsonFile() {
+    public void saveJsonFile() throws JsonFileManagerSaveException {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(customProperties.getJsonFilePath()), jsonModel);
             log.info("<manager> Json : file saved");

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.core.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
+    private final OperationService operationBuilder;
 
 
     /**
@@ -36,9 +38,10 @@ public class PersonController {
      * @param personService PersonService
      */
     @Autowired
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, OperationService operationBuilder) {
         log.info("<constructor> PersonController");
         this.personService = personService;
+        this.operationBuilder = operationBuilder;
     }
 
     /**
@@ -150,5 +153,24 @@ public class PersonController {
                 .buildAndExpand(person.getFirstName(), person.getLastName())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+
+    /**
+     * Update a person
+     *
+     * @param person Person
+     * @return Person object updated
+     */
+    @Operation(summary = "Update a person", description = "Update a person by his first name and last name.<br>Names are case-sensitive")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Not found - The person was not found", content = @Content)
+    })
+    @PutMapping(path = "/person", headers = "X-API-VERSION=1")
+    public Person updatePerson(@Valid @RequestBody Person person) {
+        log.info("<controller> **New** Request PUT on /person {}", person);
+
+        return personService.updatePerson(person);
     }
 }
