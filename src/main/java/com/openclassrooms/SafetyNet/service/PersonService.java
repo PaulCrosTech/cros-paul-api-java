@@ -1,7 +1,7 @@
 package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
-import com.openclassrooms.SafetyNet.exceptions.PersonConflictException;
+import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
@@ -83,7 +83,7 @@ public class PersonService {
      *
      * @param person Person
      */
-    public void savePerson(Person person) throws JsonFileManagerSaveException, PersonConflictException {
+    public void savePerson(Person person) throws JsonFileManagerSaveException, ConflictException {
         log.info("<service> savePerson");
 
         try {
@@ -91,7 +91,7 @@ public class PersonService {
             Person personExist = getPersonByFirstNameAndLastName(person.getFirstName(), person.getLastName());
             if (personExist != null) {
                 log.info("<service> Person already exist");
-                throw new PersonConflictException("Person already exist with firstName: " + person.getFirstName() + " and lastName: " + person.getLastName());
+                throw new ConflictException("Person already exist with firstName: " + person.getFirstName() + " and lastName: " + person.getLastName());
             }
         } catch (NotFoundException e) {
             // Création de la personne

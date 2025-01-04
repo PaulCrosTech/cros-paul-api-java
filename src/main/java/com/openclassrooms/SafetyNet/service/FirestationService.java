@@ -76,7 +76,7 @@ public class FirestationService {
     }
 
 
-    public void saveFirestation(Firestation firestation) throws JsonFileManagerSaveException, PersonConflictException {
+    public void saveFirestation(Firestation firestation) throws JsonFileManagerSaveException, ConflictException {
         log.info("<service> saveFirestation");
 
         try {
@@ -84,7 +84,7 @@ public class FirestationService {
             Firestation firestationExist = getFirestationByAddress(firestation.getAddress());
             if (firestationExist != null) {
                 log.info("<service> Firestation already exist");
-                throw new FirestationConflictException("Fire station already exist with address: " + firestation.getAddress());
+                throw new ConflictException("Fire station already exist with address: " + firestation.getAddress());
             }
         } catch (NotFoundException e) {
             // Création de Firestation
