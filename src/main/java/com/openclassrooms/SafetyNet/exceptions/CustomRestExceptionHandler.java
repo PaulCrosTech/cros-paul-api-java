@@ -2,10 +2,7 @@ package com.openclassrooms.SafetyNet.exceptions;
 
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,13 +43,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
 
-        String path = request.getDescription(false).replace("uri=", "");
-
-        final CustomApiError customApiError = new CustomApiError(HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                path,
-                errors);
-        return handleExceptionInternal(ex, customApiError, headers, status, request);
+        return sendResponseError(request, errors, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -66,17 +57,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Object> handleConflictException(ConflictException ex, WebRequest request) {
-        String path = request.getDescription(false).replace("uri=", "");
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-
-        final CustomApiError customApiError = new CustomApiError(HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT.getReasonPhrase(),
-                path,
-                errors);
-        return new ResponseEntity<>(customApiError, HttpStatus.CONFLICT);
+        return sendResponseError(request, errors, HttpStatus.CONFLICT);
     }
-    
+
     /**
      * 404 NOT FOUND
      * Handle NotFoundException
@@ -87,15 +72,29 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
-        String path = request.getDescription(false).replace("uri=", "");
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-
-        final CustomApiError customApiError = new CustomApiError(HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                path,
-                errors);
-        return new ResponseEntity<>(customApiError, HttpStatus.NOT_FOUND);
+        return sendResponseError(request, errors, HttpStatus.NOT_FOUND);
     }
 
+
+    /**
+     * Send response error
+     *
+     * @param request    WebRequest
+     * @param errors     List<String>
+     * @param HttpStatus HttpStatus
+     * @return ResponseEntity<Object>
+     */
+    private ResponseEntity<Object> sendResponseError(WebRequest request, List<String> errors, HttpStatus HttpStatus) {
+
+        String path = request.getDescription(false).replace("uri=", "");
+
+        final CustomApiError customApiError = new CustomApiError(HttpStatus.value(),
+                HttpStatus.getReasonPhrase(),
+                path,
+                errors);
+        
+        return new ResponseEntity<>(customApiError, HttpStatus);
+    }
 }
