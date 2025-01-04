@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.PersonConflictException;
-import com.openclassrooms.SafetyNet.exceptions.PersonNotFoundException;
+import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import com.openclassrooms.SafetyNet.model.Person;
@@ -42,14 +42,14 @@ public class PersonService {
      * @param firstName String case-sensitive
      * @param lastName  String case-sensitive
      * @return Person object
-     * @throws PersonNotFoundException if person not found
+     * @throws NotFoundException if person not found
      */
-    public Person getPersonByFirstNameAndLastName(String firstName, String lastName) throws PersonNotFoundException {
+    public Person getPersonByFirstNameAndLastName(String firstName, String lastName) throws NotFoundException {
         log.info("<service> getPersonByFirstnameAndLastname : firstName: {} and lastName: {}", firstName, lastName);
         Person person = personRepository.getPersonByFirstNameAndLastName(firstName, lastName);
         if (person == null) {
             log.info("<service> Person not found");
-            throw new PersonNotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
+            throw new NotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
         }
         log.info("<service> Person found");
         return person;
@@ -68,7 +68,7 @@ public class PersonService {
             boolean deleted = personRepository.deletePersonByFirstNameAndLastName(firstName, lastName);
             if (!deleted) {
                 log.info("<service> Person not found");
-                throw new PersonNotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
+                throw new NotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
             }
         } catch (JsonFileManagerSaveException e) {
             log.info("<service> Error while deleting in JSON file");
@@ -93,7 +93,7 @@ public class PersonService {
                 log.info("<service> Person already exist");
                 throw new PersonConflictException("Person already exist with firstName: " + person.getFirstName() + " and lastName: " + person.getLastName());
             }
-        } catch (PersonNotFoundException e) {
+        } catch (NotFoundException e) {
             // Création de la personne
             try {
                 personRepository.savePerson(person);
@@ -113,15 +113,15 @@ public class PersonService {
      * @param lastName  last name of the person to be updated
      * @param person    PersonUpdateDTO object with the new information
      * @return Person object updated
-     * @throws PersonNotFoundException if person not found
+     * @throws NotFoundException if person not found
      */
-    public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws PersonNotFoundException {
+    public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws NotFoundException {
         log.info("<service> updatePerson");
 
         Person personUpdated = personRepository.updatePerson(firstName, lastName, person);
         if (personUpdated == null) {
             log.info("<service> Person not found");
-            throw new PersonNotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
+            throw new NotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
         }
 
         log.info("<service> Person updated");

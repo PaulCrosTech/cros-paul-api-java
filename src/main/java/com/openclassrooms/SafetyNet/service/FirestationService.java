@@ -40,14 +40,14 @@ public class FirestationService {
      *
      * @param address String address of the fire station (case-sensitive)
      * @return Firestation objects
-     * @throws PersonNotFoundException if fire station not found
+     * @throws NotFoundException if fire station not found
      */
-    public Firestation getFirestationByAddress(String address) throws PersonNotFoundException {
+    public Firestation getFirestationByAddress(String address) throws NotFoundException {
         log.info("<service> getFirestationByAddress : address: {}", address);
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
         if (firestation == null) {
             log.info("<service> Firestation not found");
-            throw new FirestationNotFoundException("Fire station not found with address: " + address);
+            throw new NotFoundException("Fire station not found with address: " + address);
         }
         log.info("<service> Firestation found");
         return firestation;
@@ -66,7 +66,7 @@ public class FirestationService {
             boolean deleted = firestationRepository.deleteFirestationByAddress(address);
             if (!deleted) {
                 log.info("<service> Firestation not found");
-                throw new FirestationNotFoundException("Fire station not found with address : " + address);
+                throw new NotFoundException("Fire station not found with address : " + address);
             }
         } catch (JsonFileManagerSaveException e) {
             log.info("<service> Error while deleting in JSON file");
@@ -86,7 +86,7 @@ public class FirestationService {
                 log.info("<service> Firestation already exist");
                 throw new FirestationConflictException("Fire station already exist with address: " + firestation.getAddress());
             }
-        } catch (FirestationNotFoundException e) {
+        } catch (NotFoundException e) {
             // Création de Firestation
             try {
                 firestationRepository.saveFirestation(firestation);
@@ -104,15 +104,15 @@ public class FirestationService {
      * @param address     Firestation address (case-sensitive)
      * @param firestation Firestation object to update
      * @return Firestation object updated
-     * @throws PersonNotFoundException if fire station not found
+     * @throws NotFoundException if fire station not found
      */
-    public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws PersonNotFoundException {
+    public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws NotFoundException {
         log.info("<service> updateFirestation");
 
         Firestation firestationUpdated = firestationRepository.updateFirestation(address, firestation);
         if (firestationUpdated == null) {
             log.info("<service> Firestation not found");
-            throw new FirestationNotFoundException("Fire station not found with address: " + address);
+            throw new NotFoundException("Fire station not found with address: " + address);
         }
 
         log.info("<service> Firestation updated");

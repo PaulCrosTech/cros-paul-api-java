@@ -98,4 +98,26 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(customApiError, HttpStatus.CONFLICT);
     }
 
+
+    /**
+     * 404 NOT FOUND
+     * Handle NotFoundException
+     *
+     * @param ex      NotFoundException
+     * @param request WebRequest
+     * @return ResponseEntity<Object>
+     */
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        String path = request.getDescription(false).replace("uri=", "");
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        final CustomApiError customApiError = new CustomApiError(HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                path,
+                errors);
+        return new ResponseEntity<>(customApiError, HttpStatus.NOT_FOUND);
+    }
+
 }
