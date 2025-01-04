@@ -1,7 +1,6 @@
 package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
-import com.openclassrooms.SafetyNet.exceptions.PersonNotFoundException;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.service.PersonService;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.springdoc.core.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +28,6 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
-    private final OperationService operationBuilder;
-
 
     /**
      * Constructor
@@ -39,15 +35,13 @@ public class PersonController {
      * @param personService PersonService
      */
     @Autowired
-    public PersonController(PersonService personService, OperationService operationBuilder) {
+    public PersonController(PersonService personService) {
         log.info("<constructor> PersonController");
         this.personService = personService;
-        this.operationBuilder = operationBuilder;
     }
 
     /**
      * Get all persons
-     * Api version : 1
      *
      * @return List of Person objects
      */
@@ -60,23 +54,6 @@ public class PersonController {
         log.info("<controller> **New** Request GET on /person (Version 1)");
         return personService.getPersons();
     }
-
-    /**
-     * Get all persons
-     * Api version : 2
-     *
-     * @return List of Person objects
-     */
-    @Operation(summary = "Get all person", description = "Returns all persons")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-    })
-    @GetMapping(path = "/person", headers = "X-API-VERSION=2")
-    public List<Person> getPersonsV2() {
-        log.info("<controller> **New** Request GET on /person (Version 2)");
-        return personService.getPersons();
-    }
-
 
     /**
      * Get a person by first name and last name
@@ -143,7 +120,7 @@ public class PersonController {
     })
     @PostMapping(path = "/person", headers = "X-API-VERSION=1")
     public ResponseEntity<Object> createPerson(@Valid @RequestBody Person person) {
-        log.info("<controller> **New** Request POST on /person");
+        log.info("<controller> **New** Request POST on /person {}", person);
 
         personService.savePerson(person);
 

@@ -58,14 +58,35 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * 409 CONFLICT
-     * Handle PersonNotFoundException
+     * Handle PersonConflictException
      *
-     * @param ex      PersonNotFoundException
+     * @param ex      PersonConflictException
      * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(PersonConflictException.class)
     public ResponseEntity<Object> handlePersonConflictException(PersonConflictException ex, WebRequest request) {
+        String path = request.getDescription(false).replace("uri=", "");
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        final CustomApiError customApiError = new CustomApiError(HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                path,
+                errors);
+        return new ResponseEntity<>(customApiError, HttpStatus.CONFLICT);
+    }
+
+    /**
+     * 409 CONFLICT
+     * Handle FirestationConflictException
+     *
+     * @param ex      FirestationConflictException
+     * @param request WebRequest
+     * @return ResponseEntity<Object>
+     */
+    @ExceptionHandler(FirestationConflictException.class)
+    public ResponseEntity<Object> handleFirestationConflictException(FirestationConflictException ex, WebRequest request) {
         String path = request.getDescription(false).replace("uri=", "");
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());

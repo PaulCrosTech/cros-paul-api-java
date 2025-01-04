@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@Schema(description = "Details about a person")
+@Schema(description = "Updatable informations about a person")
 @Data
 public class PersonUpdateDTO {
 

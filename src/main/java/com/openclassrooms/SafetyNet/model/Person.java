@@ -5,11 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 
 
-@Log4j2
 @Schema(description = "Details about a person")
 @Data
 public class Person {
