@@ -137,8 +137,10 @@ public class PersonController {
     /**
      * Update a person
      *
-     * @param person Person
-     * @return Person object updated
+     * @param firstName firstName of the person to update
+     * @param lastName  lastName of the person to update
+     * @param person    PersonUpdateDTO object to update
+     * @return Person object
      */
     @Operation(summary = "Update a person", description = "Update a person by his first name and last name.<br>Names are case-sensitive")
     @Parameters({
