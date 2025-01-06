@@ -183,6 +183,14 @@
     "zip" : "97451",
     "phone" : "841-874-7458",
     "email" : "gramps@email.com"
+  }, {
+    "firstName" : "Paul",
+    "lastName" : "Cros",
+    "address" : "1509 Culver St",
+    "city" : "Culver",
+    "zip" : "97451",
+    "phone" : "841-874-9999",
+    "email" : "neaaaawmail@email.com"
   } ],
   "firestations" : [ {
     "address" : "1509 Culver St",
@@ -223,6 +231,9 @@
   }, {
     "address" : "951 LoneTree Rd",
     "station" : "2"
+  }, {
+    "address" : "834 Binoc Avea",
+    "station" : "334"
   } ],
   "medicalrecords" : [ {
     "firstName" : "Jacob",

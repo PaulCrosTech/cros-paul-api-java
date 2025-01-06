@@ -97,7 +97,6 @@ public class MedicalRecordRepository {
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecordUpdateDTO medicalRecord) throws JsonFileManagerSaveException {
         log.info("<repo> updateMedicalRecord : MedicalRecord: {}", medicalRecord);
         // Ici, on récupère la référence et non une copie de la liste
-        // TODO : ici pourquoi ne pas faire un getMedicalRecordByFirstNameAndLastName ? (pour éviter de parcourir la liste)
         MedicalRecord existingRecord = getMedicalRecordByFirstNameAndLastName(firstName, lastName);
         if (existingRecord != null) {
             existingRecord.setBirthdate(medicalRecord.getBirthdate());
@@ -107,19 +106,6 @@ public class MedicalRecordRepository {
             return existingRecord;
         }
         return null;
-//        List<MedicalRecord> medicalRecords = getMedicalRecords();
-//        for (MedicalRecord p : persons) {
-//            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
-//                p.setAddress(person.getAddress());
-//                p.setCity(person.getCity());
-//                p.setZip(person.getZip());
-//                p.setPhone(person.getPhone());
-//                p.setEmail(person.getEmail());
-//                jsonFileManager.saveJsonFile();
-//                return p;
-//            }
-//        }
-//        return null;
     }
 
 }

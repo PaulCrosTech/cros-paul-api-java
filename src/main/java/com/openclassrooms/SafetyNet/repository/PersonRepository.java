@@ -96,17 +96,15 @@ public class PersonRepository {
     public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws JsonFileManagerSaveException {
         log.info("<repo> updatePerson : person: {}", person);
         // Ici, on récupère la référence et non une copie de la liste
-        List<Person> persons = getPersons();
-        for (Person p : persons) {
-            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
-                p.setAddress(person.getAddress());
-                p.setCity(person.getCity());
-                p.setZip(person.getZip());
-                p.setPhone(person.getPhone());
-                p.setEmail(person.getEmail());
-                jsonFileManager.saveJsonFile();
-                return p;
-            }
+        Person existingPerson = getPersonByFirstNameAndLastName(firstName, lastName);
+        if (existingPerson != null) {
+            existingPerson.setAddress(person.getAddress());
+            existingPerson.setCity(person.getCity());
+            existingPerson.setZip(person.getZip());
+            existingPerson.setPhone(person.getPhone());
+            existingPerson.setEmail(person.getEmail());
+            jsonFileManager.saveJsonFile();
+            return existingPerson;
         }
         return null;
     }

@@ -112,13 +112,11 @@ public class FirestationRepository {
     public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws JsonFileManagerSaveException {
         log.info("<repo> updateFirestation : firestation: {}", firestation);
         // Ici, on récupère la référence et non une copie de la liste
-        List<Firestation> firestations = getFirestations();
-        for (Firestation f : firestations) {
-            if (f.getAddress().equals(address)) {
-                f.setStation(firestation.getStation());
-                jsonFileManager.saveJsonFile();
-                return f;
-            }
+        Firestation existingFirestation = getFirestationByAddress(address);
+        if (existingFirestation != null) {
+            existingFirestation.setStation(firestation.getStation());
+            jsonFileManager.saveJsonFile();
+            return existingFirestation;
         }
         return null;
     }
