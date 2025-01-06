@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -47,6 +48,25 @@ public class PersonRepository {
             }
         }
         return null;
+    }
+
+    /**
+     * Get a list of persons by address
+     *
+     * @param address String address of the person (case-sensitive)
+     * @return List of Person objects
+     */
+    public List<Person> getPersonByAddress(String address) {
+        log.info("<repo> getPersonByAddress : address: {}", address);
+        List<Person> persons = new ArrayList<>();
+
+        for (Person person : getPersons()) {
+            if (person.getAddress().equals(address)) {
+                log.info("<repo> getPersonByAddress : person found, adding to list {}", person);
+                persons.add(person);
+            }
+        }
+        return persons;
     }
 
     /**

@@ -38,7 +38,7 @@ public class FirestationRepository {
      * @param station String number of the station
      * @return List of Firestation objects
      */
-    public List<Firestation> getFirestationByStation(String station) {
+    public List<Firestation> getFirestationByStationNumber(String station) {
         log.info("<repo> getFirestationByStation : station: {}", station);
         List<Firestation> f = new ArrayList<>();
         for (Firestation firestation : getFirestations()) {
