@@ -240,6 +240,37 @@ public class EmergencyService {
         return personReturned;
     }
 
+
+    /**
+     * Retourne une liste de personnes avec les détails médicaux et l'email
+     *
+     * @param lastName nom de famille
+     * @return liste de PersonMedicalDetailsWithEmail
+     */
+    public List<PersonMedicalDetailsWithEmail> getPersonMedicalDetailsWithEmail(String lastName) {
+        log.info("<service> getPersonMedicalDetailsWithEmail");
+        List<PersonMedicalDetailsWithEmail> personReturned = new ArrayList<>();
+
+        List<Person> personList = personRepository.getPersons();
+        for (Person person : personList) {
+            if (person.getLastName().equals(lastName)) {
+                MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+                if (medicalRecord != null) {
+                    PersonMedicalDetailsWithEmail personMedicalDetailsWithEmail = new PersonMedicalDetailsWithEmail();
+                    personMedicalDetailsWithEmail.setFirstName(person.getFirstName());
+                    personMedicalDetailsWithEmail.setLastName(person.getLastName());
+                    personMedicalDetailsWithEmail.setEmail(person.getEmail());
+                    personMedicalDetailsWithEmail.setAge(calculateAge(medicalRecord.getBirthdate()));
+                    personMedicalDetailsWithEmail.setMedications(medicalRecord.getMedications());
+                    personMedicalDetailsWithEmail.setAllergies(medicalRecord.getAllergies());
+
+                    personReturned.add(personMedicalDetailsWithEmail);
+                }
+            }
+        }
+        return personReturned;
+    }
+
     /**
      * Calcule l'âge d'une personne
      *

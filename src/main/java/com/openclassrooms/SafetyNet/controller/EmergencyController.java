@@ -1,10 +1,7 @@
 package com.openclassrooms.SafetyNet.controller;
 
 
-import com.openclassrooms.SafetyNet.model.PersonAtSameAddress;
-import com.openclassrooms.SafetyNet.model.PersonAtSameAddressWithMedicalDetailsAndFirestation;
-import com.openclassrooms.SafetyNet.model.PersonCoveredByStation;
-import com.openclassrooms.SafetyNet.model.PersonWithMedicalDetailsGroupedByAddress;
+import com.openclassrooms.SafetyNet.model.*;
 import com.openclassrooms.SafetyNet.service.EmergencyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -137,6 +134,26 @@ public class EmergencyController {
     public PersonWithMedicalDetailsGroupedByAddress getPersonsGroupedByAddress(@RequestParam List<Integer> stations) {
         log.info("<controller> **New** Request GET on /flood/stations");
         return emergencyService.getPersonWithMedicalDetailsGroupedByAddress(stations);
+    }
+
+
+    /**
+     * Get persons, with medical details and email, by last name
+     *
+     * @param lastName The last name
+     * @return List of PersonMedicalDetailsWithEmail objects
+     */
+    @Operation(summary = "Get persons, with medical details and email, by last name", description = "Returned all persons, with medical details and email, by last name")
+    @Parameters({
+            @Parameter(in = ParameterIn.QUERY, name = "lastName", description = "Last name", required = true, example = "Boyd"),
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+    })
+    @GetMapping(path = "/personInfo", params = "lastName", headers = "X-API-VERSION=1")
+    public List<PersonMedicalDetailsWithEmail> getPersonMedicalDetailsWithEmail(@RequestParam String lastName) {
+        log.info("<controller> **New** Request GET on /personInfo?lastName={}", lastName);
+        return emergencyService.getPersonMedicalDetailsWithEmail(lastName);
     }
 
 }
