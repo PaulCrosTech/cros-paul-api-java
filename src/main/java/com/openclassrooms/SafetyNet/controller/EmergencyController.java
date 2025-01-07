@@ -156,4 +156,24 @@ public class EmergencyController {
         return emergencyService.getPersonMedicalDetailsWithEmail(lastName);
     }
 
+
+    /**
+     * Get persons email by city name
+     *
+     * @param city The city
+     * @return HashSet of email
+     */
+    @Operation(summary = "", description = "")
+    @Parameters({
+            @Parameter(in = ParameterIn.QUERY, name = "city", description = "City", required = true, example = "Culver"),
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+    })
+    @GetMapping(path = "/communityEmail", params = "city", headers = "X-API-VERSION=1")
+    public HashSet<String> getPersonEmailByCity(String city) {
+        log.info("<controller> **New** Request GET on /communityEmail?city={}", city);
+        return emergencyService.getPersonEmailByCity(city);
+    }
+
 }

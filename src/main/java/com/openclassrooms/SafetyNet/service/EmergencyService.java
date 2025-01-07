@@ -271,6 +271,26 @@ public class EmergencyService {
         return personReturned;
     }
 
+
+    /**
+     * Get email of persons living in the city
+     *
+     * @param city name of the city
+     * @return HashSet of email
+     */
+    public HashSet<String> getPersonEmailByCity(String city) {
+        log.info("<service> getPersonEmailByCity");
+        HashSet<String> emailList = new HashSet<>();
+
+        List<Person> personList = personRepository.getPersons();
+        for (Person person : personList) {
+            if (person.getCity().equals(city)) {
+                emailList.add(person.getEmail());
+            }
+        }
+        return emailList;
+    }
+
     /**
      * Calcule l'âge d'une personne
      *
