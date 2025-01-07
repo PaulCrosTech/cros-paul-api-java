@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

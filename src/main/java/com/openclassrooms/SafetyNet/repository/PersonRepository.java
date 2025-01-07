@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Person;
-import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.PersonUpdateDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

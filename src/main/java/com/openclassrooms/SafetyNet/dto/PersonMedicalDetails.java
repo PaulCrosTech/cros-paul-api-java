@@ -1,17 +1,14 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
 
 @Schema(description = "Details about a medical record")
 @Data
-public class PersonMedicalDetailsWithEmail {
+public class PersonMedicalDetails {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
     private String firstName;
@@ -29,7 +26,4 @@ public class PersonMedicalDetailsWithEmail {
 
     @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
     private int age;
-
-    @Schema(description = "Email of the person", example = "mail@email.com", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 5, maxLength = 255)
-    private String email;
 }

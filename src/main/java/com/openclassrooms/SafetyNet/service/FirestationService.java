@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.exceptions.*;
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.model.FirestationUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.FirestationUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;

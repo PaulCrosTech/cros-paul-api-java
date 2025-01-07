@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.model.MedicalRecordUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.MedicalRecordUpdateDTO;
 import com.openclassrooms.SafetyNet.service.MedicalRecordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

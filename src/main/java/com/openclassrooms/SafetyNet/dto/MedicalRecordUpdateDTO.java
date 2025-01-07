@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;

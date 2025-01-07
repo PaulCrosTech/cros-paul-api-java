@@ -1,7 +1,7 @@
 package com.openclassrooms.SafetyNet.controller;
 
 
-import com.openclassrooms.SafetyNet.model.*;
+import com.openclassrooms.SafetyNet.dto.*;
 import com.openclassrooms.SafetyNet.service.EmergencyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +41,7 @@ public class EmergencyController {
      * Get person covered by a fire stations
      *
      * @param stationNumber The station number
-     * @return PersonCoveredByStation object
+     * @return PersonCoveredByStationDTO object
      */
     @Operation(summary = "Get person covered by a fire stations", description = "Returns all person covered by a fire stations, with adults and children count")
     @Parameters({
@@ -51,7 +51,7 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/firestation", params = "stationNumber", headers = "X-API-VERSION=1")
-    public PersonCoveredByStation getPersonCoveredByStation(@RequestParam int stationNumber) {
+    public PersonCoveredByStationDTO getPersonCoveredByStation(@RequestParam int stationNumber) {
         log.info("<controller> **New** Request GET on /firestation?stationNumber={}", stationNumber);
         return emergencyService.getPersonCoveredByStationNumber(stationNumber);
     }
@@ -155,7 +155,6 @@ public class EmergencyController {
         log.info("<controller> **New** Request GET on /personInfo?lastName={}", lastName);
         return emergencyService.getPersonMedicalDetailsWithEmail(lastName);
     }
-
 
     /**
      * Get persons email by city name

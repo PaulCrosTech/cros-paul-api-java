@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.model.FirestationUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.FirestationUpdateDTO;
 import com.openclassrooms.SafetyNet.service.FirestationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

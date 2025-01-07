@@ -3,7 +3,7 @@ package com.openclassrooms.SafetyNet.service;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
-import com.openclassrooms.SafetyNet.model.PersonUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import com.openclassrooms.SafetyNet.model.Person;
 import lombok.Data;

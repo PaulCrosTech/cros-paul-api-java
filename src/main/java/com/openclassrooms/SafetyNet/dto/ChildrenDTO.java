@@ -1,15 +1,19 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@Schema(description = "Details about an adult")
+
+@Schema(description = "Details about an children")
 @Data
-public class Adult {
+public class ChildrenDTO {
+
     @Schema(description = "First name", example = "John", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 35)
     private String firstName;
 
     @Schema(description = "Last name", example = "Boyd", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 35)
     private String lastName;
 
+    @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int age;
 }

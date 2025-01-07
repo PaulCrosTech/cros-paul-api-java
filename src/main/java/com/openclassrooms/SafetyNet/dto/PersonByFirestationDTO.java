@@ -1,13 +1,15 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Schema(description = "Details about a person")
 @Data
+@AllArgsConstructor
 public class PersonByFirestationDTO {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 35)

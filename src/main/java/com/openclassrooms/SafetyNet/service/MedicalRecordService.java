@@ -4,7 +4,7 @@ import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.model.MedicalRecordUpdateDTO;
+import com.openclassrooms.SafetyNet.dto.MedicalRecordUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
