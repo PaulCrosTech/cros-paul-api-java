@@ -1,11 +1,13 @@
 package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Schema(description = "Details about an children")
 @Data
+@AllArgsConstructor
 public class ChildrenDTO {
 
     @Schema(description = "First name", example = "John", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 35)

@@ -10,7 +10,7 @@ import lombok.Data;
 @Schema(description = "Details about a person")
 @Data
 @AllArgsConstructor
-public class PersonDTO {
+public class PersonBasicDetailsDTO {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 35)
     @NotBlank(message = "First name is mandatory")

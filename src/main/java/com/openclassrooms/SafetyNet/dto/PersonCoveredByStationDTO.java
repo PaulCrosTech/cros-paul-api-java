@@ -17,7 +17,7 @@ public class PersonCoveredByStationDTO {
     private int nbAdults;
 
     @Schema(description = "List of persons covered by the station")
-    private List<PersonDTO> persons;
+    private List<PersonBasicDetailsDTO> persons;
 
 }
 

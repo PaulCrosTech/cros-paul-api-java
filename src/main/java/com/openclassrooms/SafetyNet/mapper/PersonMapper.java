@@ -8,11 +8,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class PersonMapper {
@@ -34,10 +31,14 @@ public class PersonMapper {
     }
 
 
-    public PersonCoveredByStationDTO toPersonCoveredByStationDTO(
-            List<Person> persons,
-            List<MedicalRecord> medicalRecords
-    ) {
+    /**
+     * Convert a Person to a PersonAtSameAddressDTO
+     *
+     * @param persons        list of persons
+     * @param medicalRecords list of medical records
+     * @return the converted PersonAtSameAddressDTO
+     */
+    public PersonCoveredByStationDTO toPersonCoveredByStationDTO(List<Person> persons, List<MedicalRecord> medicalRecords) {
         // Associate Person with MedicalRecord
         List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
 
@@ -57,8 +58,8 @@ public class PersonMapper {
         personCoveredByStationDTO.setNbChildrens(nbChildrens);
 
         // Map PersonWithMedicalRecord to PersonDTO
-        List<PersonDTO> personDTOs = personWithMedicalRecords.stream()
-                .map(personWithMedicalRecord -> new PersonDTO(
+        List<PersonBasicDetailsDTO> personBasicDetailsDTO = personWithMedicalRecords.stream()
+                .map(personWithMedicalRecord -> new PersonBasicDetailsDTO(
                         personWithMedicalRecord.getFirstName(),
                         personWithMedicalRecord.getLastName(),
                         personWithMedicalRecord.getAddress(),
@@ -66,9 +67,51 @@ public class PersonMapper {
                 ))
                 .toList();
 
-        personCoveredByStationDTO.setPersons(personDTOs);
+        personCoveredByStationDTO.setPersons(personBasicDetailsDTO);
 
         return personCoveredByStationDTO;
+
+    }
+
+    /**
+     * Convert a Person to a PersonAtSameAddressDTO
+     *
+     * @param persons        list of persons
+     * @param medicalRecords list of medical records
+     * @return the converted PersonAtSameAddressDTO
+     */
+    public PersonAtSameAddressDTO toPersonAtSameAddressDTO(
+            List<Person> persons,
+            List<MedicalRecord> medicalRecords
+    ) {
+        PersonAtSameAddressDTO personAtSameAddressDTO = new PersonAtSameAddressDTO();
+
+        // Associate Person with MedicalRecord
+        List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
+
+        // Map PersonWithMedicalRecord to AdultDTO
+        List<AdultDTO> adults = personWithMedicalRecords.stream()
+                .filter(PersonWithMedicalRecord::getIsAdult)
+                .map(personWithMedicalRecord -> new AdultDTO(
+                        personWithMedicalRecord.getFirstName(),
+                        personWithMedicalRecord.getLastName()
+                ))
+                .toList();
+
+        // Map PersonWithMedicalRecord to ChrildrenDTO
+        List<ChildrenDTO> childrens = personWithMedicalRecords.stream()
+                .filter(personWithMedicalRecord -> !personWithMedicalRecord.getIsAdult())
+                .map(personWithMedicalRecord -> new ChildrenDTO(
+                        personWithMedicalRecord.getFirstName(),
+                        personWithMedicalRecord.getLastName(),
+                        personWithMedicalRecord.getAge()
+                ))
+                .toList();
+        
+        personAtSameAddressDTO.setAdults(adults);
+        personAtSameAddressDTO.setChildrens(childrens);
+
+        return personAtSameAddressDTO;
 
     }
 

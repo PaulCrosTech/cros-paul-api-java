@@ -69,89 +69,7 @@ public class EmergencyService {
         }
 
         return personMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
-
-//        // Calcul : nombre d'enfants et adultes
-//        int nbChildrens = 0;
-//        int nbAdults = 0;
-//        for (Person p : personsCovered) {
-//            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
-//
-//            if (medicalRecord != null) {
-//                int age = calculateAge(medicalRecord.getBirthdate());
-//                if (age <= 18) {
-//                    nbChildrens++;
-//                    log.info("<service> getPersonCoveredByStationNumber - medicalRecord Children : {}", medicalRecord);
-//                } else {
-//                    nbAdults++;
-//                    log.info("<service> getPersonCoveredByStationNumber - medicalRecord Adult : {}", medicalRecord);
-//                }
-//            }
-//        }
-//
-//        // Mappe les données avec PersonCoveredByStationDTO
-//        PersonCoveredByStation personCoveredByStation = new PersonCoveredByStation();
-//        personCoveredByStation.setNbChildrens(nbChildrens);
-//        personCoveredByStation.setNbAdults(nbAdults);
-//        personCoveredByStation.setPersonsCovered(personsCovered.
-//                stream().
-//                map(PersonMapper::toPersonByFirestationDTO).
-//                toList()
-//        );
-//
-//        return personCoveredByStation;
-
     }
-
-//    /**
-//     * Retourne une liste de personnes couvertes par la caserne stationNumber
-//     *
-//     * @param stationNumber numéro de la caserne
-//     * @return liste de PersonCoveredByStation
-//     */
-//    public PersonCoveredByStation getPersonCoveredByStationNumber(int stationNumber) {
-//        log.info("<service> getPersonCoveredByStationNumber");
-//
-//        // Récupère les adresses couvertes par la caserne stationNumber
-//        List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(String.valueOf(stationNumber));
-//
-//        // Récupère les personnes habitant à ces adresses
-//        List<Person> personsCovered = new ArrayList<>();
-//        for (Firestation firestation : firestations) {
-//            List<Person> p = personRepository.getPersonByAddress(firestation.getAddress());
-//            personsCovered.addAll(p);
-//        }
-//
-//        // Calcul : nombre d'enfants et adultes
-//        int nbChildrens = 0;
-//        int nbAdults = 0;
-//        for (Person p : personsCovered) {
-//            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
-//
-//            if (medicalRecord != null) {
-//                int age = calculateAge(medicalRecord.getBirthdate());
-//                if (age <= 18) {
-//                    nbChildrens++;
-//                    log.info("<service> getPersonCoveredByStationNumber - medicalRecord Children : {}", medicalRecord);
-//                } else {
-//                    nbAdults++;
-//                    log.info("<service> getPersonCoveredByStationNumber - medicalRecord Adult : {}", medicalRecord);
-//                }
-//            }
-//        }
-//
-//        // Mappe les données avec PersonCoveredByStationDTO
-//        PersonCoveredByStation personCoveredByStation = new PersonCoveredByStation();
-//        personCoveredByStation.setNbChildrens(nbChildrens);
-//        personCoveredByStation.setNbAdults(nbAdults);
-//        personCoveredByStation.setPersonsCovered(personsCovered.
-//                stream().
-//                map(PersonMapper::toPersonByFirestationDTO).
-//                toList()
-//        );
-//
-//        return personCoveredByStation;
-//
-//    }
 
 
     /**
@@ -160,40 +78,23 @@ public class EmergencyService {
      * @param address adresse
      * @return liste de ChildrenByAddress
      */
-    public PersonAtSameAddress getPersonAtSameAddress(String address) {
+    public PersonAtSameAddressDTO getPersonAtSameAddress(String address) {
 
-        // Récupère les personnes habitant à cette adresse
+        // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);
 
-        PersonAtSameAddress personAtSameAddress = new PersonAtSameAddress();
-        List<Children> childrens = new ArrayList<>();
-        List<Adult> adults = new ArrayList<>();
-
-        // Pour chaque personne, récupère son âge et le classe dans la liste enfants ou adultes
+        // Get MedicalRecords of persons
+        List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (Person p : persons) {
             MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
+
             if (medicalRecord != null) {
-                int age = calculateAge(medicalRecord.getBirthdate());
-                if (age <= 18) {
-                    Children c = new Children();
-                    c.setAge(age);
-                    c.setFirstName(p.getFirstName());
-                    c.setLastName(p.getLastName());
-                    childrens.add(c);
-                } else {
-                    Adult a = new Adult();
-                    a.setFirstName(p.getFirstName());
-                    a.setLastName(p.getLastName());
-                    adults.add(a);
-                }
+                medicalRecords.add(medicalRecord);
             }
         }
 
-        // Finalise l'objet AddressOccupants
-        personAtSameAddress.setChildrens(childrens);
-        personAtSameAddress.setAdults(adults);
-
-        return personAtSameAddress;
+        // Map persons and medicalRecords to Children and Adults
+        return personMapper.toPersonAtSameAddressDTO(persons, medicalRecords);
     }
 
     /**

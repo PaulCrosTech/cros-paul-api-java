@@ -71,7 +71,7 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/childAlert", params = "address", headers = "X-API-VERSION=1")
-    public PersonAtSameAddress getPersonAtSameAddress(@RequestParam String address) {
+    public PersonAtSameAddressDTO getPersonAtSameAddress(@RequestParam String address) {
         log.info("<controller> **New** Request GET on /childAlert?address={}", address);
         return emergencyService.getPersonAtSameAddress(address);
     }
