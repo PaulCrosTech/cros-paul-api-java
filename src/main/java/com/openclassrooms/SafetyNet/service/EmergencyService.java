@@ -98,20 +98,21 @@ public class EmergencyService {
     }
 
     /**
-     * Retourne une liste de numéros de téléphone des personnes couvertes par la caserne stationNumber
+     * Get phone numbers covered by a fire stations
      *
-     * @param stationNumber numéro de la caserne
-     * @return liste de numéros de téléphone
+     * @param stationNumber station number
+     * @return HashSet of phone numbers
      */
     public HashSet<String> getPhoneNumbersCoveredByFireStation(String stationNumber) {
         log.info("<service> getPhoneAlert");
 
+        // HashSet for unique phone numbers
         HashSet<String> phoneNumbers = new HashSet<>();
 
-        // Récupère les personnes couvertes par la caserne firestation
+        // Get Firestations corresponding to the stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
 
-        // Récupère les personnes habitant à ces adresses
+        // Get Persons living at the addresses covered by the firestations
         for (Firestation firestation : firestations) {
             List<Person> persons = personRepository.getPersonByAddress(firestation.getAddress());
             for (Person person : persons) {
