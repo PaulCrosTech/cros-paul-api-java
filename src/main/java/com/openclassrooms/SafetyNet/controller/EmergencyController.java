@@ -175,5 +175,4 @@ public class EmergencyController {
         log.info("<controller> **New** Request GET on /communityEmail?city={}", city);
         return emergencyService.getPersonEmailByCity(city);
     }
-
 }

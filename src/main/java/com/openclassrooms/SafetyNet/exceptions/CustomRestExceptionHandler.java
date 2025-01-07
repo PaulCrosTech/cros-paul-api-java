@@ -27,7 +27,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      * @param headers HttpHeaders
      * @param status  HttpStatusCode
      * @param request WebRequest
-     * @return ResponseEntity<Object>
+     * @return ResponseEntity Object containing the error details and an HTTP status of BAD REQUEST
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
@@ -53,7 +53,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      ConflictException
      * @param request WebRequest
-     * @return ResponseEntity<Object>
+     * @return ResponseEntity Object containing the error details and an HTTP status of CONFLICT
      */
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Object> handleConflictException(ConflictException ex, WebRequest request) {
@@ -68,7 +68,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      NotFoundException
      * @param request WebRequest
-     * @return ResponseEntity<Object>
+     * @return ResponseEntity Object containing the error details and an HTTP status of NOT FOUND
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
@@ -84,7 +84,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
      * @param request    WebRequest
      * @param errors     List<String>
      * @param HttpStatus HttpStatus
-     * @return ResponseEntity<Object>
+     * @return ResponseEntity Object containing the error details and an HTTP status
      */
     private ResponseEntity<Object> sendResponseError(WebRequest request, List<String> errors, HttpStatus HttpStatus) {
 
@@ -94,7 +94,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.getReasonPhrase(),
                 path,
                 errors);
-        
+
         return new ResponseEntity<>(customApiError, HttpStatus);
     }
 }
