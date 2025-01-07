@@ -7,7 +7,7 @@ import java.util.List;
 
 @Schema(description = "Details about occupants of an address")
 @Data
-public class AddressOccupants {
+public class PersonAtSameAddress {
 
     private List<Adult> adults;
     private List<Children> childrens;

@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Log4j2
@@ -93,12 +91,12 @@ public class EmergencyService {
      * @param address adresse
      * @return liste de ChildrenByAddress
      */
-    public AddressOccupants getOccupantsByAddress(String address) {
+    public PersonAtSameAddress getPersonAtSameAddress(String address) {
 
         // Récupère les personnes habitant à cette adresse
         List<Person> persons = personRepository.getPersonByAddress(address);
 
-        AddressOccupants addressOccupants = new AddressOccupants();
+        PersonAtSameAddress personAtSameAddress = new PersonAtSameAddress();
         List<Children> childrens = new ArrayList<>();
         List<Adult> adults = new ArrayList<>();
 
@@ -123,10 +121,123 @@ public class EmergencyService {
         }
 
         // Finalise l'objet AddressOccupants
-        addressOccupants.setChildrens(childrens);
-        addressOccupants.setAdults(adults);
+        personAtSameAddress.setChildrens(childrens);
+        personAtSameAddress.setAdults(adults);
 
-        return addressOccupants;
+        return personAtSameAddress;
+    }
+
+    /**
+     * Retourne une liste de numéros de téléphone des personnes couvertes par la caserne stationNumber
+     *
+     * @param stationNumber numéro de la caserne
+     * @return liste de numéros de téléphone
+     */
+    public HashSet<String> getPhoneNumbersCoveredByFireStation(String stationNumber) {
+        log.info("<service> getPhoneAlert");
+
+        HashSet<String> phoneNumbers = new HashSet<>();
+
+        // Récupère les personnes couvertes par la caserne firestation
+        List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
+
+        // Récupère les personnes habitant à ces adresses
+        for (Firestation firestation : firestations) {
+            List<Person> persons = personRepository.getPersonByAddress(firestation.getAddress());
+            for (Person person : persons) {
+                phoneNumbers.add(person.getPhone());
+            }
+        }
+
+        return phoneNumbers;
+    }
+
+    /**
+     * Retourne une liste de personnes habitant à la même adresse avec les détails médicaux et la caserne de rattachement
+     *
+     * @param address adresse
+     * @return liste de PersonAtSameAddressWithMedicalDetailsAndFirestation
+     */
+    public PersonAtSameAddressWithMedicalDetailsAndFirestation getPersonsAtSameAddressWithMedicalDetailsAndFirestation(String address) {
+        log.info("<service> getPersonsAtSameAddressWithFirestation");
+
+        PersonAtSameAddressWithMedicalDetailsAndFirestation personsReturned = new PersonAtSameAddressWithMedicalDetailsAndFirestation();
+
+        // Récupère la liste des casernes couvrant cette adresse
+        Firestation firestation = firestationRepository.getFirestationByAddress(address);
+        if (firestation == null) {
+            return personsReturned;
+        }
+        personsReturned.setStation(firestation.getStation());
+        List<PersonMedicalDetails> personMedicalDetailsList = new ArrayList<>();
+
+        // Récupère les personnes habitant à cette adresse
+        List<Person> personsAtSameAddress = personRepository.getPersonByAddress(address);
+        for (Person person : personsAtSameAddress) {
+
+            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+            if (medicalRecord != null) {
+
+                PersonMedicalDetails personMedicalDetails = new PersonMedicalDetails();
+                personMedicalDetails.setFirstName(person.getFirstName());
+                personMedicalDetails.setMedications(medicalRecord.getMedications());
+                personMedicalDetails.setAllergies(medicalRecord.getAllergies());
+                personMedicalDetails.setAge(calculateAge(medicalRecord.getBirthdate()));
+
+                personMedicalDetailsList.add(personMedicalDetails);
+            }
+        }
+        personsReturned.setPersonMedicalDetails(personMedicalDetailsList);
+
+        return personsReturned;
+    }
+
+
+    /**
+     * Retourne une liste de personnes, avec les détails médicaux, regroupés par address
+     *
+     * @param stationNumbers liste de numéros de casernes
+     * @return liste de PersonWithMedicalDetailsGroupedByAddress
+     */
+    public PersonWithMedicalDetailsGroupedByAddress getPersonWithMedicalDetailsGroupedByAddress(List<Integer> stationNumbers) {
+        PersonWithMedicalDetailsGroupedByAddress personReturned = new PersonWithMedicalDetailsGroupedByAddress();
+        HashMap<String, List<PersonMedicalDetailsWithPhone>> addressReturned = new HashMap<>();
+
+        // Récupère les Firestations pour chaque stationNumber
+        for (Integer i : stationNumbers) {
+            List<Firestation> addressesList = firestationRepository.getFirestationByStationNumber(String.valueOf(i));
+
+            // Récupère les addresses couvertes par la caserne stationNumber
+            for (Firestation address : addressesList) {
+                List<Person> personList = personRepository.getPersonByAddress(address.getAddress());
+                List<PersonMedicalDetailsWithPhone> medicalRecordReturned = new ArrayList<>();
+
+                // Récupère les informations médicales pour chaque personne
+                for (Person person : personList) {
+                    MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+
+                    if (medicalRecord != null) {
+                        PersonMedicalDetailsWithPhone personMedicalDetailsWithPhone = new PersonMedicalDetailsWithPhone();
+                        personMedicalDetailsWithPhone.setFirstName(person.getFirstName());
+                        personMedicalDetailsWithPhone.setLastName(person.getLastName());
+                        personMedicalDetailsWithPhone.setPhone(person.getPhone());
+                        personMedicalDetailsWithPhone.setAge(calculateAge(medicalRecord.getBirthdate()));
+                        personMedicalDetailsWithPhone.setMedications(medicalRecord.getMedications());
+                        personMedicalDetailsWithPhone.setAllergies(medicalRecord.getAllergies());
+
+                        // Ajoute le medicalRecord à la liste temporaire, groupée par adresse
+                        medicalRecordReturned.add(personMedicalDetailsWithPhone);
+                    }
+                }
+
+                // Affecte la liste de MedicalRecord à l'adresse
+                addressReturned.put(address.getAddress(), medicalRecordReturned);
+            }
+        }
+        // Affecte la liste d'adresse à l'objet retourné
+        personReturned.setAddress(addressReturned);
+
+        return personReturned;
     }
 
     /**

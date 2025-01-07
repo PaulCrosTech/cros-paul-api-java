@@ -56,6 +56,7 @@ public class FirestationRepository {
      * @param address String address of the fire station (case-sensitive)
      * @return Firestation object
      */
+    // TODO : à revoir, car une adresse peut être couverte par plusieurs casernes
     public Firestation getFirestationByAddress(String address) {
         log.info("<repo> getFirestationByAddress : address: {}", address);
         for (Firestation firestation : getFirestations()) {
