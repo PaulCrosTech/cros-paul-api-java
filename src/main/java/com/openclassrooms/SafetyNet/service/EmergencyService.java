@@ -258,6 +258,7 @@ public class EmergencyService {
      */
     public HashSet<String> getPersonEmailByCity(String city) {
         log.info("<service> getPersonEmailByCity");
+
         HashSet<String> emailList = new HashSet<>();
 
         List<Person> personList = personRepository.getPersons();

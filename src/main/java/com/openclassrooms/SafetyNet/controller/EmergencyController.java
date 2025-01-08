@@ -162,9 +162,9 @@ public class EmergencyController {
      * @param city The city
      * @return HashSet of email
      */
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Get persons email by city name", description = "Return all email of persons living in city name")
     @Parameters({
-            @Parameter(in = ParameterIn.QUERY, name = "city", description = "City", required = true, example = "Culver"),
+            @Parameter(in = ParameterIn.QUERY, name = "city", description = "City name", required = true, example = "Culver"),
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
