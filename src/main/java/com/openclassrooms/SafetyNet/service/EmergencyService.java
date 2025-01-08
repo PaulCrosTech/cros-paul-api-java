@@ -11,9 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -146,7 +143,9 @@ public class EmergencyService {
         // Get MedicalRecords of persons
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (Person person : persons) {
-            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(
+                    person.getFirstName(),
+                    person.getLastName());
             if (medicalRecord != null) {
                 medicalRecords.add(medicalRecord);
             }
@@ -195,17 +194,17 @@ public class EmergencyService {
         }
 
         // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecord> personWithMedicalRecords = emergencyMapper.toPersonWithMedicalRecord(finalPersonList, finalMedicalRecordList);
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = emergencyMapper.toPersonWithMedicalRecord(finalPersonList, finalMedicalRecordList);
 
         // Group by address
         HashMap<String, List<PersonWithMedicalAndPhoneDTO>> personGroupedByAddress = new HashMap<>();
 
-        for (PersonWithMedicalRecord personWithMedicalRecord : personWithMedicalRecords) {
+        for (PersonWithMedicalRecordDTO personWithMedicalRecordDTO : personWithMedicalRecordDTOS) {
             // Map to PersonWithMedicalAndPhoneDTO
-            PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecord);
+            PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecordDTO);
             // Group by address
             personGroupedByAddress.computeIfAbsent(
-                    personWithMedicalRecord.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO
+                    personWithMedicalRecordDTO.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO
             );
         }
         familyDTO.setAddress(personGroupedByAddress);
@@ -238,11 +237,11 @@ public class EmergencyService {
         }
 
         // Map to PersonWithMedicalAndEmailDTO
-        List<PersonWithMedicalRecord> personWithMedicalRecords = emergencyMapper.toPersonWithMedicalRecord(personsList, medicalRecordsList);
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = emergencyMapper.toPersonWithMedicalRecord(personsList, medicalRecordsList);
 
         // Map to PersonWithMedicalAndEmailDTO
         List<PersonWithMedicalAndEmailDTO> personWithMedicalAndEmailDTOS = new ArrayList<>();
-        for (PersonWithMedicalRecord p : personWithMedicalRecords) {
+        for (PersonWithMedicalRecordDTO p : personWithMedicalRecordDTOS) {
             PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = emergencyMapper.toPersonWithMedicalAndEmailDTO(p);
             personWithMedicalAndEmailDTOS.add(personWithMedicalAndEmailDTO);
         }
@@ -269,21 +268,5 @@ public class EmergencyService {
         }
         return emailList;
     }
-
-    /**
-     * Calcule l'âge d'une personne
-     *
-     * @param birthdate date de naissance
-     * @return âge
-     */
-    private int calculateAge(Date birthdate) {
-        // Converti la date de naissance en LocalDate, pour cela :
-        // Converti la date en Instant (temps en millisecondes depuis le 1er janvier 1970)
-        // Converti l'Instant en ZoneDateTime (date et heure) en utilisant le fuseau horaire du système
-        LocalDate birthDateLocal = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate today = LocalDate.now();
-        return Period.between(birthDateLocal, today).getYears();
-    }
-
 
 }

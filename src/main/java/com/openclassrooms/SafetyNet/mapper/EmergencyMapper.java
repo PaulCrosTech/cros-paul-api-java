@@ -15,23 +15,6 @@ import java.util.List;
 @Component
 public class EmergencyMapper {
 
-
-    /**
-     * Convert a Person to a PersonByFirestationDTO
-     *
-     * @param person the person to convert
-     * @return the converted PersonByFirestationDTO
-     */
-    public PersonByFirestationDTO toPersonByFirestationDTO(Person person) {
-        return new PersonByFirestationDTO(
-                person.getFirstName(),
-                person.getLastName(),
-                person.getAddress(),
-                person.getPhone()
-        );
-    }
-
-
     /**
      * Convert a Person to a PersonAtSameAddressDTO
      *
@@ -41,14 +24,14 @@ public class EmergencyMapper {
      */
     public PersonCoveredByStationDTO toPersonCoveredByStationDTO(List<Person> persons, List<MedicalRecord> medicalRecords) {
         // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = toPersonWithMedicalRecord(persons, medicalRecords);
 
         PersonCoveredByStationDTO personCoveredByStationDTO = new PersonCoveredByStationDTO();
 
         // Count Adult & Children
         int nbAdults = 0;
         int nbChildrens = 0;
-        for (PersonWithMedicalRecord person : personWithMedicalRecords) {
+        for (PersonWithMedicalRecordDTO person : personWithMedicalRecordDTOS) {
             if (person.getIsAdult()) {
                 nbAdults++;
             } else {
@@ -59,12 +42,12 @@ public class EmergencyMapper {
         personCoveredByStationDTO.setNbChildrens(nbChildrens);
 
         // Map PersonWithMedicalRecord to PersonDTO
-        List<PersonBasicDetailsDTO> personBasicDetailsDTO = personWithMedicalRecords.stream()
-                .map(personWithMedicalRecord -> new PersonBasicDetailsDTO(
-                        personWithMedicalRecord.getFirstName(),
-                        personWithMedicalRecord.getLastName(),
-                        personWithMedicalRecord.getAddress(),
-                        personWithMedicalRecord.getPhone()
+        List<PersonBasicDetailsDTO> personBasicDetailsDTO = personWithMedicalRecordDTOS.stream()
+                .map(personWithMedicalRecordDTO -> new PersonBasicDetailsDTO(
+                        personWithMedicalRecordDTO.getFirstName(),
+                        personWithMedicalRecordDTO.getLastName(),
+                        personWithMedicalRecordDTO.getAddress(),
+                        personWithMedicalRecordDTO.getPhone()
                 ))
                 .toList();
 
@@ -88,24 +71,24 @@ public class EmergencyMapper {
         FamilyDTO familyDTO = new FamilyDTO();
 
         // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = toPersonWithMedicalRecord(persons, medicalRecords);
 
         // Map PersonWithMedicalRecord to AdultDTO
-        List<AdultDTO> adults = personWithMedicalRecords.stream()
-                .filter(PersonWithMedicalRecord::getIsAdult)
-                .map(personWithMedicalRecord -> new AdultDTO(
-                        personWithMedicalRecord.getFirstName(),
-                        personWithMedicalRecord.getLastName()
+        List<AdultDTO> adults = personWithMedicalRecordDTOS.stream()
+                .filter(PersonWithMedicalRecordDTO::getIsAdult)
+                .map(personWithMedicalRecordDTO -> new AdultDTO(
+                        personWithMedicalRecordDTO.getFirstName(),
+                        personWithMedicalRecordDTO.getLastName()
                 ))
                 .toList();
 
         // Map PersonWithMedicalRecord to ChrildrenDTO
-        List<ChildrenDTO> children = personWithMedicalRecords.stream()
-                .filter(personWithMedicalRecord -> !personWithMedicalRecord.getIsAdult())
-                .map(personWithMedicalRecord -> new ChildrenDTO(
-                        personWithMedicalRecord.getFirstName(),
-                        personWithMedicalRecord.getLastName(),
-                        personWithMedicalRecord.getAge()
+        List<ChildrenDTO> children = personWithMedicalRecordDTOS.stream()
+                .filter(personWithMedicalRecordDTO -> !personWithMedicalRecordDTO.getIsAdult())
+                .map(personWithMedicalRecordDTO -> new ChildrenDTO(
+                        personWithMedicalRecordDTO.getFirstName(),
+                        personWithMedicalRecordDTO.getLastName(),
+                        personWithMedicalRecordDTO.getAge()
                 ))
                 .toList();
 
@@ -133,20 +116,20 @@ public class EmergencyMapper {
         familyDTO.setStation(firestation.getStation());
 
         // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = toPersonWithMedicalRecord(persons, medicalRecords);
 
         // Map PersonWithMedicalRecord to PersonMedicalDetails
-        List<PersonMedicalDetails> personMedicalDetails = personWithMedicalRecords.stream()
-                .map(personWithMedicalRecord -> new PersonMedicalDetails(
-                        personWithMedicalRecord.getFirstName(),
-                        personWithMedicalRecord.getLastName(),
-                        personWithMedicalRecord.getMedications(),
-                        personWithMedicalRecord.getAllergies(),
-                        personWithMedicalRecord.getAge()
+        List<PersonMedicalDetailsDTO> personMedicalDetailDTOS = personWithMedicalRecordDTOS.stream()
+                .map(personWithMedicalRecordDTO -> new PersonMedicalDetailsDTO(
+                        personWithMedicalRecordDTO.getFirstName(),
+                        personWithMedicalRecordDTO.getLastName(),
+                        personWithMedicalRecordDTO.getMedications(),
+                        personWithMedicalRecordDTO.getAllergies(),
+                        personWithMedicalRecordDTO.getAge()
                 ))
                 .toList();
 
-        familyDTO.setPersonMedicalDetails(personMedicalDetails);
+        familyDTO.setPersonMedicalDetailDTOS(personMedicalDetailDTOS);
         return familyDTO;
     }
 
@@ -157,7 +140,7 @@ public class EmergencyMapper {
      * @param person the person to convert
      * @return the converted PersonWithMedicalAndPhoneDTO
      */
-    public PersonWithMedicalAndPhoneDTO toPersonWithMedicalAndPhone(PersonWithMedicalRecord person) {
+    public PersonWithMedicalAndPhoneDTO toPersonWithMedicalAndPhone(PersonWithMedicalRecordDTO person) {
         PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = new PersonWithMedicalAndPhoneDTO();
         personWithMedicalAndPhoneDTO.setFirstName(person.getFirstName());
         personWithMedicalAndPhoneDTO.setLastName(person.getLastName());
@@ -174,7 +157,7 @@ public class EmergencyMapper {
      * @param person the person to convert
      * @return the converted PersonWithMedicalAndEmailDTO
      */
-    public PersonWithMedicalAndEmailDTO toPersonWithMedicalAndEmailDTO(PersonWithMedicalRecord person) {
+    public PersonWithMedicalAndEmailDTO toPersonWithMedicalAndEmailDTO(PersonWithMedicalRecordDTO person) {
         PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = new PersonWithMedicalAndEmailDTO();
         personWithMedicalAndEmailDTO.setFirstName(person.getFirstName());
         personWithMedicalAndEmailDTO.setLastName(person.getLastName());
@@ -192,36 +175,36 @@ public class EmergencyMapper {
      * @param medicalRecords list of medical records
      * @return list of persons with medical records
      */
-    public List<PersonWithMedicalRecord> toPersonWithMedicalRecord(List<Person> persons, List<MedicalRecord> medicalRecords) {
+    public List<PersonWithMedicalRecordDTO> toPersonWithMedicalRecord(List<Person> persons, List<MedicalRecord> medicalRecords) {
 
-        List<PersonWithMedicalRecord> personWithMedicalRecords = persons.stream()
+        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = persons.stream()
                 .map(person -> {
                     MedicalRecord medicalRecord = medicalRecords.stream()
                             .filter(record -> record.getFirstName().equals(person.getFirstName()) && record.getLastName().equals(person.getLastName()))
                             .findFirst()
                             .orElse(null);
 
-                    PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord();
-                    personWithMedicalRecord.setFirstName(person.getFirstName());
-                    personWithMedicalRecord.setLastName(person.getLastName());
-                    personWithMedicalRecord.setAddress(person.getAddress());
-                    personWithMedicalRecord.setCity(person.getCity());
-                    personWithMedicalRecord.setZip(person.getZip());
-                    personWithMedicalRecord.setPhone(person.getPhone());
-                    personWithMedicalRecord.setEmail(person.getEmail());
+                    PersonWithMedicalRecordDTO personWithMedicalRecordDTO = new PersonWithMedicalRecordDTO();
+                    personWithMedicalRecordDTO.setFirstName(person.getFirstName());
+                    personWithMedicalRecordDTO.setLastName(person.getLastName());
+                    personWithMedicalRecordDTO.setAddress(person.getAddress());
+                    personWithMedicalRecordDTO.setCity(person.getCity());
+                    personWithMedicalRecordDTO.setZip(person.getZip());
+                    personWithMedicalRecordDTO.setPhone(person.getPhone());
+                    personWithMedicalRecordDTO.setEmail(person.getEmail());
 
                     if (medicalRecord != null) {
-                        personWithMedicalRecord.setAge(calculateAge(medicalRecord.getBirthdate()));
-                        personWithMedicalRecord.setIsAdult(personWithMedicalRecord.getAge() >= 18);
-                        personWithMedicalRecord.setMedications(medicalRecord.getMedications());
-                        personWithMedicalRecord.setAllergies(medicalRecord.getAllergies());
+                        personWithMedicalRecordDTO.setAge(calculateAge(medicalRecord.getBirthdate()));
+                        personWithMedicalRecordDTO.setIsAdult(personWithMedicalRecordDTO.getAge() >= 18);
+                        personWithMedicalRecordDTO.setMedications(medicalRecord.getMedications());
+                        personWithMedicalRecordDTO.setAllergies(medicalRecord.getAllergies());
                     }
 
-                    return personWithMedicalRecord;
+                    return personWithMedicalRecordDTO;
                 })
                 .toList();
 
-        return personWithMedicalRecords;
+        return personWithMedicalRecordDTOS;
 
     }
 

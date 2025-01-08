@@ -10,7 +10,7 @@ import java.util.List;
 @Schema(description = "Details about a medical record")
 @Data
 @AllArgsConstructor
-public class PersonMedicalDetails {
+public class PersonMedicalDetailsDTO {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
     private String firstName;
