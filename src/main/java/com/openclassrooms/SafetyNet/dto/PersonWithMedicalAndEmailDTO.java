@@ -6,9 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
-@Schema(description = "Details about a medical record")
+@Schema(description = "Details about a person with medical record and email")
 @Data
-public class PersonMedicalDetailsWithEmail {
+public class PersonWithMedicalAndEmailDTO {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
     private String firstName;

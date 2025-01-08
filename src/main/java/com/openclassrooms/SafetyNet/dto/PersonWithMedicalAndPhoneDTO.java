@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@Schema(description = "Details about a medical record")
+@Schema(description = "Details about a person with medical record and phone")
 @Data
 public class PersonWithMedicalAndPhoneDTO {
 

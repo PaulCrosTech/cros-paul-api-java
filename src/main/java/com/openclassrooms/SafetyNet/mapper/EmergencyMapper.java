@@ -169,6 +169,23 @@ public class EmergencyMapper {
     }
 
     /**
+     * Convert a PersonWithMedicalRecord to a PersonWithMedicalAndEmailDTO
+     *
+     * @param person the person to convert
+     * @return the converted PersonWithMedicalAndEmailDTO
+     */
+    public PersonWithMedicalAndEmailDTO toPersonWithMedicalAndEmailDTO(PersonWithMedicalRecord person) {
+        PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = new PersonWithMedicalAndEmailDTO();
+        personWithMedicalAndEmailDTO.setFirstName(person.getFirstName());
+        personWithMedicalAndEmailDTO.setLastName(person.getLastName());
+        personWithMedicalAndEmailDTO.setMedications(person.getMedications());
+        personWithMedicalAndEmailDTO.setAllergies(person.getAllergies());
+        personWithMedicalAndEmailDTO.setAge(person.getAge());
+        personWithMedicalAndEmailDTO.setEmail(person.getEmail());
+        return personWithMedicalAndEmailDTO;
+    }
+
+    /**
      * Associate Person with MedicalRecord
      *
      * @param persons        list of persons

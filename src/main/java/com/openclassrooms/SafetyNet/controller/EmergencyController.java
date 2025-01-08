@@ -138,10 +138,10 @@ public class EmergencyController {
 
 
     /**
-     * Get persons, with medical details and email, by last name
+     * Get persons by last name, with medical details and email
      *
      * @param lastName The last name
-     * @return List of PersonMedicalDetailsWithEmail objects
+     * @return List of PersonWithMedicalAndEmailDTO objects
      */
     @Operation(summary = "Get persons, with medical details and email, by last name", description = "Returned all persons, with medical details and email, by last name")
     @Parameters({
@@ -151,9 +151,9 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/personInfo", params = "lastName", headers = "X-API-VERSION=1")
-    public List<PersonMedicalDetailsWithEmail> getPersonMedicalDetailsWithEmail(@RequestParam String lastName) {
+    public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(@RequestParam String lastName) {
         log.info("<controller> **New** Request GET on /personInfo?lastName={}", lastName);
-        return emergencyService.getPersonMedicalDetailsWithEmail(lastName);
+        return emergencyService.getPersonMedicalWithEmail(lastName);
     }
 
     /**

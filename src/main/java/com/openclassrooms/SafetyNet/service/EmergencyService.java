@@ -204,7 +204,9 @@ public class EmergencyService {
             // Map to PersonWithMedicalAndPhoneDTO
             PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecord);
             // Group by address
-            personGroupedByAddress.computeIfAbsent(personWithMedicalRecord.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO);
+            personGroupedByAddress.computeIfAbsent(
+                    personWithMedicalRecord.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO
+            );
         }
         familyDTO.setAddress(personGroupedByAddress);
 
@@ -213,33 +215,38 @@ public class EmergencyService {
 
 
     /**
-     * Retourne une liste de personnes avec les détails médicaux et l'email
+     * Get person by last name, with medical details and email
      *
-     * @param lastName nom de famille
-     * @return liste de PersonMedicalDetailsWithEmail
+     * @param lastName last name of the persons
+     * @return List of PersonWithMedicalAndEmailDTO objects
      */
-    public List<PersonMedicalDetailsWithEmail> getPersonMedicalDetailsWithEmail(String lastName) {
-        log.info("<service> getPersonMedicalDetailsWithEmail");
-        List<PersonMedicalDetailsWithEmail> personReturned = new ArrayList<>();
+    public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(String lastName) {
+        log.info("<service> getPersonMedicalWithEmail");
 
-        List<Person> personList = personRepository.getPersons();
-        for (Person person : personList) {
-            if (person.getLastName().equals(lastName)) {
-                MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
-                if (medicalRecord != null) {
-                    PersonMedicalDetailsWithEmail personMedicalDetailsWithEmail = new PersonMedicalDetailsWithEmail();
-                    personMedicalDetailsWithEmail.setFirstName(person.getFirstName());
-                    personMedicalDetailsWithEmail.setLastName(person.getLastName());
-                    personMedicalDetailsWithEmail.setEmail(person.getEmail());
-                    personMedicalDetailsWithEmail.setAge(calculateAge(medicalRecord.getBirthdate()));
-                    personMedicalDetailsWithEmail.setMedications(medicalRecord.getMedications());
-                    personMedicalDetailsWithEmail.setAllergies(medicalRecord.getAllergies());
 
-                    personReturned.add(personMedicalDetailsWithEmail);
-                }
+        // Get all persons with lat name equals to lastName
+        List<Person> personsList = personRepository.getPersonByLastName(lastName);
+
+        // Get medical record of persons
+        List<MedicalRecord> medicalRecordsList = new ArrayList<>();
+        for (Person person : personsList) {
+            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(
+                    person.getFirstName(), person.getLastName());
+            if (medicalRecord != null) {
+                medicalRecordsList.add(medicalRecord);
             }
         }
-        return personReturned;
+
+        // Map to PersonWithMedicalAndEmailDTO
+        List<PersonWithMedicalRecord> personWithMedicalRecords = emergencyMapper.toPersonWithMedicalRecord(personsList, medicalRecordsList);
+
+        // Map to PersonWithMedicalAndEmailDTO
+        List<PersonWithMedicalAndEmailDTO> personWithMedicalAndEmailDTOS = new ArrayList<>();
+        for (PersonWithMedicalRecord p : personWithMedicalRecords) {
+            PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = emergencyMapper.toPersonWithMedicalAndEmailDTO(p);
+            personWithMedicalAndEmailDTOS.add(personWithMedicalAndEmailDTO);
+        }
+        return personWithMedicalAndEmailDTOS;
     }
 
 

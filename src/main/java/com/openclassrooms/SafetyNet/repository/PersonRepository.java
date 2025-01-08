@@ -51,6 +51,26 @@ public class PersonRepository {
     }
 
     /**
+     * Get a list of persons by last name
+     *
+     * @param lastName String case-sensitive
+     * @return List of Person objects
+     */
+    public List<Person> getPersonByLastName(String lastName) {
+        log.info("<repo> getPersonByLastName : lastName: {}", lastName);
+
+        List<Person> persons = new ArrayList<>();
+
+        for (Person p : getPersons()) {
+            if (p.getLastName().equals(lastName)) {
+                log.info("<repo> getPersonByLastName : person found");
+                persons.add(p);
+            }
+        }
+        return persons;
+    }
+
+    /**
      * Get a list of persons by address
      *
      * @param address String address of the person (case-sensitive)
