@@ -1,6 +1,7 @@
 package com.openclassrooms.SafetyNet.mapper;
 
 import com.openclassrooms.SafetyNet.dto.*;
+import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class PersonMapper {
+public class EmergencyMapper {
 
 
     /**
@@ -74,17 +75,17 @@ public class PersonMapper {
     }
 
     /**
-     * Convert a Person to a PersonAtSameAddressDTO
+     * Convert a Person (split info adults and children) to a FamilyDTO
      *
      * @param persons        list of persons
      * @param medicalRecords list of medical records
      * @return the converted PersonAtSameAddressDTO
      */
-    public PersonAtSameAddressDTO toPersonAtSameAddressDTO(
+    public FamilyDTO toFamilyDTO(
             List<Person> persons,
             List<MedicalRecord> medicalRecords
     ) {
-        PersonAtSameAddressDTO personAtSameAddressDTO = new PersonAtSameAddressDTO();
+        FamilyDTO familyDTO = new FamilyDTO();
 
         // Associate Person with MedicalRecord
         List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
@@ -99,7 +100,7 @@ public class PersonMapper {
                 .toList();
 
         // Map PersonWithMedicalRecord to ChrildrenDTO
-        List<ChildrenDTO> childrens = personWithMedicalRecords.stream()
+        List<ChildrenDTO> children = personWithMedicalRecords.stream()
                 .filter(personWithMedicalRecord -> !personWithMedicalRecord.getIsAdult())
                 .map(personWithMedicalRecord -> new ChildrenDTO(
                         personWithMedicalRecord.getFirstName(),
@@ -107,12 +108,46 @@ public class PersonMapper {
                         personWithMedicalRecord.getAge()
                 ))
                 .toList();
-        
-        personAtSameAddressDTO.setAdults(adults);
-        personAtSameAddressDTO.setChildrens(childrens);
 
-        return personAtSameAddressDTO;
+        familyDTO.setAdults(adults);
+        familyDTO.setChildren(children);
 
+        return familyDTO;
+
+    }
+
+
+    /**
+     * Convert a Person, MedicalRecord, Firestation to a FamilyWithMedicalAndFirestationDTO
+     *
+     * @param persons        list of persons
+     * @param medicalRecords list of medical records
+     * @param firestation    firestation
+     * @return the converted FamilyWithMedicalAndFirestationDTO
+     */
+    public FamilyWithMedicalAndFirestationDTO toFamilyWithMedicalAndFirestationDTO(List<Person> persons,
+                                                                                   List<MedicalRecord> medicalRecords,
+                                                                                   Firestation firestation) {
+
+        FamilyWithMedicalAndFirestationDTO familyDTO = new FamilyWithMedicalAndFirestationDTO();
+        familyDTO.setStation(firestation.getStation());
+
+        // Associate Person with MedicalRecord
+        List<PersonWithMedicalRecord> personWithMedicalRecords = toPersonWithMedicalRecord(persons, medicalRecords);
+
+        // Map PersonWithMedicalRecord to PersonMedicalDetails
+        List<PersonMedicalDetails> personMedicalDetails = personWithMedicalRecords.stream()
+                .map(personWithMedicalRecord -> new PersonMedicalDetails(
+                        personWithMedicalRecord.getFirstName(),
+                        personWithMedicalRecord.getLastName(),
+                        personWithMedicalRecord.getMedications(),
+                        personWithMedicalRecord.getAllergies(),
+                        personWithMedicalRecord.getAge()
+                ))
+                .toList();
+
+        familyDTO.setPersonMedicalDetails(personMedicalDetails);
+        return familyDTO;
     }
 
     /**

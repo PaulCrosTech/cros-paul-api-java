@@ -63,17 +63,17 @@ public class EmergencyController {
      * @param address The address
      * @return AddressOccupants object
      */
-    @Operation(summary = "Get child, with parent information, by address", description = "Returns all child by address, with parent informations")
+    @Operation(summary = "Get child, with parent information, by address", description = "Returns family informations (children and parents) by address")
     @Parameters({
-            @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address", required = true, example = "\"112 Steppes Pl\""),
+            @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address", required = true, example = "\"1509 Culver St\""),
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/childAlert", params = "address", headers = "X-API-VERSION=1")
-    public PersonAtSameAddressDTO getPersonAtSameAddress(@RequestParam String address) {
+    public FamilyDTO getFamily(@RequestParam String address) {
         log.info("<controller> **New** Request GET on /childAlert?address={}", address);
-        return emergencyService.getPersonAtSameAddress(address);
+        return emergencyService.getFamily(address);
     }
 
 
@@ -98,12 +98,12 @@ public class EmergencyController {
 
 
     /**
-     * Get persons at same address with fire station and medical details
+     * Get family by address, with fire station and medical details
      *
      * @param address The address
-     * @return List of PersonAtSameAddressWithFirestation objects
+     * @return List of FamilyWithMedicalAndFirestationDTO objects
      */
-    @Operation(summary = "Get persons at same address with fire station details", description = "Returns all persons living at same address with fire station details")
+    @Operation(summary = "Get family (persons at same address) with medical details and fire station", description = "Returns a familiy (persons at same address) with medical details and fire station")
     @Parameters({
             @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address", required = true, example = "\"112 Steppes Pl\""),
     })
@@ -111,9 +111,9 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/fire", params = "address", headers = "X-API-VERSION=1")
-    public PersonAtSameAddressWithMedicalDetailsAndFirestation getPersonsAtSameAddressWithMedicalDetailsAndFirestation(@RequestParam String address) {
+    public FamilyWithMedicalAndFirestationDTO getFamilyWithMedicalAndFirestation(@RequestParam String address) {
         log.info("<controller> **New** Request GET on /fire?address={}", address);
-        return emergencyService.getPersonsAtSameAddressWithMedicalDetailsAndFirestation(address);
+        return emergencyService.getFamilyWithMedicalAndFirestation(address);
     }
 
 

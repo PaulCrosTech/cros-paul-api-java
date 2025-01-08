@@ -5,10 +5,10 @@ import lombok.Data;
 
 import java.util.List;
 
-@Schema(description = "Details about occupants of an address")
+@Schema(description = "Details about persons living at the same address")
 @Data
-public class PersonAtSameAddressDTO {
+public class FamilyDTO {
 
     private List<AdultDTO> adults;
-    private List<ChildrenDTO> childrens;
+    private List<ChildrenDTO> children;
 }

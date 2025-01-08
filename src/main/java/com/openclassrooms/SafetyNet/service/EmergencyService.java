@@ -1,7 +1,7 @@
 package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.dto.*;
-import com.openclassrooms.SafetyNet.mapper.PersonMapper;
+import com.openclassrooms.SafetyNet.mapper.EmergencyMapper;
 import com.openclassrooms.SafetyNet.model.*;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
@@ -25,18 +25,18 @@ public class EmergencyService {
     private final PersonRepository personRepository;
     private final FirestationRepository firestationRepository;
     private final MedicalRecordRepository medicalRecordRepository;
-    private final PersonMapper personMapper;
+    private final EmergencyMapper emergencyMapper;
 
     @Autowired
     public EmergencyService(PersonRepository personRepository,
                             FirestationRepository firestationRepository,
                             MedicalRecordRepository medicalRecordRepository,
-                            PersonMapper personMapper) {
+                            EmergencyMapper personMapper) {
         log.info("<constructor> EmergencyService");
         this.personRepository = personRepository;
         this.firestationRepository = firestationRepository;
         this.medicalRecordRepository = medicalRecordRepository;
-        this.personMapper = personMapper;
+        this.emergencyMapper = personMapper;
     }
 
     /**
@@ -68,17 +68,18 @@ public class EmergencyService {
             }
         }
 
-        return personMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
+        return emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
     }
 
 
     /**
-     * Retourne une liste d'enfants avec les informations de leurs parents
+     * Get family (children and adults) information, living at the same address
      *
      * @param address adresse
      * @return liste de ChildrenByAddress
      */
-    public PersonAtSameAddressDTO getPersonAtSameAddress(String address) {
+    public FamilyDTO getFamily(String address) {
+        log.info("<service> getFamily");
 
         // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);
@@ -94,7 +95,7 @@ public class EmergencyService {
         }
 
         // Map persons and medicalRecords to Children and Adults
-        return personMapper.toPersonAtSameAddressDTO(persons, medicalRecords);
+        return emergencyMapper.toFamilyDTO(persons, medicalRecords);
     }
 
     /**
@@ -104,7 +105,7 @@ public class EmergencyService {
      * @return HashSet of phone numbers
      */
     public HashSet<String> getPhoneNumbersCoveredByFireStation(String stationNumber) {
-        log.info("<service> getPhoneAlert");
+        log.info("<service> getPhoneNumbersCoveredByFireStation");
 
         // HashSet for unique phone numbers
         HashSet<String> phoneNumbers = new HashSet<>();
@@ -124,43 +125,35 @@ public class EmergencyService {
     }
 
     /**
-     * Retourne une liste de personnes habitant à la même adresse avec les détails médicaux et la caserne de rattachement
+     * Get family (persons at same address) with fire station and medical details
      *
      * @param address adresse
-     * @return liste de PersonAtSameAddressWithMedicalDetailsAndFirestation
+     * @return liste de FamilyWithMedicalAndFirestationDTO
      */
-    public PersonAtSameAddressWithMedicalDetailsAndFirestation getPersonsAtSameAddressWithMedicalDetailsAndFirestation(String address) {
-        log.info("<service> getPersonsAtSameAddressWithFirestation");
+    public FamilyWithMedicalAndFirestationDTO getFamilyWithMedicalAndFirestation(String address) {
+        log.info("<service> getFamilyWithMedicalAndFirestation");
 
-        PersonAtSameAddressWithMedicalDetailsAndFirestation personsReturned = new PersonAtSameAddressWithMedicalDetailsAndFirestation();
-
-        // Récupère la liste des casernes couvrant cette adresse
+        // Get Firestation for the address
+        // TODO : getFirestationByAddress return one Firesation, not a list (to be fixed?)
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
         if (firestation == null) {
-            return personsReturned;
+            return new FamilyWithMedicalAndFirestationDTO();
         }
-        personsReturned.setStation(firestation.getStation());
-        List<PersonMedicalDetails> personMedicalDetailsList = new ArrayList<>();
 
-        // Récupère les personnes habitant à cette adresse
-        List<Person> personsAtSameAddress = personRepository.getPersonByAddress(address);
-        for (Person person : personsAtSameAddress) {
+        // Get persons covered by the firestation
+        List<Person> persons = personRepository.getPersonByAddress(address);
 
+        // Get MedicalRecords of persons
+        List<MedicalRecord> medicalRecords = new ArrayList<>();
+        for (Person person : persons) {
             MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
             if (medicalRecord != null) {
-
-                PersonMedicalDetails personMedicalDetails = new PersonMedicalDetails();
-                personMedicalDetails.setFirstName(person.getFirstName());
-                personMedicalDetails.setMedications(medicalRecord.getMedications());
-                personMedicalDetails.setAllergies(medicalRecord.getAllergies());
-                personMedicalDetails.setAge(calculateAge(medicalRecord.getBirthdate()));
-
-                personMedicalDetailsList.add(personMedicalDetails);
+                medicalRecords.add(medicalRecord);
             }
         }
-        personsReturned.setPersonMedicalDetails(personMedicalDetailsList);
 
-        return personsReturned;
+        // Map persons, medicalRecords and firestation to FamilyWithMedicalAndFirestationDTO
+        return emergencyMapper.toFamilyWithMedicalAndFirestationDTO(persons, medicalRecords, firestation);
     }
 
 
