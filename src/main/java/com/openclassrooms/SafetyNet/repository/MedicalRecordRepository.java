@@ -27,7 +27,6 @@ public class MedicalRecordRepository {
      * @return List of Medical records objects
      */
     public List<MedicalRecord> getMedicalRecords() {
-        log.info("<repo> getMedicalRecords");
         return jsonFileManager.getMedicalRecords();
     }
 
@@ -39,13 +38,13 @@ public class MedicalRecordRepository {
      * @return Medical record object
      */
     public MedicalRecord getMedicalRecordByFirstNameAndLastName(String firstName, String lastName) {
-        log.info("<repo> getMedicalRecordByFirstNameAndLastName : firstName: {} and lastName: {}", firstName, lastName);
         for (MedicalRecord medicalRecord : getMedicalRecords()) {
             if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-                log.info("<repo> getMedicalRecordByFirstNameAndLastName : medical record found");
+                log.debug("Medical record {} {} found", firstName, lastName);
                 return medicalRecord;
             }
         }
+        log.debug("Medical record {} {} not found", firstName, lastName);
         return null;
     }
 
@@ -58,15 +57,14 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deleteMedicalRecordByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
-        log.info("<repo> deleteMedicalRecordByFirstNameAndLastName : firstName: {} and lastName: {}", firstName, lastName);
         // Ici, on récupère la référence et non une copie de la liste
         List<MedicalRecord> medicalRecords = getMedicalRecords();
         boolean deleted = medicalRecords.removeIf(medicalRecord ->
                 medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName));
         if (deleted) {
-            log.info("<repo> deleteMedicalRecordByFirstNameAndLastName : medical record deleted");
             jsonFileManager.saveJsonFile();
         }
+        log.debug("Medical record {} {} deleted : {} ", firstName, lastName, deleted);
         return deleted;
     }
 
@@ -77,10 +75,10 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void saveMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException {
-        log.info("<repo> saveMedicalRecord : MedicalRecord: {}", medicalRecord);
         // Ici, on récupère la référence et non une copie de la liste
         List<MedicalRecord> medicalRecords = getMedicalRecords();
         medicalRecords.add(medicalRecord);
+        log.debug("Medical record {} {} saved", medicalRecord.getFirstName(), medicalRecord.getLastName());
         jsonFileManager.saveJsonFile();
     }
 
@@ -95,7 +93,6 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecordUpdateDTO medicalRecord) throws JsonFileManagerSaveException {
-        log.info("<repo> updateMedicalRecord : MedicalRecord: {}", medicalRecord);
         // Ici, on récupère la référence et non une copie de la liste
         MedicalRecord existingRecord = getMedicalRecordByFirstNameAndLastName(firstName, lastName);
         if (existingRecord != null) {
@@ -105,6 +102,7 @@ public class MedicalRecordRepository {
             jsonFileManager.saveJsonFile();
             return existingRecord;
         }
+        log.debug("Medical record {} {} not found", firstName, lastName);
         return null;
     }
 

@@ -49,10 +49,9 @@ public class JsonFileManager {
     private void loadJsonFile() {
         try {
             jsonModel = objectMapper.readValue(new File(customProperties.getJsonFilePath()), JsonModel.class);
-            log.info("<manager> Json : file loaded");
+            log.info("Json file loaded");
 
         } catch (Exception e) {
-            log.error("<manager> Json : error while loading the file");
             throw new JsonFileManagerLoadException("Error while loading the file");
         }
     }
@@ -65,10 +64,9 @@ public class JsonFileManager {
     public void saveJsonFile() throws JsonFileManagerSaveException {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(customProperties.getJsonFilePath()), jsonModel);
-            log.info("<manager> Json : file saved");
+            log.info("JSON file saved");
 
         } catch (Exception e) {
-            log.error("<manager> Json : error while saving the file");
             throw new JsonFileManagerSaveException("Error while saving the file");
         }
     }

@@ -28,7 +28,6 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersons() {
-        log.info("<repo> getPersons");
         return jsonFileManager.getPersons();
     }
 
@@ -40,13 +39,13 @@ public class PersonRepository {
      * @return Person object
      */
     public Person getPersonByFirstNameAndLastName(String firstName, String lastName) {
-        log.info("<repo> getPersonByFirstnameAndLastname : firstName: {} and lastName: {}", firstName, lastName);
         for (Person person : getPersons()) {
             if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
-                log.info("<repo> getPersonByFirstnameAndLastname : person found");
+                log.debug("Person {} {} found", firstName, lastName);
                 return person;
             }
         }
+        log.debug("Person {} {} not found", firstName, lastName);
         return null;
     }
 
@@ -57,16 +56,14 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersonByLastName(String lastName) {
-        log.info("<repo> getPersonByLastName : lastName: {}", lastName);
-
         List<Person> persons = new ArrayList<>();
 
         for (Person p : getPersons()) {
             if (p.getLastName().equals(lastName)) {
-                log.info("<repo> getPersonByLastName : person found");
                 persons.add(p);
             }
         }
+        log.debug("Persons with last name {} found", lastName);
         return persons;
     }
 
@@ -77,15 +74,14 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersonByAddress(String address) {
-        log.info("<repo> getPersonByAddress : address: {}", address);
         List<Person> persons = new ArrayList<>();
 
         for (Person person : getPersons()) {
             if (person.getAddress().equals(address)) {
-                log.info("<repo> getPersonByAddress : person found, adding to list {}", person);
                 persons.add(person);
             }
         }
+        log.debug("Persons with address {} found", address);
         return persons;
     }
 
@@ -98,14 +94,13 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deletePersonByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
-        log.info("<repo> deletePersonByFirstnameAndLastname : firstName: {} and lastName: {}", firstName, lastName);
         // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         boolean deleted = persons.removeIf(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName));
         if (deleted) {
-            log.info("<repo> deletePersonByFirstnameAndLastname : person deleted");
             jsonFileManager.saveJsonFile();
         }
+        log.debug("Person {} {} deleted : {}", firstName, lastName, deleted);
         return deleted;
     }
 
@@ -116,10 +111,10 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void savePerson(Person person) throws JsonFileManagerSaveException {
-        log.info("<repo> savePerson : person: {}", person);
         // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         persons.add(person);
+        log.debug("Person {} {} saved", person.getFirstName(), person.getLastName());
         jsonFileManager.saveJsonFile();
     }
 
@@ -134,7 +129,6 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws JsonFileManagerSaveException {
-        log.info("<repo> updatePerson : person: {}", person);
         // Ici, on récupère la référence et non une copie de la liste
         Person existingPerson = getPersonByFirstNameAndLastName(firstName, lastName);
         if (existingPerson != null) {
@@ -146,6 +140,7 @@ public class PersonRepository {
             jsonFileManager.saveJsonFile();
             return existingPerson;
         }
+        log.debug("Person {} {} not found", firstName, lastName);
         return null;
     }
 

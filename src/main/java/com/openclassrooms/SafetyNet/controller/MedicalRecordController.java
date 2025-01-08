@@ -51,7 +51,7 @@ public class MedicalRecordController {
     })
     @GetMapping(path = "/medicalRecord", headers = "X-API-VERSION=1")
     public List<MedicalRecord> getMedicalRecords() {
-        log.info("<controller> **New** Request GET on /medicalRecord (Version 1)");
+        log.info("<controller> **New** Request GET on /medicalRecord");
         return medicalRecordService.getMedicalRecords();
     }
 
@@ -120,7 +120,7 @@ public class MedicalRecordController {
     })
     @PostMapping(path = "/medicalRecord", headers = "X-API-VERSION=1")
     public ResponseEntity<Object> createMedicalRecord(@Valid @RequestBody MedicalRecord medicalRecord) {
-        log.info("<controller> **New** Request POST on /medicalRecord {}", medicalRecord);
+        log.info("<controller> **New** Request POST on /medicalRecord body {}", medicalRecord);
 
         medicalRecordService.saveMedicalRecord(medicalRecord);
 
@@ -153,7 +153,7 @@ public class MedicalRecordController {
     })
     @PutMapping(path = "/medicalRecord/{firstName}/{lastName}", headers = "X-API-VERSION=1")
     public MedicalRecord updateMedicalRecord(@PathVariable String firstName, @PathVariable String lastName, @Valid @RequestBody MedicalRecordUpdateDTO medicalRecord) {
-        log.info("<controller> **New** Request PUT on /medicalRecord {}", medicalRecord);
+        log.info("<controller> **New** Request PUT on /medicalRecord/{}/{} body {}", firstName, lastName, medicalRecord);
 
         return medicalRecordService.updateMedicalRecord(firstName, lastName, medicalRecord);
     }

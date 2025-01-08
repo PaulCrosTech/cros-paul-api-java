@@ -30,8 +30,9 @@ public class FirestationService {
      * @return List of Firestation objects
      */
     public List<Firestation> getFirestations() {
-        log.info("<service> getFirestations");
-        return firestationRepository.getFirestations();
+        List<Firestation> firestations = firestationRepository.getFirestations();
+        log.info("{} fire stations found", firestations.size());
+        return firestations;
     }
 
 
@@ -43,13 +44,11 @@ public class FirestationService {
      * @throws NotFoundException if fire station not found
      */
     public Firestation getFirestationByAddress(String address) throws NotFoundException {
-        log.info("<service> getFirestationByAddress : address: {}", address);
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
         if (firestation == null) {
-            log.info("<service> Firestation not found");
             throw new NotFoundException("Fire station not found with address: " + address);
         }
-        log.info("<service> Firestation found");
+        log.info("Firestation at {} found", address);
         return firestation;
     }
 
@@ -61,29 +60,23 @@ public class FirestationService {
      * @throws Exception if error while deleting
      */
     public void deleteFirestationByAddress(String address) throws Exception {
-        log.info("<service> deleteFirestationByAddress : address: {}", address);
         try {
             boolean deleted = firestationRepository.deleteFirestationByAddress(address);
             if (!deleted) {
-                log.info("<service> Firestation not found");
                 throw new NotFoundException("Fire station not found with address : " + address);
             }
         } catch (JsonFileManagerSaveException e) {
-            log.info("<service> Error while deleting in JSON file");
             throw new Exception("Error while deleting the fire station in JSON file, address: " + address);
         }
-        log.info("<service> Firestation deleted");
+        log.info("Firestation at {} deleted", address);
     }
 
 
     public void saveFirestation(Firestation firestation) throws JsonFileManagerSaveException, ConflictException {
-        log.info("<service> saveFirestation");
-
         try {
             // Vérifie si Firestation existe déjà
             Firestation firestationExist = getFirestationByAddress(firestation.getAddress());
             if (firestationExist != null) {
-                log.info("<service> Firestation already exist");
                 throw new ConflictException("Fire station already exist with address: " + firestation.getAddress());
             }
         } catch (NotFoundException e) {
@@ -91,10 +84,9 @@ public class FirestationService {
             try {
                 firestationRepository.saveFirestation(firestation);
             } catch (JsonFileManagerSaveException ex) {
-                log.info("<service> Error while saving in JSON file");
                 throw new JsonFileManagerSaveException("Error while saving the fire station in JSON file");
             }
-            log.info("<service> Firestation saved");
+            log.info("Firestation at {} saved", firestation.getAddress());
         }
     }
 
@@ -107,15 +99,11 @@ public class FirestationService {
      * @throws NotFoundException if fire station not found
      */
     public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws NotFoundException {
-        log.info("<service> updateFirestation");
-
         Firestation firestationUpdated = firestationRepository.updateFirestation(address, firestation);
         if (firestationUpdated == null) {
-            log.info("<service> Firestation not found");
             throw new NotFoundException("Fire station not found with address: " + address);
         }
-
-        log.info("<service> Firestation updated");
+        log.info("Firestation at {} updated", address);
 
         return firestationUpdated;
     }

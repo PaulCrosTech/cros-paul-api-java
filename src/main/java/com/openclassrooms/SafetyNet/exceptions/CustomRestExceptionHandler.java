@@ -34,6 +34,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   final HttpHeaders headers,
                                                                   final HttpStatusCode status,
                                                                   final WebRequest request) {
+        log.error("<exception> MethodArgumentNotValidException : {}", ex.getMessage());
         // Construction de la liste des erreurs à partir des erreurs de validation
         final List<String> errors = new ArrayList<String>();
         for (final FieldError error : ex.getBindingResult().getFieldErrors()) {

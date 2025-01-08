@@ -172,10 +172,37 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- JavaDoc-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.10.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>aggregate</id>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>21</source>
+                    <show>protected</show>
+                    <includeTests>true</includeTests>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
-    <!-- Add Surefire, JaCoCo reporting -->
+    <!-- Add Surefire, JaCoCo, JavaDoc reporting -->
     <reporting>
         <plugins>
             <plugin>
@@ -187,6 +214,17 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <show>public</show>
+                    <includeTests>true</includeTests>
+                    <aggregate>true</aggregate>
+                    <failOnError>false</failOnError>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>

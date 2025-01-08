@@ -4,6 +4,7 @@ import com.openclassrooms.SafetyNet.dto.*;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+@Log4j2
 @Component
 public class EmergencyMapper {
 
@@ -30,16 +32,17 @@ public class EmergencyMapper {
 
         // Count Adult & Children
         int nbAdults = 0;
-        int nbChildrens = 0;
+        int nbChildren = 0;
         for (PersonWithMedicalRecordDTO person : personWithMedicalRecordDTOS) {
             if (person.getIsAdult()) {
                 nbAdults++;
             } else {
-                nbChildrens++;
+                nbChildren++;
             }
         }
+
         personCoveredByStationDTO.setNbAdults(nbAdults);
-        personCoveredByStationDTO.setNbChildrens(nbChildrens);
+        personCoveredByStationDTO.setNbChildren(nbChildren);
 
         // Map PersonWithMedicalRecord to PersonDTO
         List<PersonBasicDetailsDTO> personBasicDetailsDTO = personWithMedicalRecordDTOS.stream()

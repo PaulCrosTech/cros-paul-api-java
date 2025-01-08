@@ -132,7 +132,7 @@ public class EmergencyController {
     })
     @GetMapping(path = "/flood/stations", params = "stations", headers = "X-API-VERSION=1")
     public FamilyWithMedicalGroupedByAddressDTO getFamilyWithMedicalGroupedByAddress(@RequestParam List<Integer> stations) {
-        log.info("<controller> **New** Request GET on /flood/stations");
+        log.info("<controller> **New** Request GET on /flood/stations?stations={}", stations);
         return emergencyService.getFamilyWithMedicalGroupedByAddress(stations);
     }
 

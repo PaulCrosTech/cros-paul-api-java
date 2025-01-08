@@ -32,8 +32,9 @@ public class MedicalRecordService {
      * @return List of MedicalRecord objects
      */
     public List<MedicalRecord> getMedicalRecords() {
-        log.info("<service> getMedicalRecords");
-        return medicalRecordRepository.getMedicalRecords();
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecords();
+        log.info("{} medical records found", medicalRecords.size());
+        return medicalRecords;
     }
 
     /**
@@ -45,13 +46,11 @@ public class MedicalRecordService {
      * @throws NotFoundException if medical record not found
      */
     public MedicalRecord getMedicalRecordByFirstNameAndLastName(String firstName, String lastName) throws NotFoundException {
-        log.info("<service> getMedicalRecordByFirstNameAndLastName : firstName: {} and lastName: {}", firstName, lastName);
         MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(firstName, lastName);
         if (medicalRecord == null) {
-            log.info("<service> Medical record not found");
             throw new NotFoundException("Medical record not found with firstName: " + firstName + " and lastName: " + lastName);
         }
-        log.info("<service> Medical record found");
+        log.info("Medical record of {} {} found", firstName, lastName);
         return medicalRecord;
     }
 
@@ -63,18 +62,15 @@ public class MedicalRecordService {
      * @throws Exception if an error occurs while deleting the person
      */
     public void deleteMedicalRecordByFirstNameAndLastName(String firstName, String lastName) throws Exception {
-        log.info("<service> deleteMedicalRecordByFirstNameAndLastName : firstName: {} and lastName: {}", firstName, lastName);
         try {
             boolean deleted = medicalRecordRepository.deleteMedicalRecordByFirstNameAndLastName(firstName, lastName);
             if (!deleted) {
-                log.info("<service> Medical record not found");
                 throw new NotFoundException("Medical record not found with firstName: " + firstName + " and lastName: " + lastName);
             }
         } catch (JsonFileManagerSaveException e) {
-            log.info("<service> Error while deleting in JSON file");
             throw new Exception("Error while deleting the medical record in JSON file, firstName: " + firstName + " and lastName: " + lastName);
         }
-        log.info("<service> Medical record deleted");
+        log.info("Medical record of {} {} deleted", firstName, lastName);
     }
 
     /**
@@ -85,13 +81,10 @@ public class MedicalRecordService {
      * @throws ConflictException            if medical record already exist
      */
     public void saveMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException, ConflictException {
-        log.info("<service> saveMedicalRecord");
-
         try {
             // Vérifie si le medical record existe déjà
             MedicalRecord medicalRecordExist = getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
             if (medicalRecordExist != null) {
-                log.info("<service> Medical record already exist");
                 throw new ConflictException("Medical record already exist with firstName: " + medicalRecord.getFirstName() + " and lastName: " + medicalRecord.getLastName());
             }
         } catch (NotFoundException e) {
@@ -99,10 +92,9 @@ public class MedicalRecordService {
             try {
                 medicalRecordRepository.saveMedicalRecord(medicalRecord);
             } catch (JsonFileManagerSaveException ex) {
-                log.info("<service> Error while saving in JSON file");
                 throw new JsonFileManagerSaveException("Error while saving the medical record in JSON file");
             }
-            log.info("<service> Medical record saved");
+            log.info("Medical record of {} {} saved", medicalRecord.getFirstName(), medicalRecord.getLastName());
         }
     }
 
@@ -117,15 +109,11 @@ public class MedicalRecordService {
      * @throws NotFoundException if medical record not found
      */
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecordUpdateDTO medicalRecord) throws NotFoundException {
-        log.info("<service> updateMedicalRecord");
-
         MedicalRecord medicalRecordUdated = medicalRecordRepository.updateMedicalRecord(firstName, lastName, medicalRecord);
         if (medicalRecordUdated == null) {
-            log.info("<service> Medical record not found");
             throw new NotFoundException("Medical record not found with firstName: " + firstName + " and lastName: " + lastName);
         }
-
-        log.info("<service> Medical record updated");
+        log.info("Medical record of {} {} updated", firstName, lastName);
 
         return medicalRecordUdated;
     }

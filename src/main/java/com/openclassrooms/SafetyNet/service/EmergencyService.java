@@ -43,8 +43,6 @@ public class EmergencyService {
      * @return liste de PersonCoveredByStation
      */
     public PersonCoveredByStationDTO getPersonCoveredByStationNumber(int stationNumber) {
-        log.info("<service> getPersonCoveredByStationNumber");
-
         // Récupère les adresses couvertes par la caserne stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(String.valueOf(stationNumber));
 
@@ -65,6 +63,7 @@ public class EmergencyService {
             }
         }
 
+        log.info("{} persons found", persons.size());
         return emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
     }
 
@@ -76,8 +75,6 @@ public class EmergencyService {
      * @return liste de ChildrenByAddress
      */
     public FamilyDTO getFamily(String address) {
-        log.info("<service> getFamily");
-
         // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);
 
@@ -92,6 +89,7 @@ public class EmergencyService {
         }
 
         // Map persons and medicalRecords to Children and Adults
+        log.info("{} persons found", persons.size());
         return emergencyMapper.toFamilyDTO(persons, medicalRecords);
     }
 
@@ -102,8 +100,6 @@ public class EmergencyService {
      * @return HashSet of phone numbers
      */
     public HashSet<String> getPhoneNumbersCoveredByFireStation(String stationNumber) {
-        log.info("<service> getPhoneNumbersCoveredByFireStation");
-
         // HashSet for unique phone numbers
         HashSet<String> phoneNumbers = new HashSet<>();
 
@@ -118,6 +114,7 @@ public class EmergencyService {
             }
         }
 
+        log.info("{} phone numbers found", phoneNumbers.size());
         return phoneNumbers;
     }
 
@@ -128,8 +125,6 @@ public class EmergencyService {
      * @return liste de FamilyWithMedicalAndFirestationDTO
      */
     public FamilyWithMedicalAndFirestationDTO getFamilyWithMedicalAndFirestation(String address) {
-        log.info("<service> getFamilyWithMedicalAndFirestation");
-
         // Get Firestation for the address
         // TODO : getFirestationByAddress return one Firesation, not a list (to be fixed?)
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
@@ -152,6 +147,7 @@ public class EmergencyService {
         }
 
         // Map persons, medicalRecords and firestation to FamilyWithMedicalAndFirestationDTO
+        log.info("{} persons found", persons.size());
         return emergencyMapper.toFamilyWithMedicalAndFirestationDTO(persons, medicalRecords, firestation);
     }
 
@@ -209,6 +205,7 @@ public class EmergencyService {
         }
         familyDTO.setAddress(personGroupedByAddress);
 
+        log.info("{} persons found", finalPersonList.size());
         return familyDTO;
     }
 
@@ -220,9 +217,6 @@ public class EmergencyService {
      * @return List of PersonWithMedicalAndEmailDTO objects
      */
     public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(String lastName) {
-        log.info("<service> getPersonMedicalWithEmail");
-
-
         // Get all persons with lat name equals to lastName
         List<Person> personsList = personRepository.getPersonByLastName(lastName);
 
@@ -245,6 +239,8 @@ public class EmergencyService {
             PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = emergencyMapper.toPersonWithMedicalAndEmailDTO(p);
             personWithMedicalAndEmailDTOS.add(personWithMedicalAndEmailDTO);
         }
+
+        log.info("{} persons found", personWithMedicalAndEmailDTOS.size());
         return personWithMedicalAndEmailDTOS;
     }
 
@@ -256,7 +252,6 @@ public class EmergencyService {
      * @return HashSet of email
      */
     public HashSet<String> getPersonEmailByCity(String city) {
-        log.info("<service> getPersonEmailByCity");
 
         HashSet<String> emailList = new HashSet<>();
 
@@ -266,6 +261,7 @@ public class EmergencyService {
                 emailList.add(person.getEmail());
             }
         }
+        log.info("{} emails found", emailList.size());
         return emailList;
     }
 

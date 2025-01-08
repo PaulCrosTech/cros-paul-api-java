@@ -113,7 +113,7 @@ public class FirestationController {
     })
     @PostMapping(path = "/firestation", headers = "X-API-VERSION=1")
     public ResponseEntity<Object> createFirestation(@Valid @RequestBody Firestation firestation) {
-        log.info("<controller> **New** Request POST on /firestation {}", firestation);
+        log.info("<controller> **New** Request POST on /firestation body {}", firestation);
 
         firestationService.saveFirestation(firestation);
 
@@ -143,7 +143,7 @@ public class FirestationController {
     })
     @PutMapping(path = "/firestation/{address}", headers = "X-API-VERSION=1")
     public Firestation updateFirestation(@PathVariable String address, @Valid @RequestBody FirestationUpdateDTO firestation) {
-        log.info("<controller> **New** Request PUT on /firestation {}", firestation);
+        log.info("<controller> **New** Request PUT on /firestation/{} body {}", address, firestation);
 
         return firestationService.updateFirestation(address, firestation);
     }

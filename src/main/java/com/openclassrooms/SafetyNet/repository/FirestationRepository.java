@@ -28,7 +28,6 @@ public class FirestationRepository {
      * @return List of Firestation objects
      */
     public List<Firestation> getFirestations() {
-        log.info("<repo> getFirestations");
         return jsonFileManager.getFirestations();
     }
 
@@ -39,14 +38,13 @@ public class FirestationRepository {
      * @return List of Firestation objects
      */
     public List<Firestation> getFirestationByStationNumber(String station) {
-        log.info("<repo> getFirestationByStation : station: {}", station);
         List<Firestation> f = new ArrayList<>();
         for (Firestation firestation : getFirestations()) {
             if (firestation.getStation().equals(station)) {
-                log.info("<repo> getFirestationByStation : firestation found");
                 f.add(firestation);
             }
         }
+        log.debug("Firestation {} found", station);
         return f;
     }
 
@@ -58,13 +56,13 @@ public class FirestationRepository {
      */
     // TODO : à revoir, car une adresse peut être couverte par plusieurs casernes
     public Firestation getFirestationByAddress(String address) {
-        log.info("<repo> getFirestationByAddress : address: {}", address);
         for (Firestation firestation : getFirestations()) {
             if (firestation.getAddress().equals(address)) {
-                log.info("<repo> getFirestationByAddress : firestation found");
+                log.debug("Firestation {} found", address);
                 return firestation;
             }
         }
+        log.debug("Firestation {} not found", address);
         return null;
     }
 
@@ -75,14 +73,13 @@ public class FirestationRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deleteFirestationByAddress(String address) throws JsonFileManagerSaveException {
-        log.info("<repo> deleteFirestationByAddress : address: {}", address);
         // Ici, on récupère la référence et non une copie de la liste
         List<Firestation> firestations = getFirestations();
         boolean deleted = firestations.removeIf(firestation -> firestation.getAddress().equals(address));
         if (deleted) {
-            log.info("<repo> deleteFirestationByAddress : firestation deleted");
             jsonFileManager.saveJsonFile();
         }
+        log.debug("Firestation {} deleted : {} ", address, deleted);
         return deleted;
     }
 
@@ -94,10 +91,10 @@ public class FirestationRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void saveFirestation(Firestation firestation) throws JsonFileManagerSaveException {
-        log.info("<repo> saveFirestation : firestation: {}", firestation);
         // Ici, on récupère la référence et non une copie de la liste
         List<Firestation> firestations = getFirestations();
         firestations.add(firestation);
+        log.debug("Firestation {} saved", firestation);
         jsonFileManager.saveJsonFile();
     }
 
@@ -111,7 +108,6 @@ public class FirestationRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws JsonFileManagerSaveException {
-        log.info("<repo> updateFirestation : firestation: {}", firestation);
         // Ici, on récupère la référence et non une copie de la liste
         Firestation existingFirestation = getFirestationByAddress(address);
         if (existingFirestation != null) {
@@ -119,6 +115,7 @@ public class FirestationRepository {
             jsonFileManager.saveJsonFile();
             return existingFirestation;
         }
+        log.debug("Firestation {} not found", address);
         return null;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class PersonCoveredByStationDTO {
 
     @Schema(description = "Number of childrens", example = "2")
-    private int nbChildrens;
+    private int nbChildren;
 
     @Schema(description = "Number of adults", example = "3")
     private int nbAdults;

@@ -51,7 +51,7 @@ public class PersonController {
     })
     @GetMapping(path = "/person", headers = "X-API-VERSION=1")
     public List<Person> getPersons() {
-        log.info("<controller> **New** Request GET on /person (Version 1)");
+        log.info("<controller> **New** Request GET on /person");
         return personService.getPersons();
     }
 
@@ -153,7 +153,7 @@ public class PersonController {
     })
     @PutMapping(path = "/person/{firstName}/{lastName}", headers = "X-API-VERSION=1")
     public Person updatePerson(@PathVariable String firstName, @PathVariable String lastName, @Valid @RequestBody PersonUpdateDTO person) {
-        log.info("<controller> **New** Request PUT on /person {}", person);
+        log.info("<controller> **New** Request PUT on /person/{}/{} body {}", firstName, lastName, person);
 
         return personService.updatePerson(firstName, lastName, person);
     }
