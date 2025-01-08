@@ -7,7 +7,7 @@ import java.util.List;
 
 @Schema(description = "Details about a medical record")
 @Data
-public class PersonMedicalDetailsWithPhone {
+public class PersonWithMedicalAndPhoneDTO {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)
     private String firstName;

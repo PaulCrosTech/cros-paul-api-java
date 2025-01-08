@@ -118,12 +118,12 @@ public class EmergencyController {
 
 
     /**
-     * Get List of person, with medical details, grouped by address
+     * Get Family (persons at same address) with medical details, grouped by address
      *
      * @param stations List of stations number
      * @return List of PersonWithMedicalDetailsGroupedByAddress objects
      */
-    @Operation(summary = "Get persons at same address with fire station details", description = "Returns all persons living at same address with fire station details")
+    @Operation(summary = "Get family (persons at same address) with medical details grouped by address", description = "Returns families (persons at same address) with medical details grouped by address")
     @Parameters({
             @Parameter(in = ParameterIn.QUERY, name = "stations", description = "List of stations number", required = true, example = "[3,1]"),
     })
@@ -131,9 +131,9 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/flood/stations", params = "stations", headers = "X-API-VERSION=1")
-    public PersonWithMedicalDetailsGroupedByAddress getPersonsGroupedByAddress(@RequestParam List<Integer> stations) {
+    public FamilyWithMedicalGroupedByAddressDTO getFamilyWithMedicalGroupedByAddress(@RequestParam List<Integer> stations) {
         log.info("<controller> **New** Request GET on /flood/stations");
-        return emergencyService.getPersonWithMedicalDetailsGroupedByAddress(stations);
+        return emergencyService.getFamilyWithMedicalGroupedByAddress(stations);
     }
 
 

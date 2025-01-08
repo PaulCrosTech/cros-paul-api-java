@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@Schema(description = "Details about persons living at the same address")
+@Schema(description = "Family details : persons (split info adult, children) living at the same address")
 @Data
 public class FamilyDTO {
 

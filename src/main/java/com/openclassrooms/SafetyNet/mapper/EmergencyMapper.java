@@ -150,6 +150,24 @@ public class EmergencyMapper {
         return familyDTO;
     }
 
+
+    /**
+     * Convert a PersonWithMedicalRecord to a PersonWithMedicalAndPhoneDTO
+     *
+     * @param person the person to convert
+     * @return the converted PersonWithMedicalAndPhoneDTO
+     */
+    public PersonWithMedicalAndPhoneDTO toPersonWithMedicalAndPhone(PersonWithMedicalRecord person) {
+        PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = new PersonWithMedicalAndPhoneDTO();
+        personWithMedicalAndPhoneDTO.setFirstName(person.getFirstName());
+        personWithMedicalAndPhoneDTO.setLastName(person.getLastName());
+        personWithMedicalAndPhoneDTO.setMedications(person.getMedications());
+        personWithMedicalAndPhoneDTO.setAllergies(person.getAllergies());
+        personWithMedicalAndPhoneDTO.setAge(person.getAge());
+        personWithMedicalAndPhoneDTO.setPhone(person.getPhone());
+        return personWithMedicalAndPhoneDTO;
+    }
+
     /**
      * Associate Person with MedicalRecord
      *
@@ -157,7 +175,7 @@ public class EmergencyMapper {
      * @param medicalRecords list of medical records
      * @return list of persons with medical records
      */
-    private List<PersonWithMedicalRecord> toPersonWithMedicalRecord(List<Person> persons, List<MedicalRecord> medicalRecords) {
+    public List<PersonWithMedicalRecord> toPersonWithMedicalRecord(List<Person> persons, List<MedicalRecord> medicalRecords) {
 
         List<PersonWithMedicalRecord> personWithMedicalRecords = persons.stream()
                 .map(person -> {
