@@ -10,7 +10,6 @@ import com.openclassrooms.SafetyNet.model.Person;
 
 import com.openclassrooms.SafetyNet.config.CustomProperties;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,14 +24,12 @@ public class JsonFileManager {
     private final ObjectMapper objectMapper;
     private final CustomProperties customProperties;
 
-
     /**
      * Constructor
      *
      * @param objectMapper     ObjectMapper
      * @param customProperties CustomProperties
      */
-    @Autowired
     public JsonFileManager(ObjectMapper objectMapper, CustomProperties customProperties) {
         log.info("<constructor> JsonFileManager");
         this.objectMapper = objectMapper;

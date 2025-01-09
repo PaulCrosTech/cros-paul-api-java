@@ -2,7 +2,6 @@ package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.exceptions.*;
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.dto.FirestationUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -93,17 +92,16 @@ public class FirestationService {
     /**
      * Update a fire station
      *
-     * @param address     Firestation address (case-sensitive)
      * @param firestation Firestation object to update
      * @return Firestation object updated
      * @throws NotFoundException if fire station not found
      */
-    public Firestation updateFirestation(String address, FirestationUpdateDTO firestation) throws NotFoundException {
-        Firestation firestationUpdated = firestationRepository.updateFirestation(address, firestation);
+    public Firestation updateFirestation(Firestation firestation) throws NotFoundException {
+        Firestation firestationUpdated = firestationRepository.updateFirestation(firestation);
         if (firestationUpdated == null) {
-            throw new NotFoundException("Fire station not found with address: " + address);
+            throw new NotFoundException("Fire station not found with address: " + firestation.getAddress());
         }
-        log.info("Firestation at {} updated", address);
+        log.info("Firestation at {} updated", firestation.getAddress());
 
         return firestationUpdated;
     }

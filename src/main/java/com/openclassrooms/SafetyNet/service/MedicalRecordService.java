@@ -4,7 +4,6 @@ import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.dto.MedicalRecordUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -102,18 +101,17 @@ public class MedicalRecordService {
     /**
      * Update a medical record
      *
-     * @param firstName     first name of the person to be updated
-     * @param lastName      last name of the person to be updated
-     * @param medicalRecord MedicalRecordUpdateDTO object to update
+     * @param medicalRecord MedicalRecord object to update
      * @return MedicalRecord object
      * @throws NotFoundException if medical record not found
      */
-    public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecordUpdateDTO medicalRecord) throws NotFoundException {
-        MedicalRecord medicalRecordUdated = medicalRecordRepository.updateMedicalRecord(firstName, lastName, medicalRecord);
+    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) throws NotFoundException {
+        MedicalRecord medicalRecordUdated = medicalRecordRepository.updateMedicalRecord(medicalRecord);
         if (medicalRecordUdated == null) {
-            throw new NotFoundException("Medical record not found with firstName: " + firstName + " and lastName: " + lastName);
+            throw new NotFoundException("Medical record not found with firstName: " + medicalRecord.getFirstName()
+                    + " and lastName: " + medicalRecord.getLastName());
         }
-        log.info("Medical record of {} {} updated", firstName, lastName);
+        log.info("Medical record of {} {} updated", medicalRecord.getFirstName(), medicalRecord.getLastName());
 
         return medicalRecordUdated;
     }

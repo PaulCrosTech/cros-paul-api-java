@@ -2,11 +2,11 @@ package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.dto.MedicalRecordUpdateDTO;
 import com.openclassrooms.SafetyNet.service.MedicalRecordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,7 +33,6 @@ public class MedicalRecordController {
      *
      * @param medicalRecordService MedicalRecordService
      */
-    @Autowired
     public MedicalRecordController(MedicalRecordService medicalRecordService) {
         log.info("<constructor> MedicalRecordController");
         this.medicalRecordService = medicalRecordService;
@@ -49,9 +47,9 @@ public class MedicalRecordController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
-    @GetMapping(path = "/medicalRecord", headers = "X-API-VERSION=1")
+    @GetMapping(path = "/medicalRecords", headers = "X-API-VERSION=1")
     public List<MedicalRecord> getMedicalRecords() {
-        log.info("<controller> **New** Request GET on /medicalRecord");
+        log.info("<controller> **New** Request GET on /medicalRecords");
         return medicalRecordService.getMedicalRecords();
     }
 
@@ -64,16 +62,16 @@ public class MedicalRecordController {
      */
     @Operation(summary = "Get a medical record by first name and last name", description = "Returns a medical record by his first name and last name.<br>Names are case-sensitive")
     @Parameters({
-            @Parameter(name = "firstName", description = "The first name of the person", required = true, example = "John"),
-            @Parameter(name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
+            @Parameter(in = ParameterIn.QUERY, name = "firstName", description = "The first name of the person", required = true, example = "John"),
+            @Parameter(in = ParameterIn.QUERY, name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found - The medical record was not found", content = @Content)
     })
-    @GetMapping(path = "/medicalRecord/{firstName}/{lastName}", headers = "X-API-VERSION=1")
-    public MedicalRecord getMedicalRecordByFirstNameAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
-        log.info("<controller> **New** Request GET on /medicalRecord/{}/{}", firstName, lastName);
+    @GetMapping(path = "/medicalRecord", params = {"firstName", "lastName"}, headers = "X-API-VERSION=1")
+    public MedicalRecord getMedicalRecordByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
+        log.info("<controller> **New** Request GET on /medicalRecord?firstName={}&lastName={}", firstName, lastName);
         return medicalRecordService.getMedicalRecordByFirstNameAndLastName(firstName, lastName);
     }
 
@@ -85,16 +83,16 @@ public class MedicalRecordController {
      */
     @Operation(summary = "Delete a medical record by first name and last name", description = "Delete a medical record by his first name and last name.<br>Names are case-sensitive")
     @Parameters({
-            @Parameter(name = "firstName", description = "The first name of the person", required = true, example = "John"),
-            @Parameter(name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
+            @Parameter(in = ParameterIn.QUERY, name = "firstName", description = "The first name of the person", required = true, example = "John"),
+            @Parameter(in = ParameterIn.QUERY, name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Not found - The medical record was not found")
     })
-    @DeleteMapping(path = "/medicalRecord/{firstName}/{lastName}", headers = "X-API-VERSION=1")
-    public void deleteMedicalRecord(@PathVariable String firstName, @PathVariable String lastName) throws Exception {
-        log.info("<controller> **New** Request DELETE on /medicalRecord/{}/{}", firstName, lastName);
+    @DeleteMapping(path = "/medicalRecord", params = {"firstName", "lastName"}, headers = "X-API-VERSION=1")
+    public void deleteMedicalRecord(@RequestParam String firstName, @RequestParam String lastName) throws Exception {
+        log.info("<controller> **New** Request DELETE on /medicalRecord?firstName={}&lastName={}", firstName, lastName);
         medicalRecordService.deleteMedicalRecordByFirstNameAndLastName(firstName, lastName);
     }
 
@@ -132,29 +130,22 @@ public class MedicalRecordController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
-
-
+    
     /**
      * Update a medical record
      *
-     * @param firstName     firstName of the medical record to be updated
-     * @param lastName      lastName of the medical record to be updated
-     * @param medicalRecord MedicalRecordUpdateDTO object to update
+     * @param medicalRecord MedicalRecord object to update
      * @return MedicalRecord object updated
      */
     @Operation(summary = "Update a medical record", description = "Update a medical record by his first name and last name.<br>Names are case-sensitive")
-    @Parameters({
-            @Parameter(name = "firstName", description = "The first name of the person", required = true, example = "John"),
-            @Parameter(name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
-    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - The medical record was not found", content = @Content)
     })
-    @PutMapping(path = "/medicalRecord/{firstName}/{lastName}", headers = "X-API-VERSION=1")
-    public MedicalRecord updateMedicalRecord(@PathVariable String firstName, @PathVariable String lastName, @Valid @RequestBody MedicalRecordUpdateDTO medicalRecord) {
-        log.info("<controller> **New** Request PUT on /medicalRecord/{}/{} body {}", firstName, lastName, medicalRecord);
+    @PutMapping(path = "/medicalRecord", headers = "X-API-VERSION=1")
+    public MedicalRecord updateMedicalRecord(@Valid @RequestBody MedicalRecord medicalRecord) {
+        log.info("<controller> **New** Request PUT on /medicalRecord body {}", medicalRecord);
 
-        return medicalRecordService.updateMedicalRecord(firstName, lastName, medicalRecord);
+        return medicalRecordService.updateMedicalRecord(medicalRecord);
     }
 }

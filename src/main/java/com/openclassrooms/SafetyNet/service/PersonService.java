@@ -3,7 +3,6 @@ package com.openclassrooms.SafetyNet.service;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
-import com.openclassrooms.SafetyNet.dto.PersonUpdateDTO;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import com.openclassrooms.SafetyNet.model.Person;
 import lombok.Data;
@@ -101,18 +100,16 @@ public class PersonService {
     /**
      * Update a person
      *
-     * @param firstName first name of the person to be updated
-     * @param lastName  last name of the person to be updated
-     * @param person    PersonUpdateDTO object with the new information
+     * @param person Person object with the new information
      * @return Person object updated
      * @throws NotFoundException if person not found
      */
-    public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws NotFoundException {
-        Person personUpdated = personRepository.updatePerson(firstName, lastName, person);
+    public Person updatePerson(Person person) throws NotFoundException {
+        Person personUpdated = personRepository.updatePerson(person);
         if (personUpdated == null) {
-            throw new NotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName);
+            throw new NotFoundException("Person not found with firstName: " + person.getFirstName() + " and " + person.getLastName());
         }
-        log.info("Person {} {} updated", firstName, lastName);
+        log.info("Person {} {} updated", person.getFirstName(), person.getLastName());
         return personUpdated;
     }
 }

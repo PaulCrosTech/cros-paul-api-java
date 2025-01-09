@@ -2,9 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.dto.MedicalRecordUpdateDTO;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +13,11 @@ public class MedicalRecordRepository {
 
     private final JsonFileManager jsonFileManager;
 
-    @Autowired
+    /**
+     * Constructor
+     *
+     * @param jsonFileManager JsonFileManager
+     */
     public MedicalRecordRepository(JsonFileManager jsonFileManager) {
         log.info("<constructor> MedicalRecordRepository");
         this.jsonFileManager = jsonFileManager;
@@ -86,15 +88,13 @@ public class MedicalRecordRepository {
     /**
      * Update a medical record
      *
-     * @param firstName     first name of the person to update
-     * @param lastName      last name of the person to update
-     * @param medicalRecord MedicalRecordUpdateDTO object with the new information
+     * @param medicalRecord MedicalRecord object with the new information
      * @return MedicalRecord object updated
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
-    public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecordUpdateDTO medicalRecord) throws JsonFileManagerSaveException {
+    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException {
         // Ici, on récupère la référence et non une copie de la liste
-        MedicalRecord existingRecord = getMedicalRecordByFirstNameAndLastName(firstName, lastName);
+        MedicalRecord existingRecord = getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
         if (existingRecord != null) {
             existingRecord.setBirthdate(medicalRecord.getBirthdate());
             existingRecord.setMedications(medicalRecord.getMedications());
@@ -102,7 +102,7 @@ public class MedicalRecordRepository {
             jsonFileManager.saveJsonFile();
             return existingRecord;
         }
-        log.debug("Medical record {} {} not found", firstName, lastName);
+        log.debug("Medical record {} {} not found", medicalRecord.getFirstName(), medicalRecord.getLastName());
         return null;
     }
 

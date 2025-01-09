@@ -2,11 +2,11 @@ package com.openclassrooms.SafetyNet.controller;
 
 import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.dto.FirestationUpdateDTO;
 import com.openclassrooms.SafetyNet.service.FirestationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,7 +33,6 @@ public class FirestationController {
      *
      * @param firestationService PersonService
      */
-    @Autowired
     public FirestationController(FirestationService firestationService) {
         log.info("<constructor> FirestationController");
         this.firestationService = firestationService;
@@ -49,9 +47,9 @@ public class FirestationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
-    @GetMapping(path = "/firestation", headers = "X-API-VERSION=1")
+    @GetMapping(path = "/firestations", headers = "X-API-VERSION=1")
     public List<Firestation> getFirestations() {
-        log.info("<controller> **New** Request GET on /firestation");
+        log.info("<controller> **New** Request GET on /firestations");
         return firestationService.getFirestations();
     }
 
@@ -64,29 +62,29 @@ public class FirestationController {
      */
     @Operation(summary = "Get a fire station by address", description = "Returns a fire station by address (case-sensitive)")
     @Parameters({
-            @Parameter(name = "address", description = "The address of the fire station", required = true, example = "\"834 Binoc Ave\""),
+            @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address of the fire station", required = true, example = "\"834 Binoc Ave\""),
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found - The fire station was not found", content = @Content)
     })
-    @GetMapping(path = "/firestation/{address}", headers = "X-API-VERSION=1")
-    public Firestation getFirestationByAddress(@PathVariable String address) {
-        log.info("<controller> **New** Request GET on /firestation/{}", address);
+    @GetMapping(path = "/firestation", params = "address", headers = "X-API-VERSION=1")
+    public Firestation getFirestationByAddress(@RequestParam String address) {
+        log.info("<controller> **New** Request GET on /firestation?address={}", address);
         return firestationService.getFirestationByAddress(address);
     }
 
     @Operation(summary = "Delete a fire station by hsi address", description = "Delete a fire station by his address (case-sensitive)")
     @Parameters({
-            @Parameter(name = "address", description = "The address of fire station", required = true, example = "\"834 Binoc Ave\""),
+            @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address of fire station", required = true, example = "\"834 Binoc Ave\""),
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Not found - The fire station was not found")
     })
-    @DeleteMapping(path = "/firestation/{address}", headers = "X-API-VERSION=1")
-    public void deletePerson(@PathVariable String address) throws Exception {
-        log.info("<controller> **New** Request DELETE on /firestation/{}", address);
+    @DeleteMapping(path = "/firestation", params = "address", headers = "X-API-VERSION=1")
+    public void deletePerson(@RequestParam String address) throws Exception {
+        log.info("<controller> **New** Request DELETE on /firestation?address={}", address);
         firestationService.deleteFirestationByAddress(address);
     }
 
@@ -129,22 +127,18 @@ public class FirestationController {
     /**
      * Update a fire station
      *
-     * @param address     Firestation address (case-sensitive)
      * @param firestation Firestation object to update
      * @return Firestation object updated
      */
     @Operation(summary = "Update a fire station", description = "Update a fire station by his address (case-sensitive)")
-    @Parameters({
-            @Parameter(name = "address", description = "The address of fire station", required = true, example = "\"1509 Culver St\""),
-    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - The fire station was not found", content = @Content)
     })
-    @PutMapping(path = "/firestation/{address}", headers = "X-API-VERSION=1")
-    public Firestation updateFirestation(@PathVariable String address, @Valid @RequestBody FirestationUpdateDTO firestation) {
-        log.info("<controller> **New** Request PUT on /firestation/{} body {}", address, firestation);
+    @PutMapping(path = "/firestation", headers = "X-API-VERSION=1")
+    public Firestation updateFirestation(@Valid @RequestBody Firestation firestation) {
+        log.info("<controller> **New** Request PUT on /firestation body {}", firestation);
 
-        return firestationService.updateFirestation(address, firestation);
+        return firestationService.updateFirestation(firestation);
     }
 }

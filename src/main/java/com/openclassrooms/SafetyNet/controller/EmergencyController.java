@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -19,6 +18,7 @@ import java.util.List;
 
 
 @Tag(name = "Emergency", description = "Emergency API")
+@RequestMapping("/emergency")
 @Log4j2
 @RestController
 public class EmergencyController {
@@ -30,12 +30,10 @@ public class EmergencyController {
      *
      * @param emergencyService EmergencyService object
      */
-    @Autowired
     public EmergencyController(EmergencyService emergencyService) {
         log.info("<constructor> FirestationController");
         this.emergencyService = emergencyService;
     }
-
 
     /**
      * Get person covered by a fire stations

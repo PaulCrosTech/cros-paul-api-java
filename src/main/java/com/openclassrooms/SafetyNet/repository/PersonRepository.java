@@ -2,9 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Person;
-import com.openclassrooms.SafetyNet.dto.PersonUpdateDTO;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,7 +14,11 @@ public class PersonRepository {
 
     private final JsonFileManager jsonFileManager;
 
-    @Autowired
+    /**
+     * Constructor
+     *
+     * @param jsonFileManager JsonFileManager
+     */
     public PersonRepository(JsonFileManager jsonFileManager) {
         log.info("<constructor> PersonRepository");
         this.jsonFileManager = jsonFileManager;
@@ -122,15 +124,13 @@ public class PersonRepository {
     /**
      * Update a person
      *
-     * @param firstName first name of the person to update
-     * @param lastName  last name of the person to update
-     * @param person    PersonUpdateDTO object with the new information
+     * @param person Person object with the new information
      * @return Person object updated
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
-    public Person updatePerson(String firstName, String lastName, PersonUpdateDTO person) throws JsonFileManagerSaveException {
+    public Person updatePerson(Person person) throws JsonFileManagerSaveException {
         // Ici, on récupère la référence et non une copie de la liste
-        Person existingPerson = getPersonByFirstNameAndLastName(firstName, lastName);
+        Person existingPerson = getPersonByFirstNameAndLastName(person.getFirstName(), person.getLastName());
         if (existingPerson != null) {
             existingPerson.setAddress(person.getAddress());
             existingPerson.setCity(person.getCity());
@@ -140,7 +140,7 @@ public class PersonRepository {
             jsonFileManager.saveJsonFile();
             return existingPerson;
         }
-        log.debug("Person {} {} not found", firstName, lastName);
+        log.debug("Person {} {} not found", person.getFirstName(), person.getLastName());
         return null;
     }
 
