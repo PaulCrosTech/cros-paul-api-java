@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Log4j2
@@ -217,12 +216,17 @@ public class EmergencyMapper {
      * @param birthdate date de naissance
      * @return âge
      */
-    private int calculateAge(Date birthdate) {
-        // Converti la date de naissance en LocalDate, pour cela :
-        // Converti la date en Instant (temps en millisecondes depuis le 1er janvier 1970)
-        // Converti l'Instant en ZoneDateTime (date et heure) en utilisant le fuseau horaire du système
-        LocalDate birthDateLocal = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    private int calculateAge(String birthdate) {
+        // Définir le format de la date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+        // Convertir la chaîne de caractères en LocalDate
+        LocalDate birthDateLocal = LocalDate.parse(birthdate, formatter);
+
+        // Obtenir la date actuelle
         LocalDate today = LocalDate.now();
+
+        // Calculer la différence en années entre la date de naissance et la date actuelle
         return Period.between(birthDateLocal, today).getYears();
     }
 }

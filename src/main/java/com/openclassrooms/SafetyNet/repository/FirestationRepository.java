@@ -5,7 +5,6 @@ import com.openclassrooms.SafetyNet.model.Firestation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -35,38 +34,50 @@ public class FirestationRepository {
     }
 
     /**
-     * Get all fire stations by station number
+     * Get all fire station by station number
      *
-     * @param station String number of the station
+     * @param station Integer number of the station
      * @return List of Firestation objects
      */
-    public List<Firestation> getFirestationByStationNumber(String station) {
-        List<Firestation> f = new ArrayList<>();
-        for (Firestation firestation : getFirestations()) {
-            if (firestation.getStation().equals(station)) {
-                f.add(firestation);
-            }
-        }
-        log.debug("Firestation {} found", station);
-        return f;
+    public List<Firestation> getFirestationByStationNumber(Integer station) {
+
+        List<Firestation> firestations = getFirestations().stream()
+                .filter(f -> f.getStation().equals(station))
+                .toList();
+        log.debug("{} firestation number {} found", firestations.size(), station);
+        return firestations;
     }
 
+
     /**
-     * Get a fire station by address
+     * Get all fire stations by address
      *
      * @param address String address of the fire station (case-sensitive)
      * @return Firestation object
      */
-    // TODO : à revoir, car une adresse peut être couverte par plusieurs casernes (voir l'impact sur le reste du code)
     public Firestation getFirestationByAddress(String address) {
-        for (Firestation firestation : getFirestations()) {
-            if (firestation.getAddress().equals(address)) {
-                log.debug("Firestation {} found", address);
-                return firestation;
-            }
-        }
-        log.debug("Firestation {} not found", address);
-        return null;
+        Firestation firestation = getFirestations().stream()
+                .filter(f -> f.getAddress().equals(address))
+                .findFirst()
+                .orElse(null);
+        log.debug("Firestation wit address {} {}", address, firestation != null ? "found" : "not found");
+        return firestation;
+    }
+
+    /**
+     * Get a fire station by address and station number
+     *
+     * @param address String address of the fire station (case-sensitive)
+     * @param station Integer number of the station
+     * @return Firestation object
+     */
+    public Firestation getFirestationByAddressAndStationNumber(String address, Integer station) {
+        Firestation firestation = getFirestations().stream()
+                .filter(f -> f.getAddress().equals(address) && f.getStation().equals(station))
+                .findFirst()
+                .orElse(null);
+        log.debug("Firestation with address {} and number {} {}", address, station, firestation != null ? "found" : "not found");
+        return firestation;
     }
 
     /**
@@ -75,15 +86,13 @@ public class FirestationRepository {
      * @param address String address of the fire station (case-sensitive)
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
-    // TODO : à revoir, car une adresse peut être couverte par plusieurs casernes
     public boolean deleteFirestationByAddress(String address) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         List<Firestation> firestations = getFirestations();
         boolean deleted = firestations.removeIf(firestation -> firestation.getAddress().equals(address));
         if (deleted) {
             jsonFileManager.saveJsonFile();
         }
-        log.debug("Firestation {} deleted : {} ", address, deleted);
+        log.debug("Firestation wit address {} {} ", address, deleted ? "deleted" : "not found");
         return deleted;
     }
 
@@ -95,31 +104,35 @@ public class FirestationRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void saveFirestation(Firestation firestation) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         List<Firestation> firestations = getFirestations();
         firestations.add(firestation);
-        log.debug("Firestation {} saved", firestation);
         jsonFileManager.saveJsonFile();
+        log.debug("Firestation {} saved", firestation);
     }
 
-
     /**
-     * Update a fire station
+     * Update the station number for fire station matching the address
      *
      * @param firestation Firestation object to update
      * @return Firestation object updated
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public Firestation updateFirestation(Firestation firestation) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
-        Firestation existingFirestation = getFirestationByAddress(firestation.getAddress());
-        if (existingFirestation != null) {
-            existingFirestation.setStation(firestation.getStation());
-            jsonFileManager.saveJsonFile();
-            return existingFirestation;
+        // Get all firestations matching the address
+        Firestation firestationToUpdate = getFirestationByAddress(firestation.getAddress());
+
+        if (firestationToUpdate == null) {
+            log.debug("Firestation with address {} not found", firestation.getAddress());
+            return null;
         }
-        log.debug("Firestation {} not found", firestation.getAddress());
-        return null;
+
+        // Update the station number
+        firestationToUpdate.setStation(firestation.getStation());
+        jsonFileManager.saveJsonFile();
+
+        log.debug("Firestation with address {} updated", firestation.getAddress());
+        return firestationToUpdate;
+
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Repository
@@ -41,14 +42,12 @@ public class PersonRepository {
      * @return Person object
      */
     public Person getPersonByFirstNameAndLastName(String firstName, String lastName) {
-        for (Person person : getPersons()) {
-            if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
-                log.debug("Person {} {} found", firstName, lastName);
-                return person;
-            }
-        }
-        log.debug("Person {} {} not found", firstName, lastName);
-        return null;
+        Person personFound = getPersons().stream()
+                .filter(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
+        log.debug("Person {} {} {}", firstName, lastName, personFound != null ? "found" : "not found");
+        return personFound;
     }
 
     /**
@@ -58,14 +57,10 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersonByLastName(String lastName) {
-        List<Person> persons = new ArrayList<>();
-
-        for (Person p : getPersons()) {
-            if (p.getLastName().equals(lastName)) {
-                persons.add(p);
-            }
-        }
-        log.debug("Persons with last name {} found", lastName);
+        List<Person> persons = getPersons().stream()
+                .filter(p -> p.getLastName().equals(lastName))
+                .toList();
+        log.debug("{} persons with last name {} found", persons.size(), lastName);
         return persons;
     }
 
@@ -76,14 +71,11 @@ public class PersonRepository {
      * @return List of Person objects
      */
     public List<Person> getPersonByAddress(String address) {
-        List<Person> persons = new ArrayList<>();
 
-        for (Person person : getPersons()) {
-            if (person.getAddress().equals(address)) {
-                persons.add(person);
-            }
-        }
-        log.debug("Persons with address {} found", address);
+        List<Person> persons = getPersons().stream()
+                .filter(p -> p.getAddress().equals(address))
+                .toList();
+        log.debug("{} persons with address {} found", persons.size(), address);
         return persons;
     }
 

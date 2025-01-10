@@ -7,7 +7,6 @@ import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import com.openclassrooms.SafetyNet.model.Person;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
-    @Autowired
     public PersonService(PersonRepository personRepository) {
         log.info("<constructor> PersonService");
         this.personRepository = personRepository;

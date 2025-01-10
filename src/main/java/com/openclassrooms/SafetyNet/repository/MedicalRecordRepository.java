@@ -40,14 +40,12 @@ public class MedicalRecordRepository {
      * @return Medical record object
      */
     public MedicalRecord getMedicalRecordByFirstNameAndLastName(String firstName, String lastName) {
-        for (MedicalRecord medicalRecord : getMedicalRecords()) {
-            if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-                log.debug("Medical record {} {} found", firstName, lastName);
-                return medicalRecord;
-            }
-        }
-        log.debug("Medical record {} {} not found", firstName, lastName);
-        return null;
+        MedicalRecord medicalRecord = getMedicalRecords().stream()
+                .filter(m -> m.getFirstName().equals(firstName) && m.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
+        log.debug("Medical record for {} {} {}", firstName, lastName, medicalRecord != null ? "found" : "not found");
+        return medicalRecord;
     }
 
     /**
@@ -59,7 +57,7 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deleteMedicalRecordByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
+        
         List<MedicalRecord> medicalRecords = getMedicalRecords();
         boolean deleted = medicalRecords.removeIf(medicalRecord ->
                 medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName));

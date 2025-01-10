@@ -8,7 +8,6 @@ import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,7 +23,6 @@ public class EmergencyService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final EmergencyMapper emergencyMapper;
 
-    @Autowired
     public EmergencyService(PersonRepository personRepository,
                             FirestationRepository firestationRepository,
                             MedicalRecordRepository medicalRecordRepository,
@@ -44,7 +42,7 @@ public class EmergencyService {
      */
     public PersonCoveredByStationDTO getPersonCoveredByStationNumber(int stationNumber) {
         // Récupère les adresses couvertes par la caserne stationNumber
-        List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(String.valueOf(stationNumber));
+        List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
 
         // Récupère les personnes habitant à ces adresses
         List<Person> persons = new ArrayList<>();
@@ -99,7 +97,7 @@ public class EmergencyService {
      * @param stationNumber station number
      * @return HashSet of phone numbers
      */
-    public HashSet<String> getPhoneNumbersCoveredByFireStation(String stationNumber) {
+    public HashSet<String> getPhoneNumbersCoveredByFireStation(int stationNumber) {
         // HashSet for unique phone numbers
         HashSet<String> phoneNumbers = new HashSet<>();
 
@@ -125,8 +123,8 @@ public class EmergencyService {
      * @return liste de FamilyWithMedicalAndFirestationDTO
      */
     public FamilyWithMedicalAndFirestationDTO getFamilyWithMedicalAndFirestation(String address) {
+
         // Get Firestation for the address
-        // TODO : getFirestationByAddress return one Firesation, not a list (to be fixed?)
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
         if (firestation == null) {
             return new FamilyWithMedicalAndFirestationDTO();
@@ -166,7 +164,7 @@ public class EmergencyService {
         Set<String> addresses = new HashSet<>();
 
         for (Integer stationNumber : stationNumbers) {
-            List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(String.valueOf(stationNumber));
+            List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
             for (Firestation f : firestations) {
                 addresses.add(f.getAddress());
             }

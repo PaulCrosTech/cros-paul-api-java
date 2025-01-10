@@ -7,7 +7,6 @@ import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class MedicalRecordService {
 
     private final MedicalRecordRepository medicalRecordRepository;
 
-    @Autowired
     public MedicalRecordService(MedicalRecordRepository medicalRecordRepository) {
         log.info("<constructor> MedicalRecordService");
         this.medicalRecordRepository = medicalRecordRepository;

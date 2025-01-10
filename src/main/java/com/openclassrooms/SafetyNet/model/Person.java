@@ -1,5 +1,6 @@
 package com.openclassrooms.SafetyNet.model;
 
+import com.openclassrooms.SafetyNet.validators.annotations.ValidPhone;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,7 +40,7 @@ public class Person {
 
     @Schema(description = "Phone number of the person", example = "841-874-6512", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 10, maxLength = 14)
     @NotBlank(message = "Phone is mandatory")
-    @Size(min = 10, max = 14, message = "Phone should have at least {min} characters and at most {max} characters")
+    @ValidPhone()
     private String phone;
 
     @Schema(description = "Email of the person", example = "mail@email.com", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 5, maxLength = 255)

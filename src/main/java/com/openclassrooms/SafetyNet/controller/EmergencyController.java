@@ -89,7 +89,7 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/phoneAlert", params = "firestation", headers = "X-API-VERSION=1")
-    public HashSet<String> getPhoneNumbersCoveredByFireStation(@RequestParam String firestation) {
+    public HashSet<String> getPhoneNumbersCoveredByFireStation(@RequestParam Integer firestation) {
         log.info("<controller> **New** Request GET on /phoneAlert?firestation={}", firestation);
         return emergencyService.getPhoneNumbersCoveredByFireStation(firestation);
     }

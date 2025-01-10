@@ -55,7 +55,7 @@ public class FirestationController {
 
 
     /**
-     * Get a fire station by address
+     * Get fire station by address
      *
      * @param address String address of the fire station (case-sensitive)
      * @return Firestation object
@@ -74,7 +74,7 @@ public class FirestationController {
         return firestationService.getFirestationByAddress(address);
     }
 
-    @Operation(summary = "Delete a fire station by hsi address", description = "Delete a fire station by his address (case-sensitive)")
+    @Operation(summary = "Delete a fire station by his address", description = "Delete a fire station by his address (case-sensitive)")
     @Parameters({
             @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address of fire station", required = true, example = "\"834 Binoc Ave\""),
     })
@@ -97,15 +97,11 @@ public class FirestationController {
      */
     @Operation(summary = "Create a fire station", description = "Add a new fire station")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201",
-                    description = "Successfully created",
-                    content = @Content
+            @ApiResponse(responseCode = "201", description = "Successfully created", content = @Content
             ),
-            @ApiResponse(responseCode = "400",
-                    description = "Bad request - The request is invalid",
+            @ApiResponse(responseCode = "400", description = "Bad request - The request is invalid",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))),
-            @ApiResponse(responseCode = "409",
-                    description = "Conflict - The fire station already exists",
+            @ApiResponse(responseCode = "409", description = "Conflict - The fire station already exists",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))
             )
     })

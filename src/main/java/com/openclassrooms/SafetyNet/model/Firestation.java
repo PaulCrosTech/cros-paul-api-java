@@ -19,6 +19,6 @@ public class Firestation {
     @Schema(description = "Station number", example = "3", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Station number is mandatory")
     @Positive(message = "Station number should be positive")
-    private String station;
+    private Integer station;
 
 }
