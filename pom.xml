@@ -199,7 +199,10 @@
             <!--                    <failOnError>false</failOnError>-->
             <!--                </configuration>-->
             <!--            </plugin>-->
+
+
         </plugins>
+
     </build>
 
     <!-- Add Surefire, JaCoCo, JavaDoc reporting -->

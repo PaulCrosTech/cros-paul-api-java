@@ -141,6 +141,9 @@ public class PersonController {
     @Operation(summary = "Update a person", description = "Update a person by his first name and last name.<br>Names are case-sensitive")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated"),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad request - The request is invalid",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))),
             @ApiResponse(responseCode = "404", description = "Not found - The person was not found", content = @Content)
     })
     @PutMapping(path = "/person", headers = "X-API-VERSION=1")
