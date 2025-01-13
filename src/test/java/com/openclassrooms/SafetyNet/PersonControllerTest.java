@@ -75,7 +75,7 @@ public class PersonControllerTest {
      * @throws Exception Exception
      */
     @Test
-    public void givenExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnPerson() throws Exception {
+    public void givenExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnOkAndPerson() throws Exception {
         // Given
         String firstName = "John";
         String lastName = "Boyd";
@@ -221,8 +221,11 @@ public class PersonControllerTest {
     @Test
     public void givenMalformedBody_whenSavePerson_thenReturnBadRequest() throws Exception {
         // Given
-        String body = "{}";
-
+        String body = "{\n" +
+                "  \"firstName\": \"John\",\n" +
+                "  \"lastName\": \"Boyd\",\n" +
+                "  \"email\": \"mail@email.com\"\n" +
+                "}";
         // When
         ResultActions resultActions = mockMvc.perform(post("/person")
                 .header("X-API-VERSION", apiVersion)
@@ -230,7 +233,8 @@ public class PersonControllerTest {
                 .content(body));
 
         // Then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(result -> System.out.println(result.getResponse().getContentAsString()));
     }
 
 
@@ -300,7 +304,13 @@ public class PersonControllerTest {
     @Test
     public void givenMalformedBody_whenUpdatePerson_thenReturnBadRequest() throws Exception {
         // Given
-        String body = "{}";
+        String body = "{\n" +
+                "  \"firstName\": \"John\",\n" +
+                "  \"lastName\": \"Boyd\",\n" +
+                "  \"address\": \"1509 Culver St\",\n" +
+                "  \"city\": \"Culver\",\n" +
+                "  \"email\": \"mail@email.com\"\n" +
+                "}";
 
         // When
         ResultActions resultActions = mockMvc.perform(put("/person")
@@ -309,7 +319,8 @@ public class PersonControllerTest {
                 .content(body));
 
         // Then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(result -> System.out.println(result.getResponse().getContentAsString()));
     }
 
 }

@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 @Schema(description = "Details about a firestation")
 @Data
+@AllArgsConstructor
 public class Firestation {
 
     @Schema(description = "Address of the firestation", example = "1509 Culver St", requiredMode = Schema.RequiredMode.REQUIRED)
