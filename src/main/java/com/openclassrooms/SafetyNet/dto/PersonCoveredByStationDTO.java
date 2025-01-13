@@ -1,13 +1,17 @@
 package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @Schema(description = "Details about persons covered by station, with number of children and adults")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PersonCoveredByStationDTO {
 
     @Schema(description = "Number of childrens", example = "2")

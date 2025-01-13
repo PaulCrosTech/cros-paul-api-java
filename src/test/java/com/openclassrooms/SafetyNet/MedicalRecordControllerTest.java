@@ -3,13 +3,10 @@ package com.openclassrooms.SafetyNet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.controller.MedicalRecordController;
-import com.openclassrooms.SafetyNet.controller.PersonController;
 import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.MedicalRecordService;
-import com.openclassrooms.SafetyNet.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

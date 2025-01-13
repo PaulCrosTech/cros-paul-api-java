@@ -1,12 +1,16 @@
 package com.openclassrooms.SafetyNet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Schema(description = "Family (persons living at same address), with medical details and fire station")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FamilyWithMedicalAndFirestationDTO {
 
     @Schema(description = "Fire stations number", example = "3", requiredMode = Schema.RequiredMode.REQUIRED)

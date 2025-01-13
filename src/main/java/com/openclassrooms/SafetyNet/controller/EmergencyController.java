@@ -2,11 +2,14 @@ package com.openclassrooms.SafetyNet.controller;
 
 
 import com.openclassrooms.SafetyNet.dto.*;
+import com.openclassrooms.SafetyNet.exceptions.CustomApiError;
 import com.openclassrooms.SafetyNet.service.EmergencyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,6 +50,7 @@ public class EmergencyController {
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Station number not found"),
     })
     @GetMapping(path = "/firestation", params = "stationNumber", headers = "X-API-VERSION=1")
     public PersonCoveredByStationDTO getPersonCoveredByStation(@RequestParam int stationNumber) {
@@ -87,6 +91,7 @@ public class EmergencyController {
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Station number not found")
     })
     @GetMapping(path = "/phoneAlert", params = "firestation", headers = "X-API-VERSION=1")
     public HashSet<String> getPhoneNumbersCoveredByFireStation(@RequestParam Integer firestation) {
@@ -147,6 +152,9 @@ public class EmergencyController {
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Person not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))
+            )
     })
     @GetMapping(path = "/personInfo", params = "lastName", headers = "X-API-VERSION=1")
     public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(@RequestParam String lastName) {

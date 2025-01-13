@@ -1,6 +1,7 @@
 package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.dto.*;
+import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.mapper.EmergencyMapper;
 import com.openclassrooms.SafetyNet.model.*;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
@@ -43,6 +44,9 @@ public class EmergencyService {
     public PersonCoveredByStationDTO getPersonCoveredByStationNumber(int stationNumber) {
         // Récupère les adresses couvertes par la caserne stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
+        if (firestations.isEmpty()) {
+            throw new NotFoundException("No firestation found for station number " + stationNumber);
+        }
 
         // Récupère les personnes habitant à ces adresses
         List<Person> persons = new ArrayList<>();
@@ -103,6 +107,9 @@ public class EmergencyService {
 
         // Get Firestations corresponding to the stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
+        if (firestations.isEmpty()) {
+            throw new NotFoundException("No firestation found for station number " + stationNumber);
+        }
 
         // Get Persons living at the addresses covered by the firestations
         for (Firestation firestation : firestations) {
@@ -217,6 +224,9 @@ public class EmergencyService {
     public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(String lastName) {
         // Get all persons with lat name equals to lastName
         List<Person> personsList = personRepository.getPersonByLastName(lastName);
+        if (personsList.isEmpty()) {
+            throw new NotFoundException("No person found with last name " + lastName);
+        }
 
         // Get medical record of persons
         List<MedicalRecord> medicalRecordsList = new ArrayList<>();
