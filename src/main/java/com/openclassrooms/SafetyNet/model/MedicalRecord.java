@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Schema(description = "Details about a medical record")
 @Data
+@AllArgsConstructor
 public class MedicalRecord {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)

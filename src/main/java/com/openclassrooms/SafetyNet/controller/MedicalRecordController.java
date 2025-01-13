@@ -130,7 +130,7 @@ public class MedicalRecordController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
-    
+
     /**
      * Update a medical record
      *
