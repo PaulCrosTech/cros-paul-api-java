@@ -46,7 +46,7 @@ public class PersonServiceTest {
      * Testing getPersons() method from PersonService
      */
     @Test
-    public void givenPersonsList_whenGetPersons_thenReturnPersonList() {
+    public void givenNothing_whenGetPersons_thenReturnPersonList() {
 
         // Given
         when(personRepository.getPersons()).thenReturn(persons);
