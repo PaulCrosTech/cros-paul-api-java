@@ -1,20 +1,14 @@
 package com.openclassrooms.SafetyNet;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.controller.EmergencyController;
-import com.openclassrooms.SafetyNet.controller.PersonController;
 import com.openclassrooms.SafetyNet.dto.*;
-import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.EmergencyService;
-import com.openclassrooms.SafetyNet.service.PersonService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -44,16 +38,6 @@ public class EmergencyControllerTest {
     public EmergencyControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
-
-//    @BeforeEach
-//    public void setUp() {
-//        persons = Arrays.asList(
-//                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
-//                new Person("Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "drk@email.com"),
-//                new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com")
-//        );
-//    }
-
 
     /**
      * Testing GET /emergency/firestation with an existing station number
