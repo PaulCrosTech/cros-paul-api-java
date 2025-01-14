@@ -5,9 +5,7 @@ import com.openclassrooms.SafetyNet.model.Person;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Repository

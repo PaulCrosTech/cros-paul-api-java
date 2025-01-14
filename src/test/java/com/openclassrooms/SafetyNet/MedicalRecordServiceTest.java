@@ -34,6 +34,7 @@ public class MedicalRecordServiceTest {
     @BeforeEach
     public void setUp() {
         medicalRecordService = new MedicalRecordService(medicalRecordRepository);
+        // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         medicalRecords = Arrays.asList(
                 new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
                 new MedicalRecord("Jacob", "Boyd", "03/06/1989", Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of()),

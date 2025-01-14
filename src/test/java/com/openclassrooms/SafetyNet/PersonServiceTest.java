@@ -35,6 +35,7 @@ public class PersonServiceTest {
     @BeforeEach
     public void setUp() {
         personService = new PersonService(personRepository);
+        // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         persons = Arrays.asList(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
                 new Person("Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "drk@email.com"),

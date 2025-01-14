@@ -33,6 +33,7 @@ public class FirestationServiceTest {
     @BeforeEach
     public void setUp() {
         firestationService = new FirestationService(firestationRepository);
+        // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         firestations = Arrays.asList(
                 new Firestation("1509 Culver St", 3),
                 new Firestation("29 15th St", 2),
