@@ -1,15 +1,9 @@
 package com.openclassrooms.SafetyNet;
 
 
-import com.openclassrooms.SafetyNet.exceptions.ConflictException;
-import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
-import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.JsonFileManager;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
-import com.openclassrooms.SafetyNet.service.PersonService;
-import io.swagger.v3.core.util.Json;
-import jakarta.validation.constraints.AssertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -139,9 +133,7 @@ public class PersonRepositoryTest {
         // Then
         verify(jsonFileManager, times(1)).saveJsonFile();
         assertEquals(2, personRepository.getPersons().size());
-        boolean personExists = persons.stream()
-                .anyMatch(p -> p.getFirstName().equals(personToDelete.getFirstName()) && p.getLastName().equals(personToDelete.getLastName()));
-        assertFalse(personExists);
+        assertFalse(persons.contains(personToDelete));
     }
 
     /**
@@ -157,6 +149,7 @@ public class PersonRepositoryTest {
 
         // Then
         assertFalse(deleted);
+        verify(jsonFileManager, times(0)).saveJsonFile();
     }
 
     /**
@@ -174,9 +167,8 @@ public class PersonRepositoryTest {
 
         // Then
         verify(jsonFileManager, times(1)).saveJsonFile();
-        boolean personExists = persons.stream()
-                .anyMatch(p -> p.getFirstName().equals(personToSave.getFirstName()) && p.getLastName().equals(personToSave.getLastName()));
-        assertTrue(personExists);
+        assertTrue(persons.contains(personToSave));
+
     }
 
     /**
@@ -196,7 +188,6 @@ public class PersonRepositoryTest {
         // Then
         verify(jsonFileManager, times(1)).saveJsonFile();
         assertEquals("NewAddress", person.getAddress());
-
     }
 
     /**

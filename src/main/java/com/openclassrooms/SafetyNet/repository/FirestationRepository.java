@@ -63,23 +63,7 @@ public class FirestationRepository {
         log.debug("Firestation wit address {} {}", address, firestation != null ? "found" : "not found");
         return firestation;
     }
-
-    /**
-     * Get a fire station by address and station number
-     *
-     * @param address String address of the fire station (case-sensitive)
-     * @param station Integer number of the station
-     * @return Firestation object
-     */
-    public Firestation getFirestationByAddressAndStationNumber(String address, Integer station) {
-        Firestation firestation = getFirestations().stream()
-                .filter(f -> f.getAddress().equals(address) && f.getStation().equals(station))
-                .findFirst()
-                .orElse(null);
-        log.debug("Firestation with address {} and number {} {}", address, station, firestation != null ? "found" : "not found");
-        return firestation;
-    }
-
+    
     /**
      * Delete a fire station by address
      *
