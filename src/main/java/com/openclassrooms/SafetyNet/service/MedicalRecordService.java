@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * MedicalRecordService Class
+ */
 @Log4j2
 @Service
 @Data
@@ -18,6 +21,11 @@ public class MedicalRecordService {
 
     private final MedicalRecordRepository medicalRecordRepository;
 
+    /**
+     * Constructor
+     *
+     * @param medicalRecordRepository medical repository
+     */
     public MedicalRecordService(MedicalRecordRepository medicalRecordRepository) {
         log.info("<constructor> MedicalRecordService");
         this.medicalRecordRepository = medicalRecordRepository;

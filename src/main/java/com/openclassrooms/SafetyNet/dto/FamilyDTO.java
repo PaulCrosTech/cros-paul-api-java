@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * FamilyDTO Class
+ */
 @Schema(description = "Family details : persons (split info adult, children) living at the same address")
 @Data
 @AllArgsConstructor

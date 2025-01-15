@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * PersonRepository Class
+ */
 @Log4j2
 @Repository
 public class PersonRepository {

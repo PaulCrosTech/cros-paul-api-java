@@ -6,8 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SafetyNetApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    /**
+     * Testing context loads.
+     */
+    @Test
+    void contextLoads() {
+    }
 
 }

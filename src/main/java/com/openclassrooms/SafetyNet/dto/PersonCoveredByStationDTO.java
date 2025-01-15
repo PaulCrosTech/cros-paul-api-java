@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
+/**
+ * PersonCoveredByStationDTO Class
+ */
 @Schema(description = "Details about persons covered by station, with number of children and adults")
 @Data
 @AllArgsConstructor

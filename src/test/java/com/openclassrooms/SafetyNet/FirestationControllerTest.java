@@ -25,6 +25,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * FirestationControllerTest
+ */
 @WebMvcTest(controllers = FirestationController.class)
 public class FirestationControllerTest {
 
@@ -35,13 +38,21 @@ public class FirestationControllerTest {
     @MockitoBean
     private FirestationService firestationService;
 
+    /**
+     * Constructor
+     *
+     * @param mockMvc MockMvc
+     */
     @Autowired
     public FirestationControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
+    /**
+     * Setup before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         firestations = Arrays.asList(
                 new Firestation("1509 Culver St", 3),
                 new Firestation("29 15th St", 2),
@@ -51,6 +62,8 @@ public class FirestationControllerTest {
 
     /**
      * Testing route GET /firestations
+     * - Given  firestation list
+     * - Then OK and firestation list
      *
      * @throws Exception Exception
      */
@@ -71,7 +84,9 @@ public class FirestationControllerTest {
 
 
     /**
-     * Testing route GET /firestation?address={address} with a existing address
+     * Testing route GET /firestation with address as query parameter
+     * - Given an existing address
+     * - Then OK and firestation
      *
      * @throws Exception Exception
      */
@@ -95,7 +110,9 @@ public class FirestationControllerTest {
 
 
     /**
-     * Testing route GET /firestation?address={address} with a non-existing address
+     * Testing route GET /firestation with address as query parameter
+     * - Given a non-existing address
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -119,7 +136,9 @@ public class FirestationControllerTest {
 
 
     /**
-     * Testing route DELETE /firestation?address={address} with an existing address
+     * Testing route DELETE /firestation with address as query parameter
+     * - Given an existing address
+     * - Then OK
      *
      * @throws Exception Exception
      */
@@ -140,7 +159,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route DELETE /firestation?address={address} with a non-existing address
+     * Testing route DELETE /firestation with address as query parameter
+     * - Given a non-existing address
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -162,7 +183,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route POST /firestation with a new firestation
+     * Testing route POST /firestation
+     * - Given a new firestation
+     * - Then Created
      *
      * @throws Exception Exception
      */
@@ -186,7 +209,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route POST /firestation with an existing firestation
+     * Testing route POST /firestation
+     * - Given an existing firestation
+     * - Then Conflict
      *
      * @throws Exception Exception
      */
@@ -212,7 +237,9 @@ public class FirestationControllerTest {
 
 
     /**
-     * Testing route POST /firestation with a malformed body
+     * Testing route POST /firestation
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */
@@ -235,7 +262,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route PUT /firestation with an non existing firestation
+     * Testing route PUT /firestation
+     * - Given a non-existing firestation
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -262,7 +291,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route PUT /firestation with an existing firestation
+     * Testing route PUT /firestation
+     * - Given an existing firestation
+     * - Then Ok and updated firestation
      *
      * @throws Exception Exception
      */
@@ -288,7 +319,9 @@ public class FirestationControllerTest {
     }
 
     /**
-     * Testing route PUT /firestation with a malformed body
+     * Testing route PUT /firestation
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */

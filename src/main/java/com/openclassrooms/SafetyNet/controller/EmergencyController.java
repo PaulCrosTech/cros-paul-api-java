@@ -20,6 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 
 
+/**
+ * EmergencyController class
+ */
 @Tag(name = "Emergency", description = "Emergency API")
 @RequestMapping("/emergency")
 @Log4j2

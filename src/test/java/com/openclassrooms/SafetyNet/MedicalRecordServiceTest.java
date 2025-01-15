@@ -20,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-
+/**
+ * Tests for MedicalRecordService
+ */
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordServiceTest {
 
@@ -31,8 +33,11 @@ public class MedicalRecordServiceTest {
 
     private List<MedicalRecord> medicalRecords;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         medicalRecordService = new MedicalRecordService(medicalRecordRepository);
         // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         medicalRecords = Arrays.asList(
@@ -44,10 +49,12 @@ public class MedicalRecordServiceTest {
 
 
     /**
-     * Testing getMedicalRecords() method from MedicalRecordService
+     * Testing method getMedicalRecords
+     * - Given medicalRecords list
+     * - Then medicalRecords list
      */
     @Test
-    public void givenNothing_whenGetMedicalRecords_thenReturnMedicalRecordList() {
+    public void givenMedicalRecordList_whenGetMedicalRecords_thenReturnMedicalRecordList() {
 
         // Given
         when(medicalRecordRepository.getMedicalRecords()).thenReturn(medicalRecords);
@@ -60,7 +67,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing getMedicalRecordByFirstNameAndLastName() method from MedicalRecordService
+     * Testing method getMedicalRecordByFirstNameAndLastName
+     * - Given existing name
+     * - Then return the medicalRecord
      */
     @Test
     public void givenExistingName_whenGetMedicalRecordByFirstNameAndLastName_thenReturnMedicalRecord() {
@@ -81,7 +90,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing getMedicalRecordByFirstNameAndLastName() method from MedicalRecordService
+     * Testing method getMedicalRecordByFirstNameAndLastName
+     * - Given non-existing name
+     * - Then throw NotFoundException
      */
     @Test
     public void givenNonExistingName_whenGetMedicalRecordByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -98,7 +109,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing deleteMedicalRecordByFirstNameAndLastName() method from MedicalRecordService
+     * Testing method deleteMedicalRecordByFirstNameAndLastName
+     * - Given existing medicalRecord
+     * - Then delete medicalRecord
      *
      * @throws Exception Exception
      */
@@ -119,7 +132,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing deleteMedicalRecordByFirstNameAndLastName() method from MedicalRecordService
+     * Testing method deleteMedicalRecordByFirstNameAndLastName
+     * - Given non-existing medicalRecord
+     * - Then throw NotFoundException
      */
     @Test
     public void givenNonExistingMedicalRecord_whenDeleteMedicalRecordByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -136,7 +151,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing deleteMedicalRecordByFirstNameAndLastName() method from MedicalRecordService
+     * Testing method deleteMedicalRecordByFirstNameAndLastName
+     * - Given existing medicalRecord
+     * - Then throw JsonFileManagerSaveException
      */
     @Test
     public void givenExistingMedicalRecord_whenDeleteMedicalRecordByFirstNameAndLastName_thenThrowException() {
@@ -153,7 +170,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordService
+     * Testing method saveMedicalRecord
+     * - Given new medicalRecord
+     * - Then save medicalRecord
      */
     @Test
     public void givenNewMedicalRecord_whenSaveMedicalRecord_thenMedicalRecordSaved() {
@@ -171,7 +190,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordService
+     * Testing method saveMedicalRecord
+     * - Given existing medicalRecord
+     * - Then throw ConflictException
      */
     @Test
     public void givenExistingMedicalRecord_whenSaveMedicalRecord_thenThrowConflictException() {
@@ -187,7 +208,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordService
+     * Testing method saveMedicalRecord
+     * - Given new medicalRecord
+     * - Then throw JsonFileManagerSaveException
      */
     @Test
     public void givenNewMedicalRecord_whenSaveMedicalRecord_thenThrowJsonFileManagerSaveException() {
@@ -207,7 +230,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing updateMedicalRecord() method from MedicalRecordService
+     * Testing method updateMedicalRecord
+     * - Given existing medicalRecord
+     * - Then medicalRecord updated
      */
     @Test
     public void givenExistingMedicalRecord_whenUpdateMedicalRecord_thenReturnMedicalRecordUpdated() {
@@ -227,7 +252,9 @@ public class MedicalRecordServiceTest {
     }
 
     /**
-     * Testing updateMedicalRecord() method from MedicalRecordService
+     * Testing method updateMedicalRecord
+     * - Given non-existing medicalRecord
+     * - Then throw NotFoundException
      */
     @Test
     public void givenNonExistingMedicalRecord_whenUpdateMedicalRecord_thenThrowNotFoundException() {

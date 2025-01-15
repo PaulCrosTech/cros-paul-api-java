@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * CustomApiError Class
+ */
 @Schema(description = "Custom API Error")
 @Data
 public class CustomApiError {
@@ -18,6 +21,14 @@ public class CustomApiError {
     @Schema(description = "Path")
     private String path;
 
+    /**
+     * Constructor
+     *
+     * @param status  status
+     * @param message message
+     * @param path    path
+     * @param errors  list of errors
+     */
     public CustomApiError(int status, String message, String path, List<String> errors) {
         super();
         this.status = status;

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 
+/**
+ * EmergencyService Class
+ */
 @Log4j2
 @Service
 @Data
@@ -24,6 +27,14 @@ public class EmergencyService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final EmergencyMapper emergencyMapper;
 
+    /**
+     * Constructeur
+     *
+     * @param personRepository        person repository
+     * @param firestationRepository   firestation repository
+     * @param medicalRecordRepository medical record repository
+     * @param emergencyMapper         emergency mapper
+     */
     public EmergencyService(PersonRepository personRepository,
                             FirestationRepository firestationRepository,
                             MedicalRecordRepository medicalRecordRepository,

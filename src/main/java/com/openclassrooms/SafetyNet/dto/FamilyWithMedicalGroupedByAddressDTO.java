@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * FamilyWithMedicalGroupedByAddressDTO Class
+ */
 @Schema(description = "Family (persons at same address) with medical details, grouped by address")
 @Data
 @AllArgsConstructor

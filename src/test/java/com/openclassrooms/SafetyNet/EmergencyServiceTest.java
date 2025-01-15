@@ -23,6 +23,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests of EmergencyService
+ */
 @ExtendWith(MockitoExtension.class)
 public class EmergencyServiceTest {
 
@@ -37,6 +40,9 @@ public class EmergencyServiceTest {
     @Mock
     EmergencyMapper emergencyMapper;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
     public void setUpPerTest() {
         emergencyService = new EmergencyService(personRepository, firestationRepository, medicalRecordRepository, emergencyMapper);
@@ -44,9 +50,9 @@ public class EmergencyServiceTest {
 
 
     /**
-     * Testing method getPersonCoveredByStationNumber with
-     * - existing station number
-     * - return PersonCoveredByStationDTO
+     * Testing method getPersonCoveredByStationNumber
+     * - Given existing station number
+     * - Then PersonCoveredByStationDTO
      */
     @Test
     public void givenExistingStationNumber_whenGetPersonCoveredByStationNumber_thenReturnPersonCoveredByStationDTO() {
@@ -88,9 +94,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method getPersonCoveredByStationNumber with
-     * - non-existing station number
-     * - return NotFoundException
+     * Testing method getPersonCoveredByStationNumber
+     * - Given non-existing station number
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingStationNumber_whenGetPersonCoveredByStationNumber_thenReturnNotFoundException() {
@@ -109,9 +115,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method GetFamily with
-     * - existing address
-     * - return FamilyDTO
+     * Testing method GetFamily
+     * - Given existing address
+     * - Then FamilyDTO
      */
     @Test
     public void givenExistingAddress_whenGetFamily_thenReturnFamilyDTO() {
@@ -143,9 +149,9 @@ public class EmergencyServiceTest {
 
 
     /**
-     * Testing method GetPhoneNumbersCoveredByFireStation with
-     * - existing station number
-     * - return phones numbers
+     * Testing method GetPhoneNumbersCoveredByFireStation
+     * - Given existing station number
+     * - Then phones numbers
      */
     @Test
     public void givenExistingStationNumber_givenGetPhoneNumbersCoveredByFireStation_thenReturnPhones() {
@@ -172,9 +178,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method getPhoneNumbersCoveredByFireStation with
-     * - non-existing station number
-     * - return NotFoundException
+     * Testing method getPhoneNumbersCoveredByFireStation
+     * - Given non-existing station number
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingStationNumber_givenGetPhoneNumbersCoveredByFireStation_thenThrowNotFoundException() {
@@ -187,9 +193,9 @@ public class EmergencyServiceTest {
 
 
     /**
-     * Testing method getFamilyWithMedicalAndFirestation with
-     * - existing address
-     * - return FamilyWithMedicalAndFirestationDTO
+     * Testing method getFamilyWithMedicalAndFirestation
+     * - Given existing address
+     * - Then FamilyWithMedicalAndFirestationDTO
      */
     @Test
     public void givenExistingAddress_givenGetFamilyWithMedicalAndFirestation_thenReturnFamilyWithMedicalAndFirestationDTO() {
@@ -231,9 +237,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method getFamilyWithMedicalAndFirestation with
-     * - non-existing address
-     * - return empty FamilyWithMedicalAndFirestationDTO
+     * Testing method getFamilyWithMedicalAndFirestation
+     * - Given non-existing address
+     * - Then empty FamilyWithMedicalAndFirestationDTO
      */
     @Test
     public void givenNonExistingAddress_givenGetFamilyWithMedicalAndFirestation_thenReturnEmptyFamilyWithMedicalAndFirestationDTO() {
@@ -249,9 +255,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method getFamilyWithMedicalGroupedByAddress with
-     * - existing station numbers
-     * - return FamilyWithMedicalGroupedByAddressDTO
+     * Testing method getFamilyWithMedicalGroupedByAddress
+     * - Given existing station numbers
+     * - Then FamilyWithMedicalGroupedByAddressDTO
      */
     @Test
     public void givenListOfExistingStationNumbers_whenGetFamilyWithMedicalGroupedByAddress_thenReturnFamilyWithMedicalGroupedByAddressDTO() {
@@ -303,9 +309,9 @@ public class EmergencyServiceTest {
 
 
     /**
-     * Testing method getPersonMedicalWithEmail with
-     * - existing last name
-     * - return List of PersonWithMedicalAndEmailDTO
+     * Testing method getPersonMedicalWithEmail
+     * - Given existing last name
+     * - Then List of PersonWithMedicalAndEmailDTO
      */
     @Test
     public void givenExistingLastName_whenGetPersonMedicalWithEmail_thenReturnListOfPersonWithMedicalAndEmailDTO() {
@@ -347,9 +353,9 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method getPersonMedicalWithEmail with
-     * - non-existing last name
-     * - return NotFoundException
+     * Testing method getPersonMedicalWithEmail
+     * - Given non-existing last name
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingLastName_whenGetPersonMedicalWithEmail_thenReturnNotFoundException() {
@@ -363,9 +369,9 @@ public class EmergencyServiceTest {
 
 
     /**
-     * Testing method getPersonEmailByCity with
-     * - existing city
-     * - return List of email
+     * Testing method getPersonEmailByCity
+     * - Given existing city
+     * - Then List of email
      */
     @Test
     public void givenExistingCity_whenGetPersonEmailByCity_thenReturnListOfEmail() {

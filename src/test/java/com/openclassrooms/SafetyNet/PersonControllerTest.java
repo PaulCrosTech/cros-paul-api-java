@@ -25,6 +25,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Tests for PersonController
+ */
 @WebMvcTest(controllers = PersonController.class)
 public class PersonControllerTest {
 
@@ -35,13 +38,21 @@ public class PersonControllerTest {
     @MockitoBean
     private PersonService personService;
 
+    /**
+     * Constructor
+     *
+     * @param mockMvc MockMvc
+     */
     @Autowired
     public PersonControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         persons = Arrays.asList(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
                 new Person("Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "drk@email.com"),
@@ -51,11 +62,13 @@ public class PersonControllerTest {
 
     /**
      * Testing route GET /persons
+     * - Given list of persons
+     * - Retrun a list of persons
      *
      * @throws Exception Exception
      */
     @Test
-    public void givenPersonsList_whenGetPersons_thenReturnPersonList() throws Exception {
+    public void givenPersonList_whenGetPersons_thenReturnPersonList() throws Exception {
 
         // Given
         when(personService.getPersons()).thenReturn(persons);
@@ -70,7 +83,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route GET /person?firstName={firstName}&lastName={lastName} with an existing person
+     * Testing route GET /person with firstName and lastName as query parameters
+     * - Given an existing person
+     * - Then OK and the person
      *
      * @throws Exception Exception
      */
@@ -94,7 +109,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route GET /person?firstName={firstName}&lastName={lastName} with a non-existing person
+     * Testing route GET /person with firstName and lastName as query parameters
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -119,7 +136,9 @@ public class PersonControllerTest {
 
 
     /**
-     * Testing route DELETE /person?firstName={firstName}&lastName={lastName} with an existing person
+     * Testing route DELETE /person with firstName and lastName as query parameters
+     * - Given an existing person
+     * - Then OK
      *
      * @throws Exception Exception
      */
@@ -141,7 +160,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route DELETE /person?firstName={firstName}&lastName={lastName} with a non-existing person
+     * Testing route DELETE /person with firstName and lastName as query parameters
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -165,7 +186,9 @@ public class PersonControllerTest {
 
 
     /**
-     * Testing route POST /person with a new person
+     * Testing route POST /person
+     * - Given a new person
+     * - Then Created
      *
      * @throws Exception Exception
      */
@@ -189,7 +212,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route POST /person with an existing person
+     * Testing route POST /person
+     * - Given an existing person
+     * - Then Conflict
      *
      * @throws Exception Exception
      */
@@ -214,7 +239,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route POST /person with a malformed/empty body
+     * Testing route POST /person
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */
@@ -239,7 +266,9 @@ public class PersonControllerTest {
 
 
     /**
-     * Testing route PUT /person with a non-existing person
+     * Testing route PUT /person
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -266,7 +295,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route PUT /person with an existing person
+     * Testing route PUT /person
+     * - Given an existing person
+     * - Then OK and the updated person
      *
      * @throws Exception Exception
      */
@@ -297,7 +328,9 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route PUT /person with a malformed/empty body
+     * Testing route PUT /person
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */

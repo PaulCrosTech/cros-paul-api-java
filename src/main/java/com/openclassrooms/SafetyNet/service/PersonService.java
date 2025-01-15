@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * PersonService Class
+ */
 @Log4j2
 @Service
 @Data
@@ -18,6 +21,11 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    /**
+     * Constructor
+     *
+     * @param personRepository person repository
+     */
     public PersonService(PersonRepository personRepository) {
         log.info("<constructor> PersonService");
         this.personRepository = personRepository;

@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * JsonModel Class
+ */
 @Data
 public class JsonModel {
     private List<Person> persons;

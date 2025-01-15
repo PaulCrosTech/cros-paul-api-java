@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * PersonWithMedicalAndPhoneDTO Class
+ */
 @Schema(description = "Details about a person with medical record and phone")
 @Data
 @AllArgsConstructor

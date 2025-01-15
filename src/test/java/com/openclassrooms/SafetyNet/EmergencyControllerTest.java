@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Tests for EmergencyController
+ */
 @WebMvcTest(controllers = EmergencyController.class)
 public class EmergencyControllerTest {
 
@@ -34,13 +37,20 @@ public class EmergencyControllerTest {
     @MockitoBean
     private EmergencyService emergencyService;
 
+    /**
+     * Constructor
+     *
+     * @param mockMvc MockMvc
+     */
     @Autowired
     public EmergencyControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
     /**
-     * Testing GET /emergency/firestation with an existing station number
+     * Testing GET /emergency/firestation with
+     * - an existing station number
+     * - Then OK and PersonCoveredByStationDTO
      *
      * @throws Exception Exception
      */
@@ -69,7 +79,9 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/firestation with an unknown station number
+     * Testing GET /emergency/firestation with
+     * - an unknown station number
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -92,7 +104,9 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/phoneAlert with an existing station number
+     * Testing GET /emergency/phoneAlert with
+     * - an existing station number
+     * - Then OK and FamilyDTO
      *
      * @throws Exception Exception
      */
@@ -125,7 +139,9 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/phoneAlert with an existing station number
+     * Testing GET /emergency/phoneAlert with
+     * - an existing station number
+     * - Then OK and phone numbers
      *
      * @throws Exception Exception
      */
@@ -147,7 +163,9 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/phoneAlert with an unknown station number
+     * Testing GET /emergency/phoneAlert with
+     * - an unknown station number
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -169,7 +187,9 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/fire with an existing address
+     * Testing GET /emergency/fire with
+     * - an existing address
+     * - Then OK and FamilyWithMedicalAndFirestationDTO
      *
      * @throws Exception Exception
      */
@@ -199,7 +219,9 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/flood/stations with an unknown station number
+     * Testing GET /emergency/flood/stations with
+     * - an existing station number
+     * - Then OK and FamilyWithMedicalGroupedByAddressDTO
      *
      * @throws Exception Exception
      */
@@ -233,7 +255,9 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/personInfo with an existing lastname
+     * Testing GET /emergency/personInfo with
+     * - an existing lastname
+     * - Then OK and PersonWithMedicalAndEmailDTO
      *
      * @throws Exception Exception
      */
@@ -258,7 +282,9 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/personInfo with an unknown lastname
+     * Testing GET /emergency/personInfo with
+     * - an unknown lastname
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -280,7 +306,9 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/communityEmail with an existing city
+     * Testing GET /emergency/communityEmail with
+     * - an existing city
+     * - Then OK and emails
      *
      * @throws Exception Exception
      */

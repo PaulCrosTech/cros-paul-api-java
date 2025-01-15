@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
+/**
+ * Firestation Class
+ */
 @Schema(description = "Details about a firestation")
 @Data
 @AllArgsConstructor

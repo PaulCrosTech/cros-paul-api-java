@@ -8,15 +8,30 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
+/**
+ * DateValidator Class
+ */
 public class DateValidator implements ConstraintValidator<ValidDate, String> {
 
     private String pattern;
 
+    /**
+     * Initialize the pattern
+     *
+     * @param constraintAnnotation the annotation
+     */
     @Override
     public void initialize(ValidDate constraintAnnotation) {
         this.pattern = constraintAnnotation.pattern();
     }
 
+    /**
+     * Check if the date is valid
+     *
+     * @param value   the date
+     * @param context the context
+     * @return true if the date is valid
+     */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {

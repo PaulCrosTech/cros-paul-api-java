@@ -25,6 +25,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Tests for MedicalRecordController
+ */
 @WebMvcTest(controllers = MedicalRecordController.class)
 public class MedicalRecordControllerTest {
 
@@ -35,13 +38,21 @@ public class MedicalRecordControllerTest {
     @MockitoBean
     private MedicalRecordService medicalRecordService;
 
+    /**
+     * Constructor
+     *
+     * @param mockMvc MockMvc
+     */
     @Autowired
     public MedicalRecordControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         medicalRecords = Arrays.asList(
                 new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
                 new MedicalRecord("Jacob", "Boyd", "03/06/1989", Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of()),
@@ -51,6 +62,8 @@ public class MedicalRecordControllerTest {
 
     /**
      * Testing route GET /medicalRecords
+     * - Given list of medical records
+     * - Then OK and the list of medical records
      *
      * @throws Exception Exception
      */
@@ -71,7 +84,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route GET /medicalRecord?firstName={firstName}&lastName={lastName} with an existing person
+     * Testing route GET /medicalRecord with firstName and lastName as query parameters
+     * - Given an existing person
+     * - Then OK and the medical record
      *
      * @throws Exception Exception
      */
@@ -96,7 +111,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route GET /medicalRecord?firstName={firstName}&lastName={lastName} with a non-existing person
+     * Testing route GET /medicalRecord with firstName and lastName as query parameters
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -121,7 +138,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route DELETE /medicalRecord?firstName={firstName}&lastName={lastName} with an existing person
+     * Testing route DELETE /medicalRecord with firstName and lastName as query parameters
+     * - Given an existing person
+     * - Then OK
      *
      * @throws Exception Exception
      */
@@ -143,7 +162,9 @@ public class MedicalRecordControllerTest {
     }
 
     /**
-     * Testing route DELETE /medicalRecord?firstName={firstName}&lastName={lastName} with a non-existing person
+     * Testing route DELETE /medicalRecord with firstName and lastName as query parameters
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -167,7 +188,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route POST /medicalRecord with a new medical record
+     * Testing route POST /medicalRecord
+     * - Given a new medical record
+     * - Then Created
      *
      * @throws Exception Exception
      */
@@ -192,7 +215,9 @@ public class MedicalRecordControllerTest {
     }
 
     /**
-     * Testing route POST /medicalRecord with an existing medical record
+     * Testing route POST /medicalRecord
+     * - Given an existing medical record
+     * - Then Conflict
      *
      * @throws Exception Exception
      */
@@ -218,7 +243,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route POST /medicalRecord with a malformed body
+     * Testing route POST /medicalRecord
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */
@@ -246,7 +273,9 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route PUT /medicalRecord with a non-existing person
+     * Testing route PUT /medicalRecord
+     * - Given a non-existing person
+     * - Then NotFound
      *
      * @throws Exception Exception
      */
@@ -274,7 +303,9 @@ public class MedicalRecordControllerTest {
     }
 
     /**
-     * Testing route PUT /medicalRecord with an existing person
+     * Testing route PUT /medicalRecord
+     * - Given an existing person
+     * - Then OK and the updated medical record
      *
      * @throws Exception Exception
      */
@@ -309,7 +340,9 @@ public class MedicalRecordControllerTest {
     }
 
     /**
-     * Testing route PUT /medicalRecord with a malformed body
+     * Testing route PUT /medicalRecord
+     * - Given a malformed body
+     * - Then BadRequest
      *
      * @throws Exception Exception
      */

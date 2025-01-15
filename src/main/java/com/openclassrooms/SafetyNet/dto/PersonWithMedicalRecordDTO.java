@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * PersonWithMedicalRecordDTO Class
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

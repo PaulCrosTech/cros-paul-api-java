@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * PersonMedicalDetailsDTO Class
+ */
 @Schema(description = "Details about a medical record")
 @Data
 @AllArgsConstructor

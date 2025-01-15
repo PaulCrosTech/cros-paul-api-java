@@ -12,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+/**
+ * MedicalRecord Class
+ */
 @Schema(description = "Details about a medical record")
 @Data
 @AllArgsConstructor
@@ -45,10 +48,20 @@ public class MedicalRecord {
     @NotNull(message = "Allergies is mandatory")
     private List<String> allergies;
 
+    /**
+     * Set the first name of the person capitalized
+     *
+     * @param firstName The first name of the person
+     */
     public void setFirstName(String firstName) {
         this.firstName = StringUtils.capitalize(firstName);
     }
 
+    /**
+     * Set the last name of the person capitalized
+     *
+     * @param lastName The last name of the person
+     */
     public void setLastName(String lastName) {
         this.lastName = StringUtils.capitalize(lastName);
     }

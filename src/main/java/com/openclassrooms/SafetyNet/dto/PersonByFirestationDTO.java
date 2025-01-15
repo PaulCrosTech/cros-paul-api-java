@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
+/**
+ * PersonByFirestationDTO Class
+ */
 @Schema(description = "Details about a person")
 @Data
 @AllArgsConstructor

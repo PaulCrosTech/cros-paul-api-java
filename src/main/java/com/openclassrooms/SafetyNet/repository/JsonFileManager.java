@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.List;
 
+/**
+ * JsonFileManager Class
+ */
 @Log4j2
 @Component
 public class JsonFileManager {

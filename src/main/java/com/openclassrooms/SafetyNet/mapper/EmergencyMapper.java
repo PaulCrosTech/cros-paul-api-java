@@ -12,6 +12,9 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * EmergencyMapper Class
+ */
 @Log4j2
 @Component
 public class EmergencyMapper {

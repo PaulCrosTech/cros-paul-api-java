@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * FirestationRepository Class
+ */
 @Log4j2
 @Repository
 public class FirestationRepository {
@@ -63,7 +66,7 @@ public class FirestationRepository {
         log.debug("Firestation wit address {} {}", address, firestation != null ? "found" : "not found");
         return firestation;
     }
-    
+
     /**
      * Delete a fire station by address
      *

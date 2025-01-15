@@ -17,6 +17,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests for PersonRepository
+ */
 @ExtendWith(MockitoExtension.class)
 public class PersonRepositoryTest {
 
@@ -27,8 +30,11 @@ public class PersonRepositoryTest {
 
     private List<Person> persons;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         personRepository = new PersonRepository(jsonFileManager);
         persons = new ArrayList<>(Arrays.asList(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
@@ -38,10 +44,12 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing getPersons() method from PersonRepository
+     * Testing method getPersons
+     * - Given persons list
+     * - Then persons list
      */
     @Test
-    public void givenNothing_whenGetPersons_thenReturnPersonList() {
+    public void givenPeronList_whenGetPersons_thenReturnPersonList() {
 
         // Given
         when(jsonFileManager.getPersons()).thenReturn(persons);
@@ -55,7 +63,9 @@ public class PersonRepositoryTest {
 
 
     /**
-     * Testing getPersonByFirstNameAndLastName() method from PersonRepository
+     * Testing method getPersonByFirstNameAndLastName
+     * - Given existing persons list
+     * - Then person
      */
     @Test
     public void givenExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnPerson() {
@@ -72,7 +82,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing getPersonByFirstNameAndLastName() method from PersonRepository
+     * Testing method getPersonByFirstNameAndLastName
+     * - Given non-existing persons list
+     * - Then throw NotFoundException
      */
     @Test
     public void givenNonExistingPerson_whenGetPersonByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -87,7 +99,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing getPersonByLastName() method from PersonRepository
+     * Testing method getPersonByLastName
+     * - Given existing last name
+     * - Then person list
      */
     @Test
     public void givenExistingLastName_whenGetPersonByLastName_thenReturnPersonList() {
@@ -103,7 +117,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing getPersonByAddress() method from PersonRepository
+     * Testing method getPersonByAddress
+     * - Given existing address
+     * - Then person list
      */
     @Test
     public void givenExistingAddress_whenGetPersonByAddress_thenReturnPersonList() {
@@ -119,7 +135,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing addPerson() method from PersonRepository
+     * Testing method deletePersonByFirstNameAndLastName
+     * - Given existing person
+     * - Then person is deleted
      */
     @Test
     public void givenExistingPerson_whenDeletePersonByFirstNameAndLastName_thenPersonDeleted() {
@@ -137,7 +155,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing addPerson() method from PersonRepository
+     * Testing method deletePersonByFirstNameAndLastName
+     * - Given non-existing person
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingPerson_whenDeletePersonByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -153,7 +173,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing addPerson() method from PersonRepository
+     * Testing method savePerson
+     * - Given new person
+     * - Then person is saved
      */
     @Test
     public void givenNewPerson_whenSavePerson_thenPersonSaved() {
@@ -172,7 +194,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing addPerson() method from PersonRepository
+     * Testing method updatePerson
+     * - Given existing person
+     * - Then person is updated
      */
     @Test
     public void givenExistingPerson_whenUpdatePerson_thenReturnPersonUpdated() {
@@ -191,7 +215,9 @@ public class PersonRepositoryTest {
     }
 
     /**
-     * Testing addPerson() method from PersonRepository
+     * Testing method updatePerson
+     * - Given non-existing person
+     * - Then null
      */
     @Test
     public void givenNonExistingPerson_whenUpdatePerson_thenReturnNull() {

@@ -21,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * MedicalRecordController class
+ */
 @Tag(name = "Medical Record", description = "Medical Records API")
 @Log4j2
 @RestController
@@ -80,6 +83,7 @@ public class MedicalRecordController {
      *
      * @param firstName String case-sensitive
      * @param lastName  String case-sensitive
+     * @throws Exception if the medical record was not found
      */
     @Operation(summary = "Delete a medical record by first name and last name", description = "Delete a medical record by his first name and last name.<br>Names are case-sensitive")
     @Parameters({

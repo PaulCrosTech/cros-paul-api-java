@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * FirestationService Class
+ */
 @Log4j2
 @Service
 @Data
@@ -16,6 +19,11 @@ public class FirestationService {
 
     private final FirestationRepository firestationRepository;
 
+    /**
+     * Constructor
+     *
+     * @param firestationRepository firestation repository
+     */
     public FirestationService(FirestationRepository firestationRepository) {
         log.info("<constructor> FirestationService");
         this.firestationRepository = firestationRepository;

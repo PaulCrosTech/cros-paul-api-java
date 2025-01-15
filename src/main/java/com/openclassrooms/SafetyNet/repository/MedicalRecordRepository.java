@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * MedicalRecordRepository Class
+ */
 @Log4j2
 @Repository
 public class MedicalRecordRepository {
@@ -57,7 +60,7 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deleteMedicalRecordByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
-        
+
         List<MedicalRecord> medicalRecords = getMedicalRecords();
         boolean deleted = medicalRecords.removeIf(medicalRecord ->
                 medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName));

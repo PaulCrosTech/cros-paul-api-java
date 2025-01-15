@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
+/**
+ * ChlidrenDTO Class
+ */
 @Schema(description = "Details about an children")
 @Data
 @AllArgsConstructor

@@ -22,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests for PersonService
+ */
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
 
@@ -32,8 +35,11 @@ public class PersonServiceTest {
 
     private List<Person> persons;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         personService = new PersonService(personRepository);
         // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         persons = Arrays.asList(
@@ -44,10 +50,12 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing getPersons() method from PersonService
+     * Testing method getPersons
+     * - Given persons list
+     * - Then persons list
      */
     @Test
-    public void givenNothing_whenGetPersons_thenReturnPersonList() {
+    public void givenPersonList_whenGetPersons_thenReturnPersonList() {
 
         // Given
         when(personRepository.getPersons()).thenReturn(persons);
@@ -60,7 +68,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing getPersonByFirstNameAndLastName() method from PersonService
+     * Testing method getPersonByFirstNameAndLastName() method from PersonService
+     * - Given existing person
+     * - Then person
      */
     @Test
     public void givenExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnPerson() {
@@ -79,7 +89,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing getPersonByFirstNameAndLastName() method from PersonService
+     * Testing method getPersonByFirstNameAndLastName
+     * - Given non-existing person
+     * - Then throw NotFoundException
      */
     @Test
     public void givenNonExistingPerson_whenGetPersonByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -96,7 +108,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing deletePersonByFirstNameAndLastName() method from PersonService
+     * Testing method deletePersonByFirstNameAndLastName
+     * - Given existing person
+     * - Then person is deleted
      *
      * @throws Exception Exception
      */
@@ -117,7 +131,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing deletePersonByFirstNameAndLastName() method from PersonService
+     * Testing method deletePersonByFirstNameAndLastName
+     * - Given non-existing person
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingPerson_whenDeletePersonByFirstNameAndLastName_thenThrowNotFoundException() {
@@ -134,7 +150,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing deletePersonByFirstNameAndLastName() method from PersonService
+     * Testing method deletePersonByFirstNameAndLastName
+     * - Given existing person
+     * - Then throw JsonFileManagerSaveException
      */
     @Test
     public void givenExistingPerson_whenDeletePersonByFirstNameAndLastName_thenThrowJsonFileManagerSaveException() {
@@ -154,7 +172,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing savePerson() method from PersonService
+     * Testing method savePerson
+     * - Given new person
+     * - Then person saved
      */
     @Test
     public void givenNewPerson_whenSavePerson_thenPersonSaved() {
@@ -172,7 +192,9 @@ public class PersonServiceTest {
     }
 
     /**
-     * Testing savePerson() method from PersonService
+     * Testing method savePerson() method from PersonService
+     * - Given existing person
+     * - Then throw ConflictException
      */
     @Test
     public void givenExistingPerson_whenSavePerson_thenThrowConflictException() {
@@ -190,7 +212,9 @@ public class PersonServiceTest {
 
 
     /**
-     * Testing savePerson() method from PersonService
+     * Testing method savePerson
+     * - Given new person
+     * - Then JsonFileManagerSaveException
      */
     @Test
     public void givenNewPerson_whenSavePerson_thenThrowJsonFileManagerSaveException() {

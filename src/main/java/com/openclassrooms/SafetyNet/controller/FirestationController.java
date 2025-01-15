@@ -21,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * FirestationController class
+ */
 @Tag(name = "Firestation", description = "Fire station API")
 @Log4j2
 @RestController
@@ -74,6 +77,12 @@ public class FirestationController {
         return firestationService.getFirestationByAddress(address);
     }
 
+
+    /**
+     * Delete a fire station by address
+     *
+     * @param address String address of the fire station (case-sensitive)
+     */
     @Operation(summary = "Delete a fire station by his address", description = "Delete a fire station by his address (case-sensitive)")
     @Parameters({
             @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address of fire station", required = true, example = "\"834 Binoc Ave\""),

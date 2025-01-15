@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * FamilyWithMedicalAndFirestationDTO Class
+ */
 @Schema(description = "Family (persons living at same address), with medical details and fire station")
 @Data
 @AllArgsConstructor

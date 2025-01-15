@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests for FirestationService
+ */
 @ExtendWith(MockitoExtension.class)
 public class FirestationServiceTest {
 
@@ -30,8 +33,11 @@ public class FirestationServiceTest {
 
     private List<Firestation> firestations;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         firestationService = new FirestationService(firestationRepository);
         // TODO : à vérifier mais il faut surement le déplacer dans un @BeforeAll
         firestations = Arrays.asList(
@@ -42,10 +48,12 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing getFirestations() method from FirestationService
+     * Testing method getFirestations
+     * - Given firesations list
+     * - Then firestations list
      */
     @Test
-    public void givenNothing_whenGetFirestations_thenReturnFirestationList() {
+    public void givenFirestationList_whenGetFirestations_thenReturnFirestationList() {
 
         // Given
         when(firestationRepository.getFirestations()).thenReturn(firestations);
@@ -59,7 +67,9 @@ public class FirestationServiceTest {
 
 
     /**
-     * Testing getFirestationByAddress() method from FirestationService
+     * Testing method getFirestationByAddress
+     * - Given an existing address
+     * - Then the firestation
      */
     @Test
     public void givenExtingAddress_whenGetFirestationByAddress_thenReturnFirestation() {
@@ -75,7 +85,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing getFirestationByAddress() method from FirestationService
+     * Testing method getFirestationByAddress
+     * - Given a non-existing address
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExstinAddress_whenGetFirestationByAddress_thenThrowNotFoundException() {
@@ -88,7 +100,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing deleteFirestationByAddress() method from FirestationService
+     * Testing method deleteFirestationByAddress
+     * - Given an existing address
+     * - Then firestation deleted
      *
      * @throws Exception if error while deleting
      */
@@ -107,7 +121,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing deleteFirestationByAddress() method from FirestationService
+     * Testing method deleteFirestationByAddress
+     * - Given non-existing address
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingAddress_whenDeleteFirestationByAddress_thenThrowNotFoundException() {
@@ -120,7 +136,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing deleteFirestationByAddress() method from FirestationService
+     * Testing method deleteFirestationByAddress
+     * - Given existing address
+     * - Then JsonFileManagerSaveException
      */
     @Test
     public void givenExistingAddress_whenDeleteFirestationByAddress_thenThrowException() {
@@ -134,7 +152,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing saveFirestation() method from FirestationService
+     * Testing method saveFirestation
+     * - Given new firestation
+     * - Then firestation saved
      */
     @Test
     public void givenNewFirestation_whenSaveFirestation_thenFirestationSaved() {
@@ -151,7 +171,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing saveFirestation() method from FirestationService
+     * Testing method saveFirestation
+     * - Given existing firestation
+     * - Then ConflictException
      */
     @Test
     public void givenExistingFirestation_whenSaveFirestation_thenThrowConflictException() {
@@ -166,7 +188,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing saveFirestation() method from FirestationService
+     * Testing method saveFirestation
+     * - Given new firestation
+     * - Then JsonFileManagerSaveException
      */
     @Test
     public void givenNewFirestation_whenSaveFirestation_thenThrowJsonFileManagerSaveException() {
@@ -186,7 +210,9 @@ public class FirestationServiceTest {
 
 
     /**
-     * Testing updateFirestation() method from FirestationService
+     * Testing method updateFirestation
+     * - Given existing firestation
+     * - Then firestation updated
      */
     @Test
     public void givenExistingFirestation_whenUpdateFirestation_thenReturnFirestationUpdated() {
@@ -204,7 +230,9 @@ public class FirestationServiceTest {
     }
 
     /**
-     * Testing updateFirestation() method from FirestationService
+     * Testing method updateFirestation
+     * - Given non-existing firestation
+     * - Then NotFoundException
      */
     @Test
     public void givenNonExistingFirestation_whenUpdateFirestation_thenThrowNotFoundException() {

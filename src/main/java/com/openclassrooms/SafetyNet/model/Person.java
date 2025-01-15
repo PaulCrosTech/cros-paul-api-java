@@ -10,6 +10,9 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 
+/**
+ * Person Class
+ */
 @Schema(description = "Details about a person")
 @Data
 @AllArgsConstructor
@@ -52,10 +55,20 @@ public class Person {
     private String email;
 
 
+    /**
+     * Set the first name of the person capitalized
+     *
+     * @param firstName The first name of the person
+     */
     public void setFirstName(String firstName) {
         this.firstName = StringUtils.capitalize(firstName);
     }
 
+    /**
+     * Set the last name of the person capitalized
+     *
+     * @param lastName The last name of the person
+     */
     public void setLastName(String lastName) {
         this.lastName = StringUtils.capitalize(lastName);
     }

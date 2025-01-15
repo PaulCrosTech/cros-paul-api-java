@@ -21,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * PersonController class
+ */
 @Tag(name = "Person", description = "Person API")
 @Log4j2
 @RestController
@@ -81,6 +84,7 @@ public class PersonController {
      *
      * @param firstName String case-sensitive
      * @param lastName  String case-sensitive
+     * @throws Exception if the person was not found
      */
     @Operation(summary = "Delete a person by first name and last name", description = "Delete a person by his first name and last name.<br>Names are case-sensitive")
     @Parameters({

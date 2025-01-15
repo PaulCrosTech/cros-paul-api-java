@@ -14,6 +14,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CustomRestExceptionHandler Class
+ */
 @ControllerAdvice
 @Log4j2
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {

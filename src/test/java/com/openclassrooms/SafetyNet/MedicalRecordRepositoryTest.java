@@ -17,6 +17,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests for MedicalRecordRepository
+ */
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordRepositoryTest {
 
@@ -27,8 +30,11 @@ public class MedicalRecordRepositoryTest {
 
     private List<MedicalRecord> medicalRecords;
 
+    /**
+     * Set up before each test
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUpPerTest() {
         medicalRecordRepository = new MedicalRecordRepository(jsonFileManager);
         medicalRecords = new ArrayList<>(Arrays.asList(
                 new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
@@ -38,10 +44,12 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing getMedicalRecords() method from MedicalRecordRepository
+     * Testing method getMedicalRecords
+     * - Given medicalRecords list
+     * - Then medicalRecords list
      */
     @Test
-    public void givenNothing_whenGetMedicalRecords_thenReturnMedicalRecordList() {
+    public void givenMedicalRecordList_whenGetMedicalRecords_thenReturnMedicalRecordList() {
 
         // Given
         when(jsonFileManager.getMedicalRecords()).thenReturn(medicalRecords);
@@ -54,7 +62,9 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing getMedicalRecordByFirstNameAndLastName() method from MedicalRecordRepository
+     * Testing method getMedicalRecordByFirstNameAndLastName
+     * - Given medicalRecords list
+     * - Then medicalRecord
      */
     @Test
     public void givenExistingName_whenGetMedicalRecordByFirstNameAndLastName_thenReturnMedicalRecord() {
@@ -71,7 +81,9 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing deleteMedicalRecordByFirstNameAndLastName() method from MedicalRecordRepository
+     * Testing method deleteMedicalRecordByFirstNameAndLastName
+     * - Given existing name
+     * - Then delete medicalRecord
      */
     @Test
     public void givenExistingName_whenDeleteMedicalRecordByFirstNameAndLastName_thenDeleteMedicalRecord() {
@@ -92,7 +104,9 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing deleteMedicalRecordByFirstNameAndLastName() method from MedicalRecordRepository
+     * Testing method deleteMedicalRecordByFirstNameAndLastName
+     * - Given non-existing name
+     * - Then return false
      */
     @Test
     public void givenNonExistingName_whenDeleteMedicalRecordByFirstNameAndLastName_thenReturnFalse() {
@@ -110,7 +124,9 @@ public class MedicalRecordRepositoryTest {
 
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordRepository
+     * Testing method saveMedicalRecord
+     * - Given new medicalRecord
+     * - Then save medicalRecord
      */
     @Test
     public void givenNewMedicalRecord_whenSaveMedicalRecord_thenSaveMedicalRecord() {
@@ -128,7 +144,9 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordRepository
+     * Testing  method saveMedicalRecord
+     * - Given existing medicalRecord
+     * - Then medical record is updated
      */
     @Test
     public void givenExistingMedicalRecord_whenUpdateMedicalRecord_thenReturnMedicalRecordUpdated() {
@@ -147,7 +165,9 @@ public class MedicalRecordRepositoryTest {
     }
 
     /**
-     * Testing saveMedicalRecord() method from MedicalRecordRepository
+     * Testing method saveMedicalRecord
+     * - Given non-existing medicalRecord
+     * - Then return null
      */
     @Test
     public void givenNonExistingMedicalRecord_whenUpdateMedicalRecord_thenReturnNull() {

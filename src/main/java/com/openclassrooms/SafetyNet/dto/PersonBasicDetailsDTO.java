@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
+/**
+ * PersonBasicDetailsDTO Class
+ */
 @Schema(description = "Details about a person")
 @Data
 @AllArgsConstructor
