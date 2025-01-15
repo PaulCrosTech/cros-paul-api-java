@@ -238,7 +238,7 @@ public class EmergencyService {
             }
         }
 
-        // Map to PersonWithMedicalAndEmailDTO
+        // Associate Person with MedicalRecord
         List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = emergencyMapper.toPersonWithMedicalRecord(personsList, medicalRecordsList);
 
         // Map to PersonWithMedicalAndEmailDTO
