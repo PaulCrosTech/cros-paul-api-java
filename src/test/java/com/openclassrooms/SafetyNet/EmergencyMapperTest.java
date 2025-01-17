@@ -5,7 +5,6 @@ import com.openclassrooms.SafetyNet.mapper.EmergencyMapper;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
-import com.openclassrooms.SafetyNet.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,6 +29,7 @@ public class EmergencyMapperTest {
     private List<Person> persons;
     private List<MedicalRecord> medicalRecords;
     private Firestation firestation;
+    private HashMap<String, String> birthdays;
 
     /**
      * Set up before each test
@@ -38,6 +37,8 @@ public class EmergencyMapperTest {
     @BeforeEach
     public void setUpPerTest() {
         emergencyMapper = new EmergencyMapper();
+        // Firestation
+        firestation = new Firestation("1509 Culver St", 1);
         // Persons
         persons = Arrays.asList(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
@@ -52,10 +53,8 @@ public class EmergencyMapperTest {
                 new MedicalRecord("John", "Boyd", adultBirthDate, Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
                 new MedicalRecord("Jacob", "Boyd", childBirthDate, Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of())
         );
-        // Firestation
-        firestation = new Firestation("1509 Culver St", 1);
-    }
 
+    }
 
     /**
      * Testing method toPersonCoveredByStationDTO
@@ -68,19 +67,24 @@ public class EmergencyMapperTest {
         PersonBasicDetailsDTO p1Expected = new PersonBasicDetailsDTO("John", "Boyd", "1509 Culver St", "841-874-6512");
         PersonBasicDetailsDTO p2Expected = new PersonBasicDetailsDTO("Jacob", "Boyd", "1509 Culver St", "841-874-6513");
 
+        Map<Person, String> personsWithBirthdate = new LinkedHashMap<>();
+        personsWithBirthdate.put(persons.get(0), medicalRecords.get(0).getBirthdate());
+        personsWithBirthdate.put(persons.get(1), medicalRecords.get(1).getBirthdate());
+
+
         // When
-        PersonCoveredByStationDTO personCoveredByStationDTO = emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
+        PersonCoveredByStationDTO personCoveredByStationDTO = emergencyMapper.toPersonCoveredByStationDTO(personsWithBirthdate);
 
         // Then
         assertEquals(1, personCoveredByStationDTO.getNbChildren());
         assertEquals(1, personCoveredByStationDTO.getNbAdults());
         assertEquals(2, personCoveredByStationDTO.getPersons().size());
-        PersonBasicDetailsDTO p1 = personCoveredByStationDTO.getPersons().getFirst();
-        PersonBasicDetailsDTO p2 = personCoveredByStationDTO.getPersons().get(1);
+
+        PersonBasicDetailsDTO p1 = personCoveredByStationDTO.getPersons().get(0);
         assertEquals(p1Expected, p1);
+
+        PersonBasicDetailsDTO p2 = personCoveredByStationDTO.getPersons().get(1);
         assertEquals(p2Expected, p2);
-
-
     }
 
     /**

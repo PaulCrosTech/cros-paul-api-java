@@ -16,9 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -61,6 +59,7 @@ public class EmergencyServiceTest {
         String address = "1509 Culver St";
         String firstName = "John";
         String lastName = "Boyd";
+        String birthdate = "03/06/1984";
 
         List<Firestation> firestations = new ArrayList<>();
         firestations.add(new Firestation(address, stationNumber));
@@ -68,15 +67,15 @@ public class EmergencyServiceTest {
         List<Person> persons = new ArrayList<>();
         persons.add(new Person(firstName, lastName, address, "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
 
-        List<MedicalRecord> medicalRecords = new ArrayList<>();
-        medicalRecords.add(new MedicalRecord(firstName, lastName, "03/06/1984", new ArrayList<>(), new ArrayList<>()));
+        Map<Person, String> personWithBirthdate = new HashMap<>();
+        personWithBirthdate.put(persons.getFirst(), birthdate);
 
         PersonCoveredByStationDTO expectedDTO = new PersonCoveredByStationDTO();
 
         when(firestationRepository.getFirestationByStationNumber(stationNumber)).thenReturn(firestations);
         when(personRepository.getPersonByAddress(address)).thenReturn(persons);
-        when(medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(firstName, lastName)).thenReturn(medicalRecords.getFirst());
-        when(emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords)).thenReturn(expectedDTO);
+        when(medicalRecordRepository.getBirthdateByFirstNameAndLastName(firstName, lastName)).thenReturn(birthdate);
+        when(emergencyMapper.toPersonCoveredByStationDTO(personWithBirthdate)).thenReturn(expectedDTO);
 
         // When
         PersonCoveredByStationDTO result = emergencyService.getPersonCoveredByStationNumber(stationNumber);
@@ -89,8 +88,8 @@ public class EmergencyServiceTest {
 
         verify(firestationRepository, times(1)).getFirestationByStationNumber(stationNumber);
         verify(personRepository, times(1)).getPersonByAddress(address);
-        verify(medicalRecordRepository, times(1)).getMedicalRecordByFirstNameAndLastName(firstName, lastName);
-        verify(emergencyMapper, times(1)).toPersonCoveredByStationDTO(persons, medicalRecords);
+        verify(medicalRecordRepository, times(1)).getBirthdateByFirstNameAndLastName(firstName, lastName);
+        verify(emergencyMapper, times(1)).toPersonCoveredByStationDTO(personWithBirthdate);
     }
 
     /**
@@ -111,7 +110,7 @@ public class EmergencyServiceTest {
         verify(firestationRepository, times(1)).getFirestationByStationNumber(anyInt());
         verify(personRepository, times(0)).getPersonByAddress(anyString());
         verify(medicalRecordRepository, times(0)).getMedicalRecordByFirstNameAndLastName(anyString(), anyString());
-        verify(emergencyMapper, times(0)).toPersonCoveredByStationDTO(anyList(), anyList());
+        verify(emergencyMapper, times(0)).toPersonCoveredByStationDTO(anyMap());
     }
 
     /**

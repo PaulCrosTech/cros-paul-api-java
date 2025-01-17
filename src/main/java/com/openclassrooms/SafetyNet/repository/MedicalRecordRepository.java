@@ -52,6 +52,19 @@ public class MedicalRecordRepository {
     }
 
     /**
+     * Get the birthdate by first name and last name
+     *
+     * @param firstName String
+     * @param lastName  String
+     * @return String birthdate
+     */
+    public String getBirthdateByFirstNameAndLastName(String firstName, String lastName) {
+        MedicalRecord medicalRecord = getMedicalRecordByFirstNameAndLastName(firstName, lastName);
+        log.debug("Medical record for {} {} {}", firstName, lastName, medicalRecord != null ? "found" : "not found");
+        return (medicalRecord == null) ? null : medicalRecord.getBirthdate();
+    }
+
+    /**
      * Delete a medical record by first name and last name
      *
      * @param firstName String case-sensitive

@@ -80,6 +80,42 @@ public class MedicalRecordRepositoryTest {
         assertEquals(mdExpected, medicalRecord);
     }
 
+
+    /**
+     * Testing method getBirthdateByFirstNameAndLastName
+     * - Given existing name
+     * - Then return birthdate
+     */
+    @Test
+    public void givenExistingName_whenGetBirthdateByFirstNameAndLastName_thenReturnBirthdate() {
+        // Given
+        MedicalRecord mdExpected = medicalRecords.getFirst();
+        when(jsonFileManager.getMedicalRecords()).thenReturn(medicalRecords);
+
+        // When
+        String birthdate = medicalRecordRepository.getBirthdateByFirstNameAndLastName("John", "Boyd");
+
+        // Then
+        assertEquals("03/06/1984", birthdate);
+    }
+
+    /**
+     * Testing method getBirthdateByFirstNameAndLastName
+     * - Given non-existing name
+     * - Then return null
+     */
+    @Test
+    public void givenNonExistingName_whenGetBirthdateByFirstNameAndLastName_thenReturnNull() {
+        // Given
+        when(jsonFileManager.getMedicalRecords()).thenReturn(medicalRecords);
+
+        // When
+        String birthdate = medicalRecordRepository.getBirthdateByFirstNameAndLastName("UnknowFirstName", "UnknowLastName");
+
+        // Then
+        assertNull(birthdate);
+    }
+
     /**
      * Testing method deleteMedicalRecordByFirstNameAndLastName
      * - Given existing name

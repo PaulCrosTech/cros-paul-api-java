@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * EmergencyMapper Class
@@ -19,24 +21,33 @@ import java.util.List;
 @Component
 public class EmergencyMapper {
 
+
     /**
      * Convert a Person to a PersonAtSameAddressDTO
      *
-     * @param persons        list of persons
-     * @param medicalRecords list of medical records
+     * @param personWithBirthdate map of person with birthdate
      * @return the converted PersonAtSameAddressDTO
      */
-    public PersonCoveredByStationDTO toPersonCoveredByStationDTO(List<Person> persons, List<MedicalRecord> medicalRecords) {
-        // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = toPersonWithMedicalRecord(persons, medicalRecords);
+    public PersonCoveredByStationDTO toPersonCoveredByStationDTO(Map<Person, String> personWithBirthdate) {
 
         PersonCoveredByStationDTO personCoveredByStationDTO = new PersonCoveredByStationDTO();
 
-        // Count Adult & Children
         int nbAdults = 0;
         int nbChildren = 0;
-        for (PersonWithMedicalRecordDTO person : personWithMedicalRecordDTOS) {
-            if (person.getIsAdult()) {
+        List<PersonBasicDetailsDTO> personBasicDetailsDTO = new ArrayList<>();
+
+        for (Map.Entry<Person, String> entry : personWithBirthdate.entrySet()) {
+            Person person = entry.getKey();
+            String birthdate = entry.getValue();
+
+            personBasicDetailsDTO.add(new PersonBasicDetailsDTO(
+                    person.getFirstName(),
+                    person.getLastName(),
+                    person.getAddress(),
+                    person.getPhone()));
+
+            int age = calculateAge(birthdate);
+            if (age >= 18) {
                 nbAdults++;
             } else {
                 nbChildren++;
@@ -45,19 +56,7 @@ public class EmergencyMapper {
 
         personCoveredByStationDTO.setNbAdults(nbAdults);
         personCoveredByStationDTO.setNbChildren(nbChildren);
-
-        // Map PersonWithMedicalRecord to PersonDTO
-        List<PersonBasicDetailsDTO> personBasicDetailsDTO = personWithMedicalRecordDTOS.stream()
-                .map(personWithMedicalRecordDTO -> new PersonBasicDetailsDTO(
-                        personWithMedicalRecordDTO.getFirstName(),
-                        personWithMedicalRecordDTO.getLastName(),
-                        personWithMedicalRecordDTO.getAddress(),
-                        personWithMedicalRecordDTO.getPhone()
-                ))
-                .toList();
-
         personCoveredByStationDTO.setPersons(personBasicDetailsDTO);
-
         return personCoveredByStationDTO;
 
     }

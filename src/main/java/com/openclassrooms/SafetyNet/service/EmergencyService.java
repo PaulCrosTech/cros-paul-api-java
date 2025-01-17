@@ -7,6 +7,7 @@ import com.openclassrooms.SafetyNet.model.*;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
+import io.swagger.v3.oas.models.links.Link;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -59,29 +60,23 @@ public class EmergencyService {
             throw new NotFoundException("No firestation found for station number " + stationNumber);
         }
 
-        // Récupère les personnes habitant à ces adresses
-        List<Person> persons = new ArrayList<>();
-        for (Firestation firestation : firestations) {
-            List<Person> p = personRepository.getPersonByAddress(firestation.getAddress());
-            persons.addAll(p);
-        }
+        Map<Person, String> personWithBirthdate = new LinkedHashMap<>();
 
-        // Récupère les medical records des personnes
-//        HashMap<String, String> birthdates = new HashMap<>();
-        List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (Person p : persons) {
-            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
-            // TODO : getBirthdateByFirstNameAndLastName
-            // Calcul de l'age à partir de la date de naissance
-            // Increment du nombre d'adultes et d'enfants
-            if (medicalRecord != null) {
-                medicalRecords.add(medicalRecord);
+        // Récupère les personnes vivant aux adresses couvertes par les casernes
+        for (Firestation firestation : firestations) {
+            List<Person> persons = personRepository.getPersonByAddress(firestation.getAddress());
+
+            // Récupère les dates de naissances des personnes
+            for (Person p : persons) {
+                String birthdate = medicalRecordRepository.getBirthdateByFirstNameAndLastName(p.getFirstName(), p.getLastName());
+                if (birthdate != null) {
+                    personWithBirthdate.put(p, birthdate);
+                }
             }
         }
 
-        log.info("{} persons found", persons.size());
-        // return emergencyMapper.toPersonCoveredByStationDTO(persons, List<Birthdate> bithdates);
-        return emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
+        log.info("{} persons found", personWithBirthdate.size());
+        return emergencyMapper.toPersonCoveredByStationDTO(personWithBirthdate);
     }
 
 
