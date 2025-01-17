@@ -4,6 +4,7 @@ import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
+import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -20,15 +21,17 @@ import java.util.List;
 public class MedicalRecordService {
 
     private final MedicalRecordRepository medicalRecordRepository;
+    private final PersonService personService;
 
     /**
      * Constructor
      *
      * @param medicalRecordRepository medical repository
      */
-    public MedicalRecordService(MedicalRecordRepository medicalRecordRepository) {
+    public MedicalRecordService(MedicalRecordRepository medicalRecordRepository, PersonService personService) {
         log.info("<constructor> MedicalRecordService");
         this.medicalRecordRepository = medicalRecordRepository;
+        this.personService = personService;
     }
 
     /**
@@ -85,22 +88,27 @@ public class MedicalRecordService {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      * @throws ConflictException            if medical record already exist
      */
-    public void saveMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException, ConflictException {
+    public void saveMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException, ConflictException, NotFoundException {
+
+        // Vérifie si le medical record existe déjà
         try {
-            // Vérifie si le medical record existe déjà
             MedicalRecord medicalRecordExist = getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
             if (medicalRecordExist != null) {
                 throw new ConflictException("Medical record already exist with firstName: " + medicalRecord.getFirstName() + " and lastName: " + medicalRecord.getLastName());
             }
-        } catch (NotFoundException e) {
-            // Création du medical record
-            try {
-                medicalRecordRepository.saveMedicalRecord(medicalRecord);
-            } catch (JsonFileManagerSaveException ex) {
-                throw new JsonFileManagerSaveException("Error while saving the medical record in JSON file");
-            }
-            log.info("Medical record of {} {} saved", medicalRecord.getFirstName(), medicalRecord.getLastName());
+        } catch (NotFoundException ignored) {
         }
+
+        // Vérifie si la personne existe
+        personService.getPersonByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
+
+        // Création du medical record
+        try {
+            medicalRecordRepository.saveMedicalRecord(medicalRecord);
+        } catch (JsonFileManagerSaveException ex) {
+            throw new JsonFileManagerSaveException("Error while saving the medical record in JSON file");
+        }
+        log.info("Medical record of {} {} saved", medicalRecord.getFirstName(), medicalRecord.getLastName());
     }
 
 
@@ -112,6 +120,11 @@ public class MedicalRecordService {
      * @throws NotFoundException if medical record not found
      */
     public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) throws NotFoundException {
+
+        // Vérifie si la personne existe
+        personService.getPersonByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
+
+        // Récupère le medical record
         MedicalRecord medicalRecordUdated = medicalRecordRepository.updateMedicalRecord(medicalRecord);
         if (medicalRecordUdated == null) {
             throw new NotFoundException("Medical record not found with firstName: " + medicalRecord.getFirstName()

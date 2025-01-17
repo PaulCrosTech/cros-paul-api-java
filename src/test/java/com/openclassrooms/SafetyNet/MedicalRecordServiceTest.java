@@ -5,8 +5,11 @@ import com.openclassrooms.SafetyNet.exceptions.ConflictException;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
+import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import com.openclassrooms.SafetyNet.service.MedicalRecordService;
+import com.openclassrooms.SafetyNet.service.PersonService;
+import jakarta.validation.constraints.Null;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +33,8 @@ public class MedicalRecordServiceTest {
 
     @Mock
     private MedicalRecordRepository medicalRecordRepository;
+    @Mock
+    private PersonService personService;
 
     private List<MedicalRecord> medicalRecords;
 
@@ -38,7 +43,7 @@ public class MedicalRecordServiceTest {
      */
     @BeforeEach
     public void setUpPerTest() {
-        medicalRecordService = new MedicalRecordService(medicalRecordRepository);
+        medicalRecordService = new MedicalRecordService(medicalRecordRepository, personService);
         medicalRecords = Arrays.asList(
                 new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
                 new MedicalRecord("Jacob", "Boyd", "03/06/1989", Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of()),
@@ -170,22 +175,30 @@ public class MedicalRecordServiceTest {
 
     /**
      * Testing method saveMedicalRecord
-     * - Given new medicalRecord
+     * - Given new medicalRecord for an existing person
      * - Then save medicalRecord
      */
     @Test
-    public void givenNewMedicalRecord_whenSaveMedicalRecord_thenMedicalRecordSaved() {
+    public void givenNewMedicalRecordExistingPerson_whenSaveMedicalRecord_thenMedicalRecordSaved() {
         // Given
         MedicalRecord medicalRecordExpected = new MedicalRecord("NewFirstName", "NewLastName", "01/01/2000", List.of("med1:100mg"), List.of("allergy1"));
         when(medicalRecordRepository
-                .getMedicalRecordByFirstNameAndLastName(medicalRecordExpected.getFirstName(), medicalRecordExpected.getLastName()))
+                .getMedicalRecordByFirstNameAndLastName("NewFirstName", "NewLastName"))
                 .thenReturn(null);
+
+        when(personService
+                .getPersonByFirstNameAndLastName("NewFirstName", "NewLastName"))
+                .thenReturn(new Person("NewFirstName", "NewLastName", "NewAddress", "NewCity", "NewZip", "NewPhone", "NewEmail"));
 
         // When
         medicalRecordService.saveMedicalRecord(medicalRecordExpected);
 
         // Then
-        verify(medicalRecordRepository, times(1)).saveMedicalRecord(medicalRecordExpected);
+        verify(personService, times(1))
+                .getPersonByFirstNameAndLastName("NewFirstName", "NewLastName");
+        verify(medicalRecordRepository, times(1))
+                .saveMedicalRecord(medicalRecordExpected);
+
     }
 
     /**
