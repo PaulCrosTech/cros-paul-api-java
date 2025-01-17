@@ -84,60 +84,6 @@ public class MedicalRecordControllerTest {
 
 
     /**
-     * Testing route GET /medicalRecord with firstName and lastName as query parameters
-     * - Given an existing person
-     * - Then OK and the medical record
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenExistingPerson_whenGetMedicalRecordByFirstNameAndLastName_thenReturnOkAndMedicalRecord() throws Exception {
-        // Given
-        String firstName = "John";
-        String lastName = "Boyd";
-
-        when(medicalRecordService.getMedicalRecordByFirstNameAndLastName(firstName, lastName)).thenReturn(medicalRecords.getFirst());
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/medicalRecord?firstName={firstName}&lastName={lastName}", firstName, lastName)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Boyd"));
-    }
-
-
-    /**
-     * Testing route GET /medicalRecord with firstName and lastName as query parameters
-     * - Given a non-existing person
-     * - Then NotFound
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenNonExistingPerson_whenGetMedicalRecordByFirstNameAndLastName_thenReturnNotFound() throws Exception {
-        // Given
-        String firstName = "UnknownFirstName";
-        String lastName = "UnknownLastName";
-
-        when(medicalRecordService.getMedicalRecordByFirstNameAndLastName(firstName, lastName)).
-                thenThrow(new NotFoundException("Medical record not found with firstName: " + firstName + " and lastName: " + lastName));
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/medicalRecord?firstName={firstName}&lastName={lastName}", firstName, lastName)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isNotFound());
-
-    }
-
-
-    /**
      * Testing route DELETE /medicalRecord with firstName and lastName as query parameters
      * - Given an existing person
      * - Then OK

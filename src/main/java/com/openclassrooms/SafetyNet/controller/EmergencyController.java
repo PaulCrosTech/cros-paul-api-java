@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * EmergencyController class
  */
-@Tag(name = "Emergency", description = "Emergency API")
-@RequestMapping("/emergency")
+@Tag(name = "URLs", description = "API")
 @Log4j2
 @RestController
 public class EmergencyController {

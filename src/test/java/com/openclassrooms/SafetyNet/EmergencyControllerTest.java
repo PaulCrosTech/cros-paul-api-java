@@ -48,7 +48,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/firestation with
+     * Testing GET /firestation with
      * - an existing station number
      * - Then OK and PersonCoveredByStationDTO
      *
@@ -68,7 +68,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getPersonCoveredByStationNumber(stationNumber)).thenReturn(personCoveredByStationDTO);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/firestation?stationNumber=" + stationNumber)
+        ResultActions result = mockMvc.perform(get("/firestation?stationNumber=" + stationNumber)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -79,7 +79,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/firestation with
+     * Testing GET /firestation with
      * - an unknown station number
      * - Then NotFound
      *
@@ -94,7 +94,7 @@ public class EmergencyControllerTest {
                 .thenThrow(new NotFoundException("Station number not found"));
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/firestation?stationNumber=" + stationNumber)
+        ResultActions result = mockMvc.perform(get("/firestation?stationNumber=" + stationNumber)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -104,7 +104,7 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/phoneAlert with
+     * Testing GET /phoneAlert with
      * - an existing station number
      * - Then OK and FamilyDTO
      *
@@ -128,7 +128,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getFamily(address)).thenReturn(familyDTO);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/childAlert?address=" + address)
+        ResultActions result = mockMvc.perform(get("/childAlert?address=" + address)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -139,7 +139,7 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/phoneAlert with
+     * Testing GET /phoneAlert with
      * - an existing station number
      * - Then OK and phone numbers
      *
@@ -154,7 +154,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getPhoneNumbersCoveredByFireStation(stationNumber)).thenReturn(phoneNumbers);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/phoneAlert?firestation=" + stationNumber)
+        ResultActions result = mockMvc.perform(get("/phoneAlert?firestation=" + stationNumber)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -163,7 +163,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/phoneAlert with
+     * Testing GET /phoneAlert with
      * - an unknown station number
      * - Then NotFound
      *
@@ -178,7 +178,7 @@ public class EmergencyControllerTest {
                 .thenThrow(new NotFoundException("Station number not found"));
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/phoneAlert?firestation=" + stationNumber)
+        ResultActions result = mockMvc.perform(get("/phoneAlert?firestation=" + stationNumber)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -187,7 +187,7 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/fire with
+     * Testing GET /fire with
      * - an existing address
      * - Then OK and FamilyWithMedicalAndFirestationDTO
      *
@@ -208,7 +208,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getFamilyWithMedicalAndFirestation(address)).thenReturn(familyDTO);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/fire?address=" + address)
+        ResultActions result = mockMvc.perform(get("/fire?address=" + address)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -219,7 +219,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/flood/stations with
+     * Testing GET /flood/stations with
      * - an existing station number
      * - Then OK and FamilyWithMedicalGroupedByAddressDTO
      *
@@ -242,7 +242,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getFamilyWithMedicalGroupedByAddress(List.of(2, 3)))
                 .thenReturn(familyDTO);
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/flood/stations")
+        ResultActions result = mockMvc.perform(get("/flood/stations")
                 .param("stations", "2", "3")
                 .header("X-API-VERSION", apiVersion));
 
@@ -255,7 +255,7 @@ public class EmergencyControllerTest {
 
 
     /**
-     * Testing GET /emergency/personInfo with
+     * Testing GET /personInfo with
      * - an existing lastname
      * - Then OK and PersonWithMedicalAndEmailDTO
      *
@@ -273,7 +273,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getPersonMedicalWithEmail(lastName)).thenReturn(personDTO);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/personInfo?lastName=" + lastName)
+        ResultActions result = mockMvc.perform(get("/personInfo?lastName=" + lastName)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -282,7 +282,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/personInfo with
+     * Testing GET /personInfo with
      * - an unknown lastname
      * - Then NotFound
      *
@@ -298,7 +298,7 @@ public class EmergencyControllerTest {
         );
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/personInfo?lastName=" + lastName)
+        ResultActions result = mockMvc.perform(get("/personInfo?lastName=" + lastName)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
@@ -306,7 +306,7 @@ public class EmergencyControllerTest {
     }
 
     /**
-     * Testing GET /emergency/communityEmail with
+     * Testing GET /communityEmail with
      * - an existing city
      * - Then OK and emails
      *
@@ -321,7 +321,7 @@ public class EmergencyControllerTest {
         when(emergencyService.getPersonEmailByCity(city)).thenReturn(emails);
 
         // When
-        ResultActions result = mockMvc.perform(get("/emergency/communityEmail?city=" + city)
+        ResultActions result = mockMvc.perform(get("/communityEmail?city=" + city)
                 .header("X-API-VERSION", apiVersion));
 
         // Then

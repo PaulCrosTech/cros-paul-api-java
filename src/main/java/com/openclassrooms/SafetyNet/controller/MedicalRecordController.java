@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * MedicalRecordController class
  */
-@Tag(name = "Medical Record", description = "Medical Records API")
+@Tag(name = "Medical Record", description = "API")
 @Log4j2
 @RestController
 public class MedicalRecordController {
@@ -54,28 +54,6 @@ public class MedicalRecordController {
     public List<MedicalRecord> getMedicalRecords() {
         log.info("<controller> **New** Request GET on /medicalRecords");
         return medicalRecordService.getMedicalRecords();
-    }
-
-    /**
-     * Get a medical record by first name and last name
-     *
-     * @param firstName String case-sensitive
-     * @param lastName  String case-sensitive
-     * @return MedicalRecord object
-     */
-    @Operation(summary = "Get a medical record by first name and last name", description = "Returns a medical record by his first name and last name.<br>Names are case-sensitive")
-    @Parameters({
-            @Parameter(in = ParameterIn.QUERY, name = "firstName", description = "The first name of the person", required = true, example = "John"),
-            @Parameter(in = ParameterIn.QUERY, name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Not found - The medical record was not found", content = @Content)
-    })
-    @GetMapping(path = "/medicalRecord", params = {"firstName", "lastName"}, headers = "X-API-VERSION=1")
-    public MedicalRecord getMedicalRecordByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
-        log.info("<controller> **New** Request GET on /medicalRecord?firstName={}&lastName={}", firstName, lastName);
-        return medicalRecordService.getMedicalRecordByFirstNameAndLastName(firstName, lastName);
     }
 
     /**

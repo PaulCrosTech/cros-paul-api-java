@@ -83,59 +83,6 @@ public class PersonControllerTest {
     }
 
     /**
-     * Testing route GET /person with firstName and lastName as query parameters
-     * - Given an existing person
-     * - Then OK and the person
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnOkAndPerson() throws Exception {
-        // Given
-        String firstName = "John";
-        String lastName = "Boyd";
-
-        when(personService.getPersonByFirstNameAndLastName(firstName, lastName)).thenReturn(persons.getFirst());
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/person?firstName={firstName}&lastName={lastName}", firstName, lastName)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Boyd"));
-    }
-
-    /**
-     * Testing route GET /person with firstName and lastName as query parameters
-     * - Given a non-existing person
-     * - Then NotFound
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenNonExistingPerson_whenGetPersonByFirstNameAndLastName_thenReturnNotFound() throws Exception {
-        // Given
-        String firstName = "UnknownFirstName";
-        String lastName = "UnknownLastName";
-
-        when(personService.getPersonByFirstNameAndLastName(firstName, lastName)).
-                thenThrow(new NotFoundException("Person not found with firstName: " + firstName + " and lastName: " + lastName));
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/person?firstName={firstName}&lastName={lastName}", firstName, lastName)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isNotFound());
-
-    }
-
-
-    /**
      * Testing route DELETE /person with firstName and lastName as query parameters
      * - Given an existing person
      * - Then OK

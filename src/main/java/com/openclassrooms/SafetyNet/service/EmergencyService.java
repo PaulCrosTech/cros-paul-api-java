@@ -67,16 +67,20 @@ public class EmergencyService {
         }
 
         // Récupère les medical records des personnes
+//        HashMap<String, String> birthdates = new HashMap<>();
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (Person p : persons) {
             MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
-
+            // TODO : getBirthdateByFirstNameAndLastName
+            // Calcul de l'age à partir de la date de naissance
+            // Increment du nombre d'adultes et d'enfants
             if (medicalRecord != null) {
                 medicalRecords.add(medicalRecord);
             }
         }
 
         log.info("{} persons found", persons.size());
+        // return emergencyMapper.toPersonCoveredByStationDTO(persons, List<Birthdate> bithdates);
         return emergencyMapper.toPersonCoveredByStationDTO(persons, medicalRecords);
     }
 
@@ -87,6 +91,26 @@ public class EmergencyService {
      * @param address adresse
      * @return liste de ChildrenByAddress
      */
+    // TODO
+//    {
+//        {
+//            "firstName": "Tenley",
+//                "lastName": "Boyd",
+//                "age": 12
+//            "family" : // Same Address (sauf Tenley)
+//		[
+//            // Adults and Kids
+//            {
+//                "firstName": "John",
+//                    "lastName": "Boyd"
+//            },
+//            {
+//                "firstName": "Jacob",
+//                    "lastName": "Boyd"
+//            }
+//		]
+//        }
+//    }
     public FamilyDTO getFamily(String address) {
         // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);

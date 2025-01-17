@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * FirestationController class
  */
-@Tag(name = "Firestation", description = "Fire station API")
+@Tag(name = "Firestation", description = "API")
 @Log4j2
 @RestController
 public class FirestationController {
@@ -55,28 +55,6 @@ public class FirestationController {
         log.info("<controller> **New** Request GET on /firestations");
         return firestationService.getFirestations();
     }
-
-
-    /**
-     * Get fire station by address
-     *
-     * @param address String address of the fire station (case-sensitive)
-     * @return Firestation object
-     */
-    @Operation(summary = "Get a fire station by address", description = "Returns a fire station by address (case-sensitive)")
-    @Parameters({
-            @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address of the fire station", required = true, example = "\"834 Binoc Ave\""),
-    })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Not found - The fire station was not found", content = @Content)
-    })
-    @GetMapping(path = "/firestation", params = "address", headers = "X-API-VERSION=1")
-    public Firestation getFirestationByAddress(@RequestParam String address) {
-        log.info("<controller> **New** Request GET on /firestation?address={}", address);
-        return firestationService.getFirestationByAddress(address);
-    }
-
 
     /**
      * Delete a fire station by address

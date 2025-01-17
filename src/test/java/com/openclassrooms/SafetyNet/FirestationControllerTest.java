@@ -84,58 +84,6 @@ public class FirestationControllerTest {
 
 
     /**
-     * Testing route GET /firestation with address as query parameter
-     * - Given an existing address
-     * - Then OK and firestation
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenExistingAddress_whenGetFirestationByAddress_thenReturnOkAndFirestation() throws Exception {
-        // Given
-        String address = "1509 Culver St";
-
-        when(firestationService.getFirestationByAddress(address)).thenReturn(firestations.getFirst());
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/firestation?address={address}", address)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.address").value("1509 Culver St"))
-                .andExpect(jsonPath("$.station").value("3"));
-    }
-
-
-    /**
-     * Testing route GET /firestation with address as query parameter
-     * - Given a non-existing address
-     * - Then NotFound
-     *
-     * @throws Exception Exception
-     */
-    @Test
-    public void givenNonExistingAddress_whenGetFirestationByAddress_thenReturnNotFound() throws Exception {
-        // Given
-        String address = "1509 Culver St";
-
-        when(firestationService.getFirestationByAddress(address)).
-                thenThrow(new NotFoundException("Fire station with address " + address + " not found"));
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get("/firestation?address={address}", address)
-                .header("X-API-VERSION", apiVersion)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // Then
-        resultActions.andExpect(status().isNotFound());
-
-    }
-
-
-    /**
      * Testing route DELETE /firestation with address as query parameter
      * - Given an existing address
      * - Then OK

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * PersonController class
  */
-@Tag(name = "Person", description = "Person API")
+@Tag(name = "Person", description = "API")
 @Log4j2
 @RestController
 public class PersonController {
@@ -57,27 +57,6 @@ public class PersonController {
         return personService.getPersons();
     }
 
-    /**
-     * Get a person by first name and last name
-     *
-     * @param firstName String case-sensitive
-     * @param lastName  String case-sensitive
-     * @return Person object
-     */
-    @Operation(summary = "Get a person by first name and last name", description = "Returns a person by his first name and last name.<br>Names are case-sensitive")
-    @Parameters({
-            @Parameter(in = ParameterIn.QUERY, name = "firstName", description = "The first name of the person", required = true, example = "John"),
-            @Parameter(in = ParameterIn.QUERY, name = "lastName", description = "The last name of the person", required = true, example = "Boyd")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Not found - The person was not found", content = @Content)
-    })
-    @GetMapping(path = "/person", params = {"firstName", "lastName"}, headers = "X-API-VERSION=1")
-    public Person getPersonByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
-        log.info("<controller> **New** Request GET on /person?firstName={}&lastName={}", firstName, lastName);
-        return personService.getPersonByFirstNameAndLastName(firstName, lastName);
-    }
 
     /**
      * Delete a person by first name and last name
