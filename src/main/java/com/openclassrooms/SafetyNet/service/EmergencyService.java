@@ -7,7 +7,6 @@ import com.openclassrooms.SafetyNet.model.*;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
-import io.swagger.v3.oas.models.links.Link;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

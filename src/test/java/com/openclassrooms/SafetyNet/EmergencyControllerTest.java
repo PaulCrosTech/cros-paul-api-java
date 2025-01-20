@@ -4,7 +4,6 @@ package com.openclassrooms.SafetyNet;
 import com.openclassrooms.SafetyNet.controller.EmergencyController;
 import com.openclassrooms.SafetyNet.dto.*;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
-import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.EmergencyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ public class EmergencyControllerTest {
 
     private final MockMvc mockMvc;
     private final String apiVersion = "1";
-
-    private List<Person> persons;
 
 
     @MockitoBean
