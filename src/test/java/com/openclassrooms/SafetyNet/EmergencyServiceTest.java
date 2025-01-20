@@ -114,36 +114,47 @@ public class EmergencyServiceTest {
     }
 
     /**
-     * Testing method GetFamily
+     * Testing method getHouseChildren
      * - Given existing address
-     * - Then FamilyDTO
+     * - Then return list of HouseChildrenDTO
      */
     @Test
-    public void givenExistingAddress_whenGetFamily_thenReturnFamilyDTO() {
+    public void givenExistingAddress_whenGetHouseChildren_thenReturnListOfHouseChildrenDTO() {
         // Given
         String address = "1509 Culver St";
 
         List<Person> persons = new ArrayList<>();
         persons.add(new Person("John", "Boyd", address, "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
+        persons.add(new Person("Jacob", "Boyd", address, "Culver", "97451", "841-874-6513", "jacob@email.com"));
+
+        when(personRepository.getPersonByAddress(address)).thenReturn(persons);
 
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         medicalRecords.add(new MedicalRecord("John", "Boyd", "03/06/1984", new ArrayList<>(), new ArrayList<>()));
+        medicalRecords.add(new MedicalRecord("Jacob", "Boyd", "03/06/2024", new ArrayList<>(), new ArrayList<>()));
 
-        FamilyDTO expectedDTO = new FamilyDTO();
+        when(medicalRecordRepository.getBirthdateByFirstNameAndLastName("John", "Boyd")).thenReturn(medicalRecords.getFirst().getBirthdate());
+        when(medicalRecordRepository.getBirthdateByFirstNameAndLastName("Jacob", "Boyd")).thenReturn(medicalRecords.get(1).getBirthdate());
 
-        when(personRepository.getPersonByAddress(address)).thenReturn(persons);
-        when(medicalRecordRepository.getMedicalRecordByFirstNameAndLastName("John", "Boyd")).thenReturn(medicalRecords.getFirst());
-        when(emergencyMapper.toFamilyDTO(persons, medicalRecords)).thenReturn(expectedDTO);
+        Map<Person, String> personWithBirthdate = new HashMap<>();
+        personWithBirthdate.put(persons.get(0), medicalRecords.get(0).getBirthdate());
+        personWithBirthdate.put(persons.get(1), medicalRecords.get(1).getBirthdate());
+
+        List<HouseChildrenDTO> expectedDTOList = new ArrayList<>();
+        expectedDTOList.add(new HouseChildrenDTO("Jacob", "Boyd", 3,
+                        List.of(new HouseMemberDTO("John", "Boyd", 37))
+                )
+        );
+
+        when(emergencyMapper.toHouseChildrenDTO(personWithBirthdate)).thenReturn(expectedDTOList);
 
         // When
-        FamilyDTO familyDTO = emergencyService.getFamily(address);
+        List<HouseChildrenDTO> houseChildrenDTOList = emergencyService.getHouseChildren(address);
 
         // Then
-        assertNotNull(familyDTO);
-        assertEquals(expectedDTO.getAdults(), familyDTO.getAdults());
-        assertEquals(expectedDTO.getChildren(), familyDTO.getChildren());
+        assertEquals(expectedDTOList, houseChildrenDTOList);
         verify(personRepository, times(1)).getPersonByAddress(address);
-        verify(medicalRecordRepository, times(1)).getMedicalRecordByFirstNameAndLastName("John", "Boyd");
+        verify(medicalRecordRepository, times(1)).getBirthdateByFirstNameAndLastName("John", "Boyd");
     }
 
 

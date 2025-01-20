@@ -81,48 +81,31 @@ public class EmergencyService {
 
 
     /**
-     * Get family (children and adults) information, living at the same address
+     * Return list of children living at the address, with other members of the house
      *
-     * @param address adresse
-     * @return liste de ChildrenByAddress
+     * @param address address
+     * @return List of HouseChildrenDTO objects
      */
-    // TODO
-//    {
-//        {
-//            "firstName": "Tenley",
-//                "lastName": "Boyd",
-//                "age": 12
-//            "family" : // Same Address (sauf Tenley)
-//		[
-//            // Adults and Kids
-//            {
-//                "firstName": "John",
-//                    "lastName": "Boyd"
-//            },
-//            {
-//                "firstName": "Jacob",
-//                    "lastName": "Boyd"
-//            }
-//		]
-//        }
-//    }
-    public FamilyDTO getFamily(String address) {
+    public List<HouseChildrenDTO> getHouseChildren(String address) {
         // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);
 
-        // Get MedicalRecords of persons
-        List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (Person p : persons) {
-            MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(p.getFirstName(), p.getLastName());
 
-            if (medicalRecord != null) {
-                medicalRecords.add(medicalRecord);
+        // Map person with birthdate
+        Map<Person, String> personWithBirthdate = new LinkedHashMap<>();
+
+        for (Person p : persons) {
+            String birthdate = medicalRecordRepository.getBirthdateByFirstNameAndLastName(p.getFirstName(), p.getLastName());
+            if (birthdate != null) {
+                personWithBirthdate.put(p, birthdate);
             }
         }
 
-        // Map persons and medicalRecords to Children and Adults
-        log.info("{} persons found", persons.size());
-        return emergencyMapper.toFamilyDTO(persons, medicalRecords);
+
+        // Map persons (with birthdate) to HouseChildrenDTO
+        log.info("{} persons found", personWithBirthdate.size());
+        return emergencyMapper.toHouseChildrenDTO(personWithBirthdate);
+
     }
 
     /**

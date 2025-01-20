@@ -65,9 +65,9 @@ public class EmergencyController {
      * Get child, with parent information, by address
      *
      * @param address The address
-     * @return AddressOccupants object
+     * @return List of HouseChildrenDTO objects
      */
-    @Operation(summary = "Get child, with parent information, by address", description = "Returns family informations (children and parents) by address")
+    @Operation(summary = "Get child, with house members informations", description = "Returns for each child, all members of same address")
     @Parameters({
             @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address", required = true, example = "\"1509 Culver St\""),
     })
@@ -75,9 +75,9 @@ public class EmergencyController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     @GetMapping(path = "/childAlert", params = "address", headers = "X-API-VERSION=1")
-    public FamilyDTO getFamily(@RequestParam String address) {
+    public List<HouseChildrenDTO> getHouseChildren(@RequestParam String address) {
         log.info("<controller> **New** Request GET on /childAlert?address={}", address);
-        return emergencyService.getFamily(address);
+        return emergencyService.getHouseChildren(address);
     }
 
 

@@ -62,45 +62,36 @@ public class EmergencyMapper {
     }
 
     /**
-     * Convert a Person (split info adults and children) to a FamilyDTO
+     * Convert Persons (with birthdate) to a HouseChildrenDTO
      *
-     * @param persons        list of persons
-     * @param medicalRecords list of medical records
-     * @return the converted PersonAtSameAddressDTO
+     * @param personWithBirthdate map of person with birthdate
+     * @return the converted HouseChildrenDTO
      */
-    public FamilyDTO toFamilyDTO(
-            List<Person> persons,
-            List<MedicalRecord> medicalRecords
-    ) {
-        FamilyDTO familyDTO = new FamilyDTO();
+    public List<HouseChildrenDTO> toHouseChildrenDTO(Map<Person, String> personWithBirthdate) {
 
-        // Associate Person with MedicalRecord
-        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = toPersonWithMedicalRecord(persons, medicalRecords);
+        List<HouseChildrenDTO> houseChildrenDTOList = new ArrayList<>();
 
-        // Map PersonWithMedicalRecord to AdultDTO
-        List<AdultDTO> adults = personWithMedicalRecordDTOS.stream()
-                .filter(PersonWithMedicalRecordDTO::getIsAdult)
-                .map(personWithMedicalRecordDTO -> new AdultDTO(
-                        personWithMedicalRecordDTO.getFirstName(),
-                        personWithMedicalRecordDTO.getLastName()
-                ))
-                .toList();
+        personWithBirthdate.forEach((person, birthdate) -> {
+            int age = calculateAge(birthdate);
+            if (age <= 18) {
 
-        // Map PersonWithMedicalRecord to ChrildrenDTO
-        List<ChildrenDTO> children = personWithMedicalRecordDTOS.stream()
-                .filter(personWithMedicalRecordDTO -> !personWithMedicalRecordDTO.getIsAdult())
-                .map(personWithMedicalRecordDTO -> new ChildrenDTO(
-                        personWithMedicalRecordDTO.getFirstName(),
-                        personWithMedicalRecordDTO.getLastName(),
-                        personWithMedicalRecordDTO.getAge()
-                ))
-                .toList();
+                List<HouseMemberDTO> houseMemberDTOList = personWithBirthdate.entrySet().stream()
+                        .filter(entry -> !entry.getKey().equals(person))
+                        .map(entry -> new HouseMemberDTO(entry.getKey().getFirstName(), entry.getKey().getLastName(), calculateAge(entry.getValue())))
+                        .toList();
 
-        familyDTO.setAdults(adults);
-        familyDTO.setChildren(children);
+                houseChildrenDTOList.add(
+                        new HouseChildrenDTO(
+                                person.getFirstName(),
+                                person.getLastName(),
+                                age,
+                                houseMemberDTOList
+                        )
+                );
+            }
+        });
 
-        return familyDTO;
-
+        return houseChildrenDTOList;
     }
 
 

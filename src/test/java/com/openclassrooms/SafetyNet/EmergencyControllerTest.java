@@ -106,35 +106,25 @@ public class EmergencyControllerTest {
     /**
      * Testing GET /phoneAlert with
      * - an existing station number
-     * - Then OK and FamilyDTO
+     * - Then OK and List Of HouseChildrenDTO
      *
      * @throws Exception Exception
      */
     @Test
-    public void givenExistingAddress_whenGetFamily_thenReturnFamilyDTO() throws Exception {
+    public void givenExistingAddress_whenGetHouseChildren_thenReturnListOfHouseChildrenDTO() throws Exception {
         // Given
         String address = "1509 Culver St";
 
-        FamilyDTO familyDTO = new FamilyDTO(
-                List.of(
-                        new AdultDTO("John", "Boyd"),
-                        new AdultDTO("Jacob", "Boyd")
-                ),
-                List.of(
-                        new ChildrenDTO("Tenley", "Boyd", 10)
-                )
-        );
+        List<HouseChildrenDTO> houseChildrenDTOS = new ArrayList<>();
 
-        when(emergencyService.getFamily(address)).thenReturn(familyDTO);
+        when(emergencyService.getHouseChildren(address)).thenReturn(houseChildrenDTOS);
 
         // When
         ResultActions result = mockMvc.perform(get("/childAlert?address=" + address)
                 .header("X-API-VERSION", apiVersion));
 
         // Then
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.adults", hasSize(2)))
-                .andExpect(jsonPath("$.children", hasSize(1)));
+        result.andExpect(status().isOk());
     }
 
 

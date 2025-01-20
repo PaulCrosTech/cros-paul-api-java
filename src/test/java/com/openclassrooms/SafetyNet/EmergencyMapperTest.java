@@ -88,26 +88,25 @@ public class EmergencyMapperTest {
     }
 
     /**
-     * Testing method toFamilyDTO
-     * - Given list of persons and list of medical records
-     * - Then return FamilyDTO
+     * Testing method toHouseChildrenDTO
+     * - Given list of persons with birthdate
+     * - Then return List of HouseChildrenDTO
      */
     @Test
-    public void givenPersonsMedicalRecords_whenToFamilyDTO_thenReturnFamilyDTO() {
+    public void givenListOfPersonWithBirthdate_whenToHouseChildrenDTO_thenReturnListOfHouseChildrenDTO() {
         // Given
-        AdultDTO adultExpected = new AdultDTO("John", "Boyd");
-        ChildrenDTO childExpected = new ChildrenDTO("Jacob", "Boyd", 5);
+        Map<Person, String> personWithBirthdate = new LinkedHashMap<>();
+        personWithBirthdate.put(persons.get(0), medicalRecords.get(0).getBirthdate());
+        personWithBirthdate.put(persons.get(1), medicalRecords.get(1).getBirthdate());
 
         // When
-        FamilyDTO familyDTO = emergencyMapper.toFamilyDTO(persons, medicalRecords);
+        List<HouseChildrenDTO> houseChildrenDTOList = emergencyMapper.toHouseChildrenDTO(personWithBirthdate);
 
         // Then
-        assertEquals(1, familyDTO.getAdults().size());
-        assertEquals(1, familyDTO.getChildren().size());
-        AdultDTO adult = familyDTO.getAdults().getFirst();
-        ChildrenDTO child = familyDTO.getChildren().getFirst();
-        assertEquals(adultExpected, adult);
-        assertEquals(childExpected, child);
+        assertEquals(1, houseChildrenDTOList.size());
+        assertEquals("Jacob", houseChildrenDTOList.getFirst().getFirstName());
+        assertEquals(1, houseChildrenDTOList.getFirst().getHouseMembersDTO().size());
+        assertEquals("John", houseChildrenDTOList.getFirst().getHouseMembersDTO().getFirst().getFirstName());
     }
 
 
