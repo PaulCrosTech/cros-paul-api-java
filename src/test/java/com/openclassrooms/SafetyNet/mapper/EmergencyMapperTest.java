@@ -1,7 +1,6 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.mapper;
 
 import com.openclassrooms.SafetyNet.dto.*;
-import com.openclassrooms.SafetyNet.mapper.EmergencyMapper;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
@@ -120,8 +119,8 @@ public class EmergencyMapperTest {
 
         // Given
         FamilyWithMedicalAndFirestationDTO familyExpected = new FamilyWithMedicalAndFirestationDTO(1, List.of(
-                new PersonMedicalDetailsDTO("John", "Boyd", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"), 30),
-                new PersonMedicalDetailsDTO("Jacob", "Boyd", Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of(), 5)
+                new PersonMedicalDetailsDTO("John", "Boyd", 30, "841-874-6512", List.of("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan")),
+                new PersonMedicalDetailsDTO("Jacob", "Boyd", 5, "841-874-6513", List.of("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"), List.of())
         ));
 
         // When
@@ -145,8 +144,8 @@ public class EmergencyMapperTest {
                 new PersonWithMedicalRecordDTO("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com",
                         30, true, Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"));
 
-        PersonWithMedicalAndPhoneDTO personExpected = new PersonWithMedicalAndPhoneDTO("John", "Boyd",
-                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"), 30, "841-874-6512");
+        PersonWithMedicalAndPhoneDTO personExpected = new PersonWithMedicalAndPhoneDTO("John", "Boyd", 30, "841-874-6512",
+                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"));
         // When
         PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecordDTO);
 
@@ -166,8 +165,8 @@ public class EmergencyMapperTest {
                 new PersonWithMedicalRecordDTO("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com",
                         30, true, Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"));
 
-        PersonWithMedicalAndEmailDTO personExpected = new PersonWithMedicalAndEmailDTO("John", "Boyd",
-                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"), 30, "jaboyd@email.com");
+        PersonWithMedicalAndEmailDTO personExpected = new PersonWithMedicalAndEmailDTO("John", "Boyd", 30, "jaboyd@email.com",
+                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), List.of("nillacilan"));
         // When
         PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = emergencyMapper.toPersonWithMedicalAndEmailDTO(personWithMedicalRecordDTO);
 

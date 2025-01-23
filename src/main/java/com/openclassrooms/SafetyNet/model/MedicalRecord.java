@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @Schema(description = "Details about a medical record")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class MedicalRecord {
 
     @Schema(description = "First name of the person", example = "John", requiredMode = Schema.RequiredMode.REQUIRED)

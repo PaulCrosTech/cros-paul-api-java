@@ -108,9 +108,9 @@ public class PersonController {
 
         // Create the location of the person object saved
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{firstName}/{lastName}")
-                .buildAndExpand(person.getFirstName(), person.getLastName())
+                .fromCurrentContextPath()
+                .path("/persons")
+                .build()
                 .toUri();
         return ResponseEntity.created(location).build();
     }

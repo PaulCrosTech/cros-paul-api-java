@@ -1,9 +1,7 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.repository;
 
 
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.repository.FirestationRepository;
-import com.openclassrooms.SafetyNet.repository.JsonFileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -184,9 +184,8 @@ public class EmergencyService {
 
         for (Integer stationNumber : stationNumbers) {
             List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
-            for (Firestation f : firestations) {
-                addresses.add(f.getAddress());
-            }
+
+            firestations.stream().map(Firestation::getAddress).forEach(addresses::add);
         }
 
         // Get Persons, with medical record, living at the addresses
@@ -220,7 +219,7 @@ public class EmergencyService {
                     personWithMedicalRecordDTO.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO
             );
         }
-        familyDTO.setAddress(personGroupedByAddress);
+        familyDTO.setMapAddressPersons(personGroupedByAddress);
 
         log.info("{} persons found", finalPersonList.size());
         return familyDTO;
@@ -276,11 +275,11 @@ public class EmergencyService {
         HashSet<String> emailList = new HashSet<>();
 
         List<Person> personList = personRepository.getPersons();
-        for (Person person : personList) {
-            if (person.getCity().equals(city)) {
-                emailList.add(person.getEmail());
-            }
-        }
+        personList.stream()
+                .filter(p -> p.getCity().equals(city))
+                .map(Person::getEmail)
+                .forEach(emailList::add);
+
         log.info("{} emails found", emailList.size());
         return emailList;
     }

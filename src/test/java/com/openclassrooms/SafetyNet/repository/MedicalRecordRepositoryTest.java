@@ -1,9 +1,7 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.repository;
 
 
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
-import com.openclassrooms.SafetyNet.repository.JsonFileManager;
-import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

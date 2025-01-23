@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.service;
 
 
 import com.openclassrooms.SafetyNet.exceptions.ConflictException;
@@ -7,9 +7,6 @@ import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
-import com.openclassrooms.SafetyNet.service.MedicalRecordService;
-import com.openclassrooms.SafetyNet.service.PersonService;
-import jakarta.validation.constraints.Null;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

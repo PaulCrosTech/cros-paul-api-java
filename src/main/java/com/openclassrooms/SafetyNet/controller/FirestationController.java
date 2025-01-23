@@ -100,10 +100,11 @@ public class FirestationController {
 
         // Create the location of the person object saved
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{address}")
-                .buildAndExpand(firestation.getAddress())
+                .fromCurrentContextPath()
+                .path("/firestations")
+                .build()
                 .toUri();
+
         return ResponseEntity.created(location).build();
     }
 

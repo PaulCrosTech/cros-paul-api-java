@@ -1,5 +1,6 @@
 package com.openclassrooms.SafetyNet.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class FamilyWithMedicalAndFirestationDTO {
     private Integer station;
 
     @Schema(description = "List of persons with medical details", requiredMode = Schema.RequiredMode.REQUIRED)
+    @JsonProperty("personMedicalDetail")
     private List<PersonMedicalDetailsDTO> personMedicalDetailDTOS;
 
 }

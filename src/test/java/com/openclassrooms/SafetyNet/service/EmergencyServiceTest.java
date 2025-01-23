@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.service;
 
 import com.openclassrooms.SafetyNet.dto.*;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
@@ -9,7 +9,6 @@ import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.FirestationRepository;
 import com.openclassrooms.SafetyNet.repository.MedicalRecordRepository;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
-import com.openclassrooms.SafetyNet.service.EmergencyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -227,7 +226,7 @@ public class EmergencyServiceTest {
         // Map to FamilyWithMedicalAndFirestationDTO
         FamilyWithMedicalAndFirestationDTO expectedDTO =
                 new FamilyWithMedicalAndFirestationDTO(1, List.of(
-                        new PersonMedicalDetailsDTO("John", "Boyd", new ArrayList<>(), new ArrayList<>(), 37)
+                        new PersonMedicalDetailsDTO("John", "Boyd", 37, "841-874-6512", new ArrayList<>(), new ArrayList<>())
                 ));
         when(emergencyMapper.toFamilyWithMedicalAndFirestationDTO(
                 List.of(person),
@@ -299,7 +298,8 @@ public class EmergencyServiceTest {
         when(emergencyMapper.toPersonWithMedicalRecord(persons, medicalRecords)).thenReturn(personWithMedicalRecordDTOS);
 
         // Map to PersonWithMedicalAndPhoneDTO
-        PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = new PersonWithMedicalAndPhoneDTO("John", "Boyd", new ArrayList<>(), new ArrayList<>(), 37, "841-874-6512");
+        PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO =
+                new PersonWithMedicalAndPhoneDTO("John", "Boyd", 37, "841-874-6512", new ArrayList<>(), new ArrayList<>());
 
         when(emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecordDTOS.getFirst())).thenReturn(personWithMedicalAndPhoneDTO);
 
@@ -314,7 +314,7 @@ public class EmergencyServiceTest {
         verify(emergencyMapper, times(1)).toPersonWithMedicalRecord(persons, medicalRecords);
         verify(emergencyMapper, times(1)).toPersonWithMedicalAndPhone(personWithMedicalRecordDTOS.getFirst());
         assertNotNull(familyDTO);
-        assertEquals(1, familyDTO.getAddress().size());
+        assertEquals(1, familyDTO.getMapAddressPersons().size());
     }
 
 
@@ -341,12 +341,15 @@ public class EmergencyServiceTest {
 
         // Map persons and medical records
         List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = new ArrayList<>();
-        personWithMedicalRecordDTOS.add(new PersonWithMedicalRecordDTO("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jboyd@mail.com", 37, true, new ArrayList<>(), new ArrayList<>()));
+        personWithMedicalRecordDTOS.add(
+                new PersonWithMedicalRecordDTO("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jboyd@mail.com", 37, true, new ArrayList<>(), new ArrayList<>())
+        );
 
         when(emergencyMapper.toPersonWithMedicalRecord(persons, medicalRecords)).thenReturn(personWithMedicalRecordDTOS);
 
         // Map to PersonWithMedicalAndEmailDTO
-        PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = new PersonWithMedicalAndEmailDTO("John", "Boyd", new ArrayList<>(), new ArrayList<>(), 37, "jboyd@mail.com");
+        PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO =
+                new PersonWithMedicalAndEmailDTO("John", "Boyd", 37, "jboyd@mail.com", new ArrayList<>(), new ArrayList<>());
 
         when(emergencyMapper.toPersonWithMedicalAndEmailDTO(personWithMedicalRecordDTOS.getFirst())).thenReturn(personWithMedicalAndEmailDTO);
 

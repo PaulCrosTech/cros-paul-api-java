@@ -18,6 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class FamilyWithMedicalGroupedByAddressDTO {
 
-    HashMap<String, List<PersonWithMedicalAndPhoneDTO>> address;
+    HashMap<String, List<PersonWithMedicalAndPhoneDTO>> mapAddressPersons;
 
 }

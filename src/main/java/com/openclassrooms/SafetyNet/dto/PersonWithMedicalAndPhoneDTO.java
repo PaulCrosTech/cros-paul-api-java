@@ -22,6 +22,12 @@ public class PersonWithMedicalAndPhoneDTO {
     @Schema(description = "Last name of the person", example = "Boyd", requiredMode = Schema.RequiredMode.REQUIRED)
     private String lastName;
 
+    @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int age;
+
+    @Schema(description = "Phone number of the person", example = "841-874-6512", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 10, maxLength = 14)
+    private String phone;
+
     @Schema(description = "List of medications", type = "array", example = "[\"aznol:350mg\", \"hydrapermazol:100mg\"]",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> medications;
@@ -29,11 +35,4 @@ public class PersonWithMedicalAndPhoneDTO {
     @Schema(description = "List of allergies", type = "array", example = "[\"nillacilan\"]",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> allergies;
-
-    @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
-    private int age;
-
-    @Schema(description = "Phone number of the person", example = "841-874-6512", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 10, maxLength = 14)
-    private String phone;
-
 }

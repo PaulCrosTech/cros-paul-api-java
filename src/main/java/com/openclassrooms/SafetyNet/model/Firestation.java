@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 /**
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBl
 @Schema(description = "Details about a firestation")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Firestation {
 
     @Schema(description = "Address of the firestation", example = "1509 Culver St", requiredMode = Schema.RequiredMode.REQUIRED)

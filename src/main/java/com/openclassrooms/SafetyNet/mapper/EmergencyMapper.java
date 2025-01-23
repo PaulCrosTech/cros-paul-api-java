@@ -118,9 +118,11 @@ public class EmergencyMapper {
                 .map(personWithMedicalRecordDTO -> new PersonMedicalDetailsDTO(
                         personWithMedicalRecordDTO.getFirstName(),
                         personWithMedicalRecordDTO.getLastName(),
+                        personWithMedicalRecordDTO.getAge(),
+                        personWithMedicalRecordDTO.getPhone(),
                         personWithMedicalRecordDTO.getMedications(),
-                        personWithMedicalRecordDTO.getAllergies(),
-                        personWithMedicalRecordDTO.getAge()
+                        personWithMedicalRecordDTO.getAllergies()
+
                 ))
                 .toList();
 

@@ -1,4 +1,4 @@
-package com.openclassrooms.SafetyNet;
+package com.openclassrooms.SafetyNet.service;
 
 
 import com.openclassrooms.SafetyNet.exceptions.ConflictException;
@@ -6,7 +6,6 @@ import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.exceptions.NotFoundException;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.repository.PersonRepository;
-import com.openclassrooms.SafetyNet.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

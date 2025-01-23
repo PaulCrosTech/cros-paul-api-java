@@ -93,6 +93,9 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "400",
                     description = "Bad request - The request is invalid",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))),
+            @ApiResponse(responseCode = "404",
+                    description = "Not found - The Person doesn't exist",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))),
             @ApiResponse(responseCode = "409",
                     description = "Conflict - The medical record already exists",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class))
@@ -106,10 +109,11 @@ public class MedicalRecordController {
 
         // Create the location of the person object saved
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{firstName}/{lastName}")
-                .buildAndExpand(medicalRecord.getFirstName(), medicalRecord.getLastName())
+                .fromCurrentContextPath()
+                .path("/medicalRecords")
+                .build()
                 .toUri();
+        
         return ResponseEntity.created(location).build();
     }
 
