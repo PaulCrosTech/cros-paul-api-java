@@ -24,7 +24,7 @@ public class PersonWithMedicalAndEmailDTO {
     private String lastName;
 
     @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
-    private int age;
+    private Integer age;
 
     @Schema(description = "Email of the person", example = "mail@email.com", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 5, maxLength = 255)
     private String email;

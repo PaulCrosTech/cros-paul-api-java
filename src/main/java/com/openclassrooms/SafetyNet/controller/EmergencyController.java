@@ -51,8 +51,8 @@ public class EmergencyController {
             @Parameter(in = ParameterIn.QUERY, name = "stationNumber", description = "The station number", required = true, example = "3"),
     })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Station number not found"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved", content = @Content(schema = @Schema(implementation = PersonCoveredByStationDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Station number not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class)))
     })
     @GetMapping(path = "/firestation", params = "stationNumber", headers = "X-API-VERSION=1")
     public PersonCoveredByStationDTO getPersonCoveredByStation(@RequestParam int stationNumber) {
@@ -68,7 +68,7 @@ public class EmergencyController {
      * @return List of HouseChildrenDTO objects
      */
     @Operation(summary = "Get child, with house members informations", description = "Returns for each child, all members of same address")
-    @Parameters({
+    @Parameters(value = {
             @Parameter(in = ParameterIn.QUERY, name = "address", description = "The address", required = true, example = "\"1509 Culver St\""),
     })
     @ApiResponses(value = {
@@ -93,7 +93,7 @@ public class EmergencyController {
     })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Station number not found")
+            @ApiResponse(responseCode = "404", description = "Station number not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiError.class)))
     })
     @GetMapping(path = "/phoneAlert", params = "firestation", headers = "X-API-VERSION=1")
     public HashSet<String> getPhoneNumbersCoveredByFireStation(@RequestParam Integer firestation) {

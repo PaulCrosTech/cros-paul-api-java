@@ -23,7 +23,7 @@ public class PersonWithMedicalAndPhoneDTO {
     private String lastName;
 
     @Schema(description = "Age", example = "10", requiredMode = Schema.RequiredMode.REQUIRED)
-    private int age;
+    private Integer age;
 
     @Schema(description = "Phone number of the person", example = "841-874-6512", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 10, maxLength = 14)
     private String phone;

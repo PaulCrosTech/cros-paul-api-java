@@ -143,7 +143,7 @@ public class EmergencyMapper {
         personWithMedicalAndPhoneDTO.setLastName(person.getLastName());
         personWithMedicalAndPhoneDTO.setMedications(person.getMedications());
         personWithMedicalAndPhoneDTO.setAllergies(person.getAllergies());
-        personWithMedicalAndPhoneDTO.setAge(person.getAge());
+        personWithMedicalAndPhoneDTO.setAge((person.getAge() != null) ? person.getAge() : null);
         personWithMedicalAndPhoneDTO.setPhone(person.getPhone());
         return personWithMedicalAndPhoneDTO;
     }
@@ -160,7 +160,7 @@ public class EmergencyMapper {
         personWithMedicalAndEmailDTO.setLastName(person.getLastName());
         personWithMedicalAndEmailDTO.setMedications(person.getMedications());
         personWithMedicalAndEmailDTO.setAllergies(person.getAllergies());
-        personWithMedicalAndEmailDTO.setAge(person.getAge());
+        personWithMedicalAndEmailDTO.setAge((person.getAge() != null) ? person.getAge() : null);
         personWithMedicalAndEmailDTO.setEmail(person.getEmail());
         return personWithMedicalAndEmailDTO;
     }
@@ -174,7 +174,7 @@ public class EmergencyMapper {
      */
     public List<PersonWithMedicalRecordDTO> toPersonWithMedicalRecord(List<Person> persons, List<MedicalRecord> medicalRecords) {
 
-        List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = persons.stream()
+        return persons.stream()
                 .map(person -> {
                     MedicalRecord medicalRecord = medicalRecords.stream()
                             .filter(record -> record.getFirstName().equals(person.getFirstName()) && record.getLastName().equals(person.getLastName()))
@@ -200,8 +200,6 @@ public class EmergencyMapper {
                     return personWithMedicalRecordDTO;
                 })
                 .toList();
-
-        return personWithMedicalRecordDTOS;
 
     }
 

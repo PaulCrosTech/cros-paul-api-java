@@ -17,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PersonCoveredByStationDTO {
 
-    @Schema(description = "Number of childrens", example = "2")
+    @Schema(description = "Number of childrens", example = "0")
     private int nbChildren;
 
-    @Schema(description = "Number of adults", example = "3")
+    @Schema(description = "Number of adults", example = "1")
     private int nbAdults;
 
     @Schema(description = "List of persons covered by the station")
