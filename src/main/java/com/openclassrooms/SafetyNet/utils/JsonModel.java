@@ -1,6 +1,9 @@
-package com.openclassrooms.SafetyNet.model;
+package com.openclassrooms.SafetyNet.utils;
 
 
+import com.openclassrooms.SafetyNet.model.Firestation;
+import com.openclassrooms.SafetyNet.model.MedicalRecord;
+import com.openclassrooms.SafetyNet.model.Person;
 import lombok.Data;
 
 import java.util.List;

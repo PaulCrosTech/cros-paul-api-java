@@ -1,10 +1,9 @@
-package com.openclassrooms.SafetyNet.repository;
+package com.openclassrooms.SafetyNet.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerLoadException;
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Firestation;
-import com.openclassrooms.SafetyNet.model.JsonModel;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
 

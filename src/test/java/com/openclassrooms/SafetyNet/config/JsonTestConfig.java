@@ -1,8 +1,8 @@
 package com.openclassrooms.SafetyNet.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.SafetyNet.model.JsonModel;
-import com.openclassrooms.SafetyNet.repository.JsonFileManager;
+import com.openclassrooms.SafetyNet.utils.JsonModel;
+import com.openclassrooms.SafetyNet.utils.JsonFileManager;
 
 import java.io.File;
 

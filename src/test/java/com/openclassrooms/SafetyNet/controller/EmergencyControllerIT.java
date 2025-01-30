@@ -2,7 +2,7 @@ package com.openclassrooms.SafetyNet.controller;
 
 
 import com.openclassrooms.SafetyNet.config.JsonTestConfig;
-import com.openclassrooms.SafetyNet.repository.JsonFileManager;
+import com.openclassrooms.SafetyNet.utils.JsonFileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

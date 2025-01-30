@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
+import com.openclassrooms.SafetyNet.utils.JsonFileManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
@@ -91,7 +92,6 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void saveMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         List<MedicalRecord> medicalRecords = getMedicalRecords();
         medicalRecords.add(medicalRecord);
         log.debug("Medical record {} {} saved", medicalRecord.getFirstName(), medicalRecord.getLastName());
@@ -107,7 +107,6 @@ public class MedicalRecordRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         MedicalRecord existingRecord = getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
         if (existingRecord != null) {
             existingRecord.setBirthdate(medicalRecord.getBirthdate());

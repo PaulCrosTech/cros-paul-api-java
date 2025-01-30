@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Firestation;
+import com.openclassrooms.SafetyNet.utils.JsonFileManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
@@ -105,7 +106,6 @@ public class FirestationRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public Firestation updateFirestation(Firestation firestation) throws JsonFileManagerSaveException {
-        // Get all firestations matching the address
         Firestation firestationToUpdate = getFirestationByAddress(firestation.getAddress());
 
         if (firestationToUpdate == null) {
@@ -113,7 +113,6 @@ public class FirestationRepository {
             return null;
         }
 
-        // Update the station number
         firestationToUpdate.setStation(firestation.getStation());
         jsonFileManager.saveJsonFile();
 

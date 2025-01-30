@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNet.repository;
 
 import com.openclassrooms.SafetyNet.exceptions.JsonFileManagerSaveException;
 import com.openclassrooms.SafetyNet.model.Person;
+import com.openclassrooms.SafetyNet.utils.JsonFileManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
@@ -89,7 +90,6 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public boolean deletePersonByFirstNameAndLastName(String firstName, String lastName) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         boolean deleted = persons.removeIf(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName));
         if (deleted) {
@@ -106,7 +106,6 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public void savePerson(Person person) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         List<Person> persons = getPersons();
         persons.add(person);
         log.debug("Person {} {} saved", person.getFirstName(), person.getLastName());
@@ -122,7 +121,6 @@ public class PersonRepository {
      * @throws JsonFileManagerSaveException if an error occurs while saving the file
      */
     public Person updatePerson(Person person) throws JsonFileManagerSaveException {
-        // Ici, on récupère la référence et non une copie de la liste
         Person existingPerson = getPersonByFirstNameAndLastName(person.getFirstName(), person.getLastName());
         if (existingPerson != null) {
             existingPerson.setAddress(person.getAddress());

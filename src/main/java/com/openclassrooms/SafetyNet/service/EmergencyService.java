@@ -53,7 +53,6 @@ public class EmergencyService {
      * @return liste de PersonCoveredByStation
      */
     public PersonCoveredByStationDTO getPersonCoveredByStationNumber(int stationNumber) {
-        // Récupère les adresses couvertes par la caserne stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
         if (firestations.isEmpty()) {
             throw new NotFoundException("No firestation found for station number " + stationNumber);
@@ -61,11 +60,9 @@ public class EmergencyService {
 
         Map<Person, String> personWithBirthdate = new LinkedHashMap<>();
 
-        // Récupère les personnes vivant aux adresses couvertes par les casernes
         for (Firestation firestation : firestations) {
             List<Person> persons = personRepository.getPersonByAddress(firestation.getAddress());
 
-            // Récupère les dates de naissances des personnes
             for (Person p : persons) {
                 String birthdate = medicalRecordRepository.getBirthdateByFirstNameAndLastName(p.getFirstName(), p.getLastName());
                 if (birthdate != null) {
@@ -86,11 +83,8 @@ public class EmergencyService {
      * @return List of HouseChildrenDTO objects
      */
     public List<HouseChildrenDTO> getHouseChildren(String address) {
-        // Get persons at the same address
         List<Person> persons = personRepository.getPersonByAddress(address);
 
-
-        // Map person with birthdate
         Map<Person, String> personWithBirthdate = new LinkedHashMap<>();
 
         for (Person p : persons) {
@@ -100,8 +94,6 @@ public class EmergencyService {
             }
         }
 
-
-        // Map persons (with birthdate) to HouseChildrenDTO
         log.info("{} persons found", personWithBirthdate.size());
         return emergencyMapper.toHouseChildrenDTO(personWithBirthdate);
 
@@ -114,16 +106,13 @@ public class EmergencyService {
      * @return HashSet of phone numbers
      */
     public HashSet<String> getPhoneNumbersCoveredByFireStation(int stationNumber) {
-        // HashSet for unique phone numbers
         HashSet<String> phoneNumbers = new HashSet<>();
 
-        // Get Firestations corresponding to the stationNumber
         List<Firestation> firestations = firestationRepository.getFirestationByStationNumber(stationNumber);
         if (firestations.isEmpty()) {
             throw new NotFoundException("No firestation found for station number " + stationNumber);
         }
 
-        // Get Persons living at the addresses covered by the firestations
         for (Firestation firestation : firestations) {
             List<Person> persons = personRepository.getPersonByAddress(firestation.getAddress());
             for (Person person : persons) {
@@ -143,16 +132,13 @@ public class EmergencyService {
      */
     public FamilyWithMedicalAndFirestationDTO getFamilyWithMedicalAndFirestation(String address) {
 
-        // Get Firestation for the address
         Firestation firestation = firestationRepository.getFirestationByAddress(address);
         if (firestation == null) {
             return new FamilyWithMedicalAndFirestationDTO();
         }
 
-        // Get persons covered by the firestation
         List<Person> persons = personRepository.getPersonByAddress(address);
 
-        // Get MedicalRecords of persons
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (Person person : persons) {
             MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(
@@ -163,7 +149,6 @@ public class EmergencyService {
             }
         }
 
-        // Map persons, medicalRecords and firestation to FamilyWithMedicalAndFirestationDTO
         log.info("{} persons found", persons.size());
         return emergencyMapper.toFamilyWithMedicalAndFirestationDTO(persons, medicalRecords, firestation);
     }
@@ -179,7 +164,6 @@ public class EmergencyService {
 
         FamilyWithMedicalGroupedByAddressDTO familyDTO = new FamilyWithMedicalGroupedByAddressDTO();
 
-        // Get unique addresses of Firestations corresponding to the stationNumbers
         Set<String> addresses = new HashSet<>();
 
         for (Integer stationNumber : stationNumbers) {
@@ -188,7 +172,6 @@ public class EmergencyService {
             firestations.stream().map(Firestation::getAddress).forEach(addresses::add);
         }
 
-        // Get Persons, with medical record, living at the addresses
         List<Person> finalPersonList = new ArrayList<>();
         List<MedicalRecord> finalMedicalRecordList = new ArrayList<>();
 
@@ -196,7 +179,6 @@ public class EmergencyService {
             List<Person> tempPersonList = personRepository.getPersonByAddress(address);
             finalPersonList.addAll(tempPersonList);
 
-            // Get MedicalRecords of persons
             for (Person person : tempPersonList) {
                 MedicalRecord tempMedicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(person.getFirstName(), person.getLastName());
                 if (tempMedicalRecord != null) {
@@ -205,16 +187,12 @@ public class EmergencyService {
             }
         }
 
-        // Associate Person with MedicalRecord
         List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = emergencyMapper.toPersonWithMedicalRecord(finalPersonList, finalMedicalRecordList);
 
-        // Group by address
         HashMap<String, List<PersonWithMedicalAndPhoneDTO>> personGroupedByAddress = new HashMap<>();
 
         for (PersonWithMedicalRecordDTO personWithMedicalRecordDTO : personWithMedicalRecordDTOS) {
-            // Map to PersonWithMedicalAndPhoneDTO
             PersonWithMedicalAndPhoneDTO personWithMedicalAndPhoneDTO = emergencyMapper.toPersonWithMedicalAndPhone(personWithMedicalRecordDTO);
-            // Group by address
             personGroupedByAddress.computeIfAbsent(
                     personWithMedicalRecordDTO.getAddress(), k -> new ArrayList<>()).add(personWithMedicalAndPhoneDTO
             );
@@ -233,13 +211,11 @@ public class EmergencyService {
      * @return List of PersonWithMedicalAndEmailDTO objects
      */
     public List<PersonWithMedicalAndEmailDTO> getPersonMedicalWithEmail(String lastName) {
-        // Get all persons with lat name equals to lastName
         List<Person> personsList = personRepository.getPersonByLastName(lastName);
         if (personsList.isEmpty()) {
             throw new NotFoundException("No person found with last name " + lastName);
         }
 
-        // Get medical record of persons
         List<MedicalRecord> medicalRecordsList = new ArrayList<>();
         for (Person person : personsList) {
             MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecordByFirstNameAndLastName(
@@ -249,10 +225,8 @@ public class EmergencyService {
             }
         }
 
-        // Associate Person with MedicalRecord
         List<PersonWithMedicalRecordDTO> personWithMedicalRecordDTOS = emergencyMapper.toPersonWithMedicalRecord(personsList, medicalRecordsList);
-
-        // Map to PersonWithMedicalAndEmailDTO
+        
         List<PersonWithMedicalAndEmailDTO> personWithMedicalAndEmailDTOS = new ArrayList<>();
         for (PersonWithMedicalRecordDTO p : personWithMedicalRecordDTOS) {
             PersonWithMedicalAndEmailDTO personWithMedicalAndEmailDTO = emergencyMapper.toPersonWithMedicalAndEmailDTO(p);
